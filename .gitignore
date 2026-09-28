@@ -54,6 +54,10 @@ final-tests.*
 *.log
 *.done
 
+# python bytecode
+__pycache__/
+*.py[cod]
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
