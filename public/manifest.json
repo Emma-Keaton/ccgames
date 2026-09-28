@@ -1,0 +1,27 @@
+{
+  "name": "Coal City Games 2026 — Enugu",
+  "short_name": "CCGames 2026",
+  "description": "The 23rd National Sports Festival — live scores, results, medals and schedules for Coal City Games Enugu 2026.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#121F8F",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

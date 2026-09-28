@@ -1,0 +1,49 @@
+import { NextResponse } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from '@/utils/supabase/env'
+import { cookies } from 'next/headers'
+
+export async function GET(request: Request) {
+  const { searchParams, origin } = new URL(request.url)
+  const code = searchParams.get('code')
+  // if "next" is in param, use it as the redirect URL — validated here the
+  // same way as /login so OAuth callbacks never land on an arbitrary origin.
+  const rawNext = searchParams.get('next')
+  const next =
+    typeof rawNext === 'string' && rawNext.startsWith('/') && !rawNext.startsWith('//')
+      ? rawNext
+      : '/'
+
+  if (code) {
+    const cookieStore = await cookies()
+    const supabase = createServerClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY,
+      {
+        cookies: {
+          getAll() {
+            return cookieStore.getAll()
+          },
+          setAll(cookiesToSet) {
+            try {
+              cookiesToSet.forEach(({ name, value, options }) =>
+                cookieStore.set(name, value, options)
+              )
+            } catch {
+              // The `setAll` method was called from a Server Component.
+              // This can be ignored if you have middleware refreshing
+              // user sessions.
+            }
+          },
+        },
+      }
+    )
+    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    if (!error) {
+      return NextResponse.redirect(`${origin}${next}`)
+    }
+  }
+
+  // return the user to an error page with instructions
+  return NextResponse.redirect(`${origin}/auth/auth-code-error`)
+}

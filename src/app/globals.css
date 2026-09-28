@@ -1,0 +1,217 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   Coal City Games — Enugu 2026 design tokens
+   ============================================================================
+   Brand sheet: Athletic Royal Blue is the primary anchor (highest contrast on
+   white, WCAG AAA for interactive text), Enugu Green the secondary, Coal Amber
+   the highlight/medal colour and Festival Crimson the notification colour.
+
+   Accessibility note carried over from the brand sheet: never set amber
+   (#F7A41E) as text on white — use it as a solid background with white text or
+   as an icon/badge fill. `enugu-amber` is therefore reserved for surfaces,
+   icons and borders, and `text-enugu-amber` should be avoided on the light
+   app surface.
+
+   Light is the default theme. A `[data-theme='dark']` block re-points the
+   semantic tokens only, so components written against the semantic names
+   (bg-surface, text-text, border-border-subtle, …) work in both without edits.
+   ============================================================================ */
+
+/* Shared font stack.
+   Files live in `public/fonts/` — see public/fonts/README.md for the exact
+   file names to drop in. `font-display: swap` plus the system fallbacks below
+   mean the UI renders immediately even before the files are added. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Inter-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Inter-Italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Inter-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/Inter-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Inter-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('/fonts/Inter-ExtraBold.woff2') format('woff2');
+}
+
+/* ---------------------------------------------------------------------------
+   Raw brand swatches + neutrals. These generate utilities such as
+   `bg-enugu-blue`, `text-coal`, `border-hairline`, `bg-surface-app`.
+   --------------------------------------------------------------------------- */
+@theme {
+  --color-enugu-green: #6CB33F;
+  --color-enugu-amber: #F7A41E;
+  --color-enugu-crimson: #D8232A;
+  --color-enugu-blue: #121F8F;
+  --color-coal: #141416;
+
+  --color-surface-app: #F8F9FA;
+  --color-surface-card: #FFFFFF;
+  --color-surface-sunken: #F1F3F5;
+  --color-ink: #141416;
+  --color-ink-muted: #6B7280;
+  --color-hairline: #E5E7EB;
+
+  --font-sans:
+    'Inter',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+}
+
+/* ---------------------------------------------------------------------------
+   Semantic role tokens. Components should prefer these names so a theme flip
+   (or dark mode) never requires touching a component again.
+   --------------------------------------------------------------------------- */
+@theme inline {
+  --color-primary: var(--role-primary);
+  --color-primary-strong: var(--role-primary-strong);
+  --color-primary-soft: var(--role-primary-soft);
+  --color-secondary: var(--role-secondary);
+  --color-accent: var(--role-accent);
+  --color-danger: var(--role-danger);
+  --color-live: var(--role-live);
+
+  --color-surface: var(--role-surface);
+  --color-surface-elevated: var(--role-surface-elevated);
+  --color-text: var(--role-text);
+  --color-text-muted: var(--role-text-muted);
+  --color-border-subtle: var(--role-border);
+}
+
+:root {
+  color-scheme: light;
+
+  --role-primary: #121F8F;
+  --role-primary-strong: #0D1770;
+  --role-primary-soft: #E8EAF8;
+  --role-secondary: #6CB33F;
+  --role-accent: #F7A41E;
+  --role-danger: #D8232A;
+  /* "Live" reads as crimson in the brand sheet but the text/badge variant is
+     darkened a touch so it clears AA on the light surface. */
+  --role-live: #C81E25;
+
+  --role-surface: #F8F9FA;
+  --role-surface-elevated: #FFFFFF;
+  --role-text: #141416;
+  --role-text-muted: #6B7280;
+  --role-border: #E5E7EB;
+
+  /* Back-compat aliases for anything still reading the old names. */
+  --background: var(--role-surface);
+  --foreground: var(--role-text);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --role-primary: #4C5BE0;
+  --role-primary-strong: #6A78F0;
+  --role-primary-soft: #1B2450;
+  --role-secondary: #7CC750;
+  --role-accent: #F7A41E;
+  --role-danger: #F0443C;
+  --role-live: #FF5A5F;
+
+  --role-surface: #0E1424;
+  --role-surface-elevated: #182034;
+  --role-text: #F8FAFC;
+  --role-text-muted: #9AA4B8;
+  --role-border: #2A3448;
+}
+
+body {
+  background-color: var(--role-surface);
+  color: var(--role-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Used by the root layout. Keeps the same chain as `body` so switching to the
+   self-hosted Inter files (or falling back) never shifts the layout. */
+.system-font-fallback {
+  font-family: var(--font-sans);
+}
+
+/* ---------------------------------------------------------------------------
+   Shared primitives. Deliberately few: every surface that repeats (cards, the
+   live pulse, focus rings) is defined once so the 20-sport UI cannot drift.
+   --------------------------------------------------------------------------- */
+.cc-card {
+  background-color: var(--role-surface-elevated);
+  border: 1px solid var(--role-border);
+  border-radius: 0.75rem;
+}
+
+.cc-live-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background-color: var(--role-live);
+  animation: cc-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes cc-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-live-dot {
+    animation: none;
+  }
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--role-primary);
+  outline-offset: 2px;
+}
