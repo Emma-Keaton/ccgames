@@ -1,7 +1,7 @@
 # Supabase project configuration for the CLI (`supabase link` / `supabase db push`).
 # Keep this file in version control: it tells the CLI that the SQL files under
 # `supabase/migrations/` are the source of truth for the schema.
-project_id = "obsidian-league"
+project_id = "ccgames"
 
 [api]
 enabled = true
