@@ -108,7 +108,7 @@ const ConcludedMatchesSection = ({ matches }: { matches: MatchCardRow[] }) => (
 const RegistrationBanner = ({ tournament }: { tournament: RegistrationTarget | null }) => {
   const target: RegistrationTarget = tournament ?? {}
   const eventLabel =
-    [target.name, target.edition].filter(Boolean).join(" — ") || "the next Obsidian Elite tournament"
+    [target.name, target.edition].filter(Boolean).join(" — ") || "the next Coal City Games 2026 tournament"
 
   return (
     <section className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 rounded-2xl p-8 sm:p-12 text-center shadow-2xl relative overflow-hidden border border-indigo-500/30">

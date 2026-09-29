@@ -1,5 +1,5 @@
 -- ============================================================================
--- Obsidian Elite — COMPLETE DATABASE SETUP (single source of truth)
+-- Coal City Games — COMPLETE DATABASE SETUP (single source of truth)
 -- ============================================================================
 -- This one file is the entire database: schema, seed data, row level security,
 -- realtime configuration, scope/duty authority and every write RPC the app

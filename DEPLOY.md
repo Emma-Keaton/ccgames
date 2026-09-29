@@ -53,7 +53,7 @@ Copy `.env.example` → `.env.local` for local work, and add the same keys in
 | --- | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → API | `https://<ref>.supabase.co` |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Project Settings → API | public/anon key (RLS enforces access) |
-| `NEXT_PUBLIC_SITE_URL` | this deployment's public URL | used for metadata, `sitemap.xml`, `robots.txt`, OAuth redirects. No trailing slash. **Currently `https://obsidian-league.vercel.app`** — change it after connecting a custom domain (see §7). |
+| `NEXT_PUBLIC_SITE_URL` | this deployment's public URL | used for metadata, `sitemap.xml`, `robots.txt`, OAuth redirects. No trailing slash. **Currently `https://ccgames.vercel.app`** — change it after connecting a custom domain (see §7). |
 
 > **Set `NEXT_PUBLIC_SITE_URL` in two dashboards, not one:** **Vercel → Project →
 > Settings → Environment Variables** (Production *and* Preview) **and** **GitHub →
@@ -210,9 +210,9 @@ on conflict (user_id) do update set role = 'app_admin';
 ### Auth configuration (Supabase dashboard)
 
 - **URL Configuration** → **Site URL** = the app's public URL
-  (`https://obsidian-league.vercel.app` today, your custom domain after §7);
+  (`https://ccgames.vercel.app` today, your custom domain after §7);
   **Redirect URLs** += `https://<domain>/**` for **every** host the app answers on
-  (`https://obsidian-league.vercel.app/**`, `https://<your-domain>/**`, plus
+  (`https://ccgames.vercel.app/**`, `https://<your-domain>/**`, plus
   `http://localhost:3000/**` for local dev).
 - **Providers → Google**: enable, paste the OAuth client id/secret (authorised
   redirect URI = `https://<ref>.supabase.co/auth/v1/callback`).
@@ -227,7 +227,7 @@ By default Google shows **"Sign in to [your Supabase project ref]"** - ugly and 
 
 1. **Create a Google Cloud project** (if you don't have one):
    - Go to [console.cloud.google.com](https://console.cloud.google.com) → **New Project**.
-   - Name it after your app (e.g. "Obsidian Elite").
+   - Name it after your app (e.g. "Coal City Games").
 
 2. **Configure the OAuth consent screen**:
    - **Users & permissions** → **OAuth consent screen**.
@@ -243,7 +243,7 @@ By default Google shows **"Sign in to [your Supabase project ref]"** - ugly and 
 3. **Create the OAuth client**:
    - **APIs & Services** → **Credentials** → **+ Create Credentials** → **OAuth client ID**.
    - Application type: **Web application**.
-   - Name: `Obsidian Elite Web Client` (or whatever you like).
+   - Name: `Coal City Games Web Client` (or whatever you like).
    - **Authorized redirect URIs**: add BOTH of these:
      - `https://<your-supabase-ref>.supabase.co/auth/v1/callback`
      - `http://localhost:3000/auth/callback` (for local dev)
@@ -251,7 +251,7 @@ By default Google shows **"Sign in to [your Supabase project ref]"** - ugly and 
 
 4. **Paste into Supabase**:
    - Supabase → **Authentication** → **Providers** → **Google** → paste Client ID + Secret.
-   - Save. The next time a user signs in with Google they'll see **"Sign in to Obsidian Elite"**.
+   - Save. The next time a user signs in with Google they'll see **"Sign in to Coal City Games"**.
 
 > **Note**: Google requires domain verification for public apps. Until verified, only the test users you added in step 2 can see the branded consent screen. Other users will still see the unbranded Supabase-style message. For a fully custom branded screen visible to everyone, complete Google's verification flow (requires a public website with privacy policy and terms).
 ---
@@ -362,7 +362,7 @@ Genuine placeholders to review before launch:
 
 ## 7. Switching to a custom domain (after purchase)
 
-The app is currently served from **`https://obsidian-league.vercel.app`** (the
+The app is currently served from **`https://ccgames.vercel.app`** (the
 Vercel project URL). When the real domain is bought, the swap is deliberately
 centralised: **everything domain-dependent reads one variable**,
 `NEXT_PUBLIC_SITE_URL`, which is consumed in exactly three places.
@@ -380,14 +380,14 @@ mentions the app's own domain. All three consumers use `||` fallbacks, so an
 
 ### Step 1 — buy the domain and connect it to Vercel
 
-1. Buy the domain (any registrar), e.g. `obsidianelite.com`.
+1. Buy the domain (any registrar), e.g. `ccgames.com`.
 2. Vercel → **Project → Settings → Domains → Add** → type the domain.
 3. Create the DNS records Vercel shows, at your registrar:
    - apex (`example.com`) → Vercel's **A** record (or the **ALIAS/ANAME** value it suggests),
    - `www` → **CNAME** `cname.vercel-dns.com`.
 4. Wait for **"Valid Configuration"** and the automatic **HTTPS certificate**
    (usually a few minutes).
-5. Keep `obsidian-league.vercel.app` attached so existing links keep working.
+5. Keep `ccgames.vercel.app` attached so existing links keep working.
    Optionally set the custom domain as **primary** so Vercel 308-redirects the
    `*.vercel.app` host to it.
 
@@ -399,9 +399,9 @@ editing the Vercel env var alone changes nothing until a new build runs.
 
 | Where | Set to |
 | --- | --- |
-| **Vercel → Project → Settings → Environment Variables** (Production **and** Preview) | `https://obsidianelite.com` |
-| **GitHub → repo → Settings → Secrets and variables → Actions** → `NEXT_PUBLIC_SITE_URL` | `https://obsidianelite.com` (`.github/workflows/build.yml` feeds it to `next build`) |
-| `.env.example` (template) and local `.env.local` | `https://obsidianelite.com` — or keep `http://localhost:3000` for local-only dev |
+| **Vercel → Project → Settings → Environment Variables** (Production **and** Preview) | `https://ccgames.com` |
+| **GitHub → repo → Settings → Secrets and variables → Actions** → `NEXT_PUBLIC_SITE_URL` | `https://ccgames.com` (`.github/workflows/build.yml` feeds it to `next build`) |
+| `.env.example` (template) and local `.env.local` | `https://ccgames.com` — or keep `http://localhost:3000` for local-only dev |
 
 Then **redeploy**: Vercel → **Deployments** → *Redeploy*, and untick
 **"Use existing build cache"** so the new value is picked up.
@@ -409,14 +409,14 @@ Then **redeploy**: Vercel → **Deployments** → *Redeploy*, and untick
 ### Step 3 — Supabase (and Google)
 
 1. Supabase → **Authentication → URL Configuration**:
-   - **Site URL** = `https://obsidianelite.com`
-   - **Redirect URLs** += `https://obsidianelite.com/**` — keep
-     `http://localhost:3000/**` and `https://obsidian-league.vercel.app/**` too,
+   - **Site URL** = `https://ccgames.com`
+   - **Redirect URLs** += `https://ccgames.com/**` — keep
+     `http://localhost:3000/**` and `https://ccgames.vercel.app/**` too,
      so in-flight password resets and invite links never break mid-switch.
 2. Supabase → **Authentication → Email Templates**: confirm the confirm/reset
    links use `{{ .SiteURL }}` / `{{ .RedirectTo }}` (default) so they follow the
    new domain automatically; otherwise hardcode
-   `https://obsidianelite.com/auth/callback`.
+   `https://ccgames.com/auth/callback`.
 3. **Google OAuth: no change needed.** Its authorised redirect URI is the
    *Supabase* callback (`https://<ref>.supabase.co/auth/v1/callback`), which does
    not move when the app's own domain changes. Only update the consent screen's
@@ -425,16 +425,16 @@ Then **redeploy**: Vercel → **Deployments** → *Redeploy*, and untick
 ### Step 4 — verify, then you are done
 
 ```powershell
-npm run smoke https://obsidianelite.com   # routes, headers, authz boundaries
+npm run smoke https://ccgames.com   # routes, headers, authz boundaries
 ```
 
-- `https://obsidianelite.com/robots.txt` → `Sitemap: https://obsidianelite.com/sitemap.xml`
-- `https://obsidianelite.com/sitemap.xml` → every `<loc>` starts with the new domain
+- `https://ccgames.com/robots.txt` → `Sitemap: https://ccgames.com/sitemap.xml`
+- `https://ccgames.com/sitemap.xml` → every `<loc>` starts with the new domain
 - Sign in with **Google** and **email**, accept an invite link end-to-end, and
   confirm a shared `/news/<slug>` link previews with the new domain.
 
 ### Rolling back
 
-Point `NEXT_PUBLIC_SITE_URL` back to `https://obsidian-league.vercel.app` in
+Point `NEXT_PUBLIC_SITE_URL` back to `https://ccgames.vercel.app` in
 Vercel + the GitHub secret and redeploy. The `*.vercel.app` host stays attached,
 so the site remains reachable at either address — the switch is non-destructive.

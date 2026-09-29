@@ -8,12 +8,12 @@ import type { TeamRow } from '@/components/TeamsExplorer'
 export const revalidate = 60
 
 export const metadata: Metadata = {
-  title: 'Teams | Obsidian Elite',
-  description: 'Browse every team competing in the Obsidian Elite, filtered by category, discipline and group.',
+  title: 'Teams | Coal City Games',
+  description: 'Browse every team competing across the Coal City Games programme, filtered by category, discipline and group.',
   openGraph: {
-    title: 'Teams | Obsidian Elite',
-    description: 'Browse every team competing in the Obsidian Elite, filtered by category, discipline and group.',
-    siteName: 'Obsidian Elite',
+    title: 'Teams | Coal City Games',
+    description: 'Browse every team competing across the Coal City Games programme, filtered by category, discipline and group.',
+    siteName: 'Coal City Games',
     type: 'website',
   },
 }

@@ -27,7 +27,7 @@ export default async function CompetitionsPage() {
         <header className="mb-10 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4">
           <div>
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">Competitions</h1>
-            <p className="text-gray-400 text-lg">Obsidian Elite Tournament Hub</p>
+            <p className="text-gray-400 text-lg">Coal City Games Tournament Hub</p>
           </div>
         </header>
         <Suspense fallback={<div className="py-20 text-center text-gray-400">Loading competitions…</div>}>

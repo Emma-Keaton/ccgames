@@ -11,7 +11,7 @@ export function BrandedLoader({ message = 'Loading...' }: { message?: string }) 
     <div className="min-h-screen bg-[#0f172a] text-white flex flex-col items-center justify-center gap-4">
       <Image
         src="/logo-compressed.jpeg"
-        alt="Obsidian Elite"
+        alt="Coal City Games"
         width={72}
         height={72}
         className="w-16 h-16 rounded-2xl object-cover animate-pulse"
@@ -204,7 +204,7 @@ export function MatchCenterSkeleton() {
       <div className="text-center flex flex-col items-center">
         <Image
           src="/logo-compressed.jpeg"
-          alt="Obsidian Elite"
+          alt="Coal City Games"
           width={64}
           height={64}
           className="w-14 h-14 rounded-2xl object-cover animate-pulse mb-4"

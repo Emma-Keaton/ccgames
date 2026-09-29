@@ -1,6 +1,6 @@
 # Design System: Coal City Games — Enugu 2026
 **Project:** `ccgames` — public tournament hub for the 23rd National Sports Festival
-**Version:** 1.0 (supersedes the Obsidian Elite dark theme)
+**Version:** 1.0 (supersedes the Coal City Games dark theme)
 
 > This file is the source of truth for every screen. Anything built for this app
 > must be describable in the language below. If a screen needs a new pattern,

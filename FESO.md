@@ -6,8 +6,15 @@ and the mock/placeholder sweep, then completed with the live-database push
 (migrations `00`–`13`) and the Vercel deploy. TypeScript is clean
 (`npx tsc --noEmit` → 0 errors), `eslint src/` → 0 errors / 0 warnings, and the
 production build is verified (`next build` → 25 routes, 0 errors). The app is
-live at `https://obsidian-league.vercel.app` — see `DEPLOY.md` §7 for moving to a
+live at `https://ccgames.vercel.app` — see `DEPLOY.md` §7 for moving to a
 purchased domain.
+
+> **Read this first after a context wipe.** The authoritative source of truth for
+> *what we are building* is **§ NSF 2026 reference data** (below) plus
+> **§ Deferred / TODO**. Those two sections were written deliberately to stand alone:
+> the sport list, the venues, the tournament structure and the open tasks are all
+> recorded there so they survive losing the working conversation. Everything else in
+> this file is a historical log of batches that are already done.
 
 ## Batch 1 - Role & navigation ✅ Done
 - `src/lib/admin-auth.ts` is the single server-side source of truth: `getAuthInfo()`
@@ -96,7 +103,7 @@ purchased domain.
 - **Rate limiting** - `src/lib/rate-limit.ts`: Upstash sliding window shared across instances
   (`@upstash/ratelimit`) with an in-process fallback; applied to `/api/admin-auth-info`
   (120/min/IP) and `/api/revalidate` (60/min/IP, admin-only, 403 for anonymous callers).
-- **Shared cache** - `src/lib/cache.ts` (Upstash Redis, `ol:` prefix, never throws) plus
+- **Shared cache** - `src/lib/cache.ts` (Upstash Redis, `ccg:` prefix, never throws) plus
   `cachedRestGet()` in `src/lib/public-api.ts`. Cached reads are limited to heavy,
   semi-static data: news list/detail, medal tallies, team directory, active-tournament
   config. Live fixtures/scores are **never** cached there.
@@ -193,7 +200,7 @@ prefilled (`src/lib/registration.ts` → `REGISTRATION_TEMPLATE`). `{{TOURNAMENT
 with the active tournament's name, edition, dates and host city.
 
 ```
-Hello Obsidian Elite organisers,
+Hello Coal City Games organisers,
 
 We would like to register a team for {{TOURNAMENT}}.
 
@@ -214,7 +221,7 @@ Configure the channels with public env vars (see `.env.example`):
 | Variable | Purpose | Example |
 | --- | --- | --- |
 | `NEXT_PUBLIC_REGISTRATION_WHATSAPP` | digits only, international format, no `+` | `2348012345678` |
-| `NEXT_PUBLIC_REGISTRATION_EMAIL` | registration inbox | `entries@obsidianelite.com` |
+| `NEXT_PUBLIC_REGISTRATION_EMAIL` | registration inbox | `entries@ccgames.com` |
 
 Either channel can be omitted - its button is then hidden; if neither is set the banner falls
 back to a link to `/news`, so it can never be a dead link.
@@ -304,7 +311,7 @@ All ten FESO batches are implemented and verified:
 - Supabase remote verified: migrations `00`–`13` applied (`npm run db:list`), 48 public
   functions, every table RLS-enabled, no `is_admin()` policies, no anon grant on
   `tournament_invites`, all 20 console RPCs present
-- Canonical URL is `https://obsidian-league.vercel.app`.
+- Canonical URL is `https://ccgames.vercel.app`.
   **Action required in the dashboards (not in the repo):** set `NEXT_PUBLIC_SITE_URL`
   to that URL in **Vercel → Project → Settings → Environment Variables**
   (Production + Preview) **and** in **GitHub → repo → Settings → Secrets and
@@ -337,7 +344,145 @@ All ten FESO batches are implemented and verified:
    `upsert_fixture_entry` — all duty-checked against `is_app_admin()` or
    `is_tournament_admin(tournament_id)` with `score`/`*` scope.
 
-### Still deferred (by design)
+---
+
+## NSF 2026 reference data (source of truth)
+
+> Established 2026-09-28 from the organiser brief. **This section is authoritative
+> and deliberately self-contained** — if a future session contradicts it, this
+> section wins until someone edits it here on purpose.
+
+### The event
+
+**2026 National Sports Festival (NSF)** — officially tagged the **Coal City Games**.
+27 Nov – 11 Dec 2026, Enugu State, Nigeria. Also known as the 23rd National Sports
+Festival. Hosted by Enugu State under the National Sports Commission (NSC) *RHINSE*
+reform agenda.
+
+### The 20 sports
+
+To reduce the financial burden on the host state, the NSC streamlined the programme
+to **20 core sports** (15 compulsory + 5 host-selected), alongside specific optional
+events.
+
+| # | Sport | # | Sport |
+| --- | --- | --- | --- |
+| 1 | Athletics | 11 | Mixed Martial Arts (MMA) |
+| 2 | Para-Athletics | 12 | Swimming |
+| 3 | Badminton | 13 | Table Tennis |
+| 4 | Para-Badminton | 14 | Para-Table Tennis |
+| 5 | Basketball | 15 | Tennis |
+| 6 | Wheelchair Basketball | 16 | Taekwondo |
+| 7 | Boxing | 17 | Weightlifting |
+| 8 | Cycling | 18 | Para-Powerlifting |
+| 9 | Football | 19 | Wrestling |
+| 10 | Gymnastics | 20 | Judo |
+
+*(Rows renumbered 1–20 for reference; the brief's own ordering lists Judo at 11 and
+MMA at 12 — treat the set as the fact, not the position.)*
+
+**Optional festival programmes** (listed alongside the core 20, not part of it):
+Cricket · Canoeing · Para-Canoeing · Darts · Golf · Shooting · Para-Shooting.
+
+> ⚠️ **Unresolved: how this maps to the `sports` table.** The organiser's 20 count
+> includes **eight para/disability variants as separate entries** (Para-Athletics,
+> Para-Badminton, Wheelchair Basketball, Para-Table Tennis, Para-Powerlifting). The
+> database models disability events as `sport_divisions` on a parent sport instead —
+> e.g. `basketball` + `Basketball (5x5)` / `Basketball 3x3`, and
+> `weightlifting` + `Para Powerlifting`. So the organiser count and the schema count
+> are **not** directly comparable, and "20" in the brief is not a row count for
+> `public.sports`. Additionally, `tournament_sports` currently enables cricket,
+> canoeing, darts, golf and shooting, which this brief classifies as *optional*
+> rather than core. **Decide before seeding venues: do optional sports appear in the
+> app as disabled/coming-soon, or are they dropped entirely?**
+
+### The venues
+
+| Venue | Role |
+| --- | --- |
+| **Nnamdi Azikiwe Stadium, Enugu** | Major revamp. Hosts track & field (athletics), football, and the opening/closing ceremonies. |
+| **Enugu International Conference Centre (ICC)** | Landmark facility hub; indoor sports backdrop and official presentation ceremonies. |
+| **Enugu State Indoor Sports Hall** (Enugu State Sports Complex) | Full federal-government-approved rehabilitation. Hosts indoor sports — combat and racket categories. |
+| **Olympic-Size Swimming Pool** (new build) | Constructed explicitly for the swimming events. |
+| **Awgu Games Village** | Rehabilitated for athlete housing, training and logistics. |
+
+> ⚠️ **Unresolved:** the brief gave no capacity, address or coordinates for these,
+> and the Olympic-size pool entry arrived without a location. The "8-venue matrix"
+> in the TODO below is therefore **not yet derivable from this list** — this table
+> has 5 entries. A `venues` table does not exist in `supabase/` yet.
+
+### Tournament structure
+
+Hybrid, varying by sport category:
+
+- **Zonal elimination stage (qualifiers).** All *team* sports (football, basketball,
+  cricket, volleyball) must first pass regional elimination across Nigeria's six
+  geopolitical zones. These are mini group-stage qualification grids; **the top two
+  teams from each zone** qualify for the main festival. **Host state Enugu receives
+  automatic entry.**
+- **Main festival — group to knockout.** Team sports: group stage (round-robin), then
+  the top-seeded states advance to a single-elimination knockout (Quarter-finals →
+  Semi-finals → Final) for Gold / Silver / Bronze.
+- **Individual & combat sports.** Boxing, judo, taekwondo and wrestling run direct
+  standard knockout brackets by weight category. Athletics and swimming use timed
+  trial heats advancing straight to finals.
+
+> The seeded `tournament_settings` row in migration `04` already reflects the
+> group-to-knockout half (`format = 'group_to_knockout'`, 3 pts win / 1 draw). The
+> **zonal-qualifier stage and the automatic host entry are not modelled anywhere yet.**
+
+---
+
+## Deferred / TODO (open work)
+
+> Also written to survive a context wipe. **Nothing below is done.**
+
+1. **Mascot asset + component — blocked on rights.** The mascot is *Odum Eze* ("lion
+   king"), unveiled 30–31 Aug 2026 for the festival. **No clean vector, transparent
+   PNG or high-res master has been obtained.** Best material so far is 1080×1080
+   press photographs in `.preview/mascot/src/` (gitignored scratch) — sharp, but the
+   mascot is never isolated from the red banner or the officials standing beside it,
+   there is no transparent background, and the images are third-party news
+   photography (one carries a `thenationonlineng.net` call-to-action overlay).
+   Separately, the mascot is a **government trademark** (NSC / Enugu State), not
+   free-to-use material. Fallbacks in order: request the master from organisers →
+   green-screen re-shoot of the costume → commission an original illustration.
+   **Do not publish the press photos.**
+2. **Animated position table** — specced in `DESIGN.md` §1 ("the name plate
+   physically glides to the new row"); not yet built. The current
+   `src/components/competitions/Standings.tsx` has no animation. This is the
+   signature motion of the whole design system.
+3. **Venues + discipline breakdown seeding** — needs a `venues` table, plus
+   `sports.scoring_config.format_code` / `events` per sport. Blocked on the mapping
+   questions raised in **§ NSF 2026 reference data** above.
+4. **Branding sweep** — the SVG logo is not yet wired into components.
+5. **Multi-sport UI redesign + multi-tournament strip** — not started.
+6. **Repository hygiene** — rename the folder `Obsidian-League` → `ccgames`, then
+   re-init git and push clean. Deliberately last.
+
+### Repo hygiene note (2026-09-28)
+
+`public/odum-eze/` (four 148×148 press JPEGs containing identifiable people and a
+partially visible phone number) was tracked in git and pushed to `origin/main` in
+commit `919c902`. It has been removed from the working tree and **purged from all
+history** with `git filter-repo --invert-paths --path public/odum-eze`. A
+pre-purge backup of the `.git` directory exists at
+`E:/Projects/_ccgames-backup-before-purge` — **delete it once the clean push is
+confirmed**, since it still contains the original blobs.
+
+## Still deferred (by design)
+
+1. **Realtime fan-out remains direct Supabase Realtime.** Upgrade path (Redis pub/sub
+   or enterprise WebSocket tier) is documented in `SECURITY_AND_SCALING.md` §2.
+2. **URL-synced tabs**: the active tab is persisted in `?tab=` but scrolling to the
+   matching section uses `scrollIntoView` — the tab button highlight lags the scroll
+   slightly on direct-link navigation. Fixable with an `IntersectionObserver` if
+   needed.
+3. **`supabase/schema.sql` + `schema_updates.sql`** remain historical; migrations
+   00–13 are the source of truth (see `DEPLOY.md` §2).
+   `13_scope_duties_recorders_lineups.sql` now carries the scope-authority /
+   recorder / lineup surface that previously existed only in `db-setup.sql`, so
+   `db push` produces a console-ready database.
 
 1. **Realtime fan-out remains direct Supabase Realtime.** Upgrade path (Redis pub/sub
    or enterprise WebSocket tier) is documented in `SECURITY_AND_SCALING.md` §2.
@@ -359,13 +504,13 @@ All ten FESO batches are implemented and verified:
 | --- | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL | `https://xxxx.supabase.co` |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon key | `eyJhbGc...` |
-| `NEXT_PUBLIC_SITE_URL` | Canonical URL for metadata, sitemap, robots, OAuth | `https://obsidian-league.vercel.app` (swap to the custom domain — `DEPLOY.md` §7) |
+| `NEXT_PUBLIC_SITE_URL` | Canonical URL for metadata, sitemap, robots, OAuth | `https://ccgames.vercel.app` (swap to the custom domain — `DEPLOY.md` §7) |
 | `NEXT_PUBLIC_REGISTRATION_WHATSAPP` | Optional WhatsApp number | `2348012345678` |
 | `NEXT_PUBLIC_REGISTRATION_EMAIL` | Optional registration inbox | `entries@example.com` |
 | `NEXT_PUBLIC_SENTRY_DSN` | Optional Sentry DSN | `https://...@sentry.io/...` |
 | `SENTRY_AUTH_TOKEN` | Source-map upload token (free) | `sntrys_...` |
 | `SENTRY_ORG` | Sentry org slug | `my-org` |
-| `SENTRY_PROJECT` | Sentry project slug | `obsidian-elite` |
+| `SENTRY_PROJECT` | Sentry project slug | `ccgames` |
 | `UPSTASH_REDIS_REST_URL` | Optional shared cache + rate limit | — |
 | `UPSTASH_REDIS_REST_TOKEN` | Upstash token | — |
 

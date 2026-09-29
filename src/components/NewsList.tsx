@@ -174,7 +174,7 @@ export function NewsList({ posts }: { posts: NewsPost[] }) {
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-800 via-purple-900 to-slate-900">
                       <span className="text-xs uppercase tracking-widest text-white/40 px-4 text-center">
-                        {post.category ?? 'Obsidian Elite'}
+                        {post.category ?? 'Coal City Games'}
                       </span>
                     </div>
                   )}
@@ -191,7 +191,7 @@ export function NewsList({ posts }: { posts: NewsPost[] }) {
                   </h2>
                   {post.excerpt ? <p className="text-gray-400 text-sm line-clamp-3">{post.excerpt}</p> : null}
                   <div className="mt-auto pt-4 flex items-center justify-between gap-3 text-xs text-gray-500">
-                    <span className="truncate">{post.tournaments?.name ?? 'Obsidian Elite'}</span>
+                    <span className="truncate">{post.tournaments?.name ?? 'Coal City Games'}</span>
                     <span className="shrink-0">{formatPostDate(post.published_at)}</span>
                   </div>
                 </div>

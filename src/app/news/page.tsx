@@ -10,12 +10,12 @@ import type { RegistrationAnnouncementData } from "@/components/PinnedRegistrati
 export const revalidate = 60
 
 export const metadata: Metadata = {
-  title: "Newsroom | Obsidian Elite",
-  description: "Match reports, tournament registration announcements, and tactical breakdowns from Obsidian Elite.",
+  title: "Newsroom | Coal City Games",
+  description: "Match reports, tournament registration announcements, and tactical breakdowns from Coal City Games.",
   openGraph: {
-    title: "Newsroom | Obsidian Elite",
-    description: "Match reports, tournament registration announcements, and tactical breakdowns from Obsidian Elite.",
-    siteName: "Obsidian Elite",
+    title: "Newsroom | Coal City Games",
+    description: "Match reports, tournament registration announcements, and tactical breakdowns from Coal City Games.",
+    siteName: "Coal City Games",
     type: "website",
   },
 }
@@ -50,7 +50,7 @@ export default async function NewsPage() {
         <header className="mb-8 text-center md:text-left">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">Newsroom</h1>
           <p className="text-gray-400 max-w-2xl text-lg">
-            Match reports, tournament registration announcements, and tactical breakdowns from Obsidian Elite.
+            Match reports, tournament registration announcements, and tactical breakdowns from Coal City Games.
           </p>
         </header>
 

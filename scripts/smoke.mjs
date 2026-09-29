@@ -45,7 +45,7 @@ await check('home page renders', async () => {
   const response = await get('/')
   expectStatus(response, 200, 'GET /')
   const body = await response.text()
-  expectContains(body, 'Obsidian Elite', 'GET /')
+  expectContains(body, 'Coal City Games', 'GET /')
   return '200 + expected markup'
 })
 
@@ -54,7 +54,7 @@ for (const [path, needle] of [
   ['/teams', 'Teams'],
   ['/news', 'Newsroom'],
   ['/medals', 'Medal'],
-  ['/onboarding', 'How Obsidian Elite works'],
+  ['/onboarding', 'How Coal City Games works'],
   ['/login', 'Sign in'],
 ]) {
   await check(`${path} renders`, async () => {

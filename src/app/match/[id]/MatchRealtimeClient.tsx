@@ -217,7 +217,7 @@ function OverviewPanel({ fixture, events, isLive }: { fixture: MatchFixtureShape
         <p className="mt-2">
           Competition:{' '}
           <span className="text-white font-medium">
-            Obsidian Elite {fixture.home_team.category} {fixture.home_team.team_type}
+            Coal City Games {fixture.home_team.category} {fixture.home_team.team_type}
           </span>
         </p>
         {isLive && (

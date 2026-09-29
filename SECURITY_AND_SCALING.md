@@ -1,7 +1,7 @@
 # Architecture & Security Guidelines: Scaling to 3 Million Users
 
 This document outlines the security measures and architectural recommendations
-required for the Obsidian Elite Tournament Manager to handle 3 million concurrent
+required for the Coal City Games Tournament Manager to handle 3 million concurrent
 users securely and efficiently.
 
 > **Implementation status (current):** items marked ✅ below are already wired in

@@ -96,14 +96,14 @@ export function WelcomeDialog() {
         <div className="flex items-center gap-3">
           <Image
             src="/logo-compressed.jpeg"
-            alt="Obsidian Elite logo"
+            alt="Coal City Games logo"
             width={40}
             height={40}
             className="h-10 w-10 rounded-lg object-cover"
           />
           <div>
             <h2 id="welcome-title" className="text-xl font-extrabold tracking-tight text-white">
-              Welcome to Obsidian Elite
+              Welcome to Coal City Games
             </h2>
             <p className="text-xs text-gray-400">
               Tournaments, live scoring and news in one place.

@@ -34,7 +34,7 @@ export default function SplashScreen() {
       <div className="relative w-24 h-24 mb-8">
         <Image
           src="/logo-compressed.jpeg"
-          alt="Obsidian Elite logo"
+          alt="Coal City Games logo"
           fill
           className="rounded-2xl object-cover"
           priority
@@ -43,7 +43,7 @@ export default function SplashScreen() {
 
       {/* App name */}
       <h1 className="text-white font-bold text-2xl tracking-tight mb-8">
-        Obsidian Elite
+        Coal City Games
       </h1>
 
       {/* Animated loading bar */}

@@ -86,7 +86,7 @@ export async function generateMetadata({ params }: MatchPageServerProps): Promis
     .single()
 
   if (!fixture) {
-    return { title: 'Match Not Found | Obsidian Elite' }
+    return { title: 'Match Not Found | Coal City Games' }
   }
 
   const home = fixture.home_team as { name: string; short_name: string } | null
@@ -99,11 +99,11 @@ export async function generateMetadata({ params }: MatchPageServerProps): Promis
         : fixture.status === 'cancelled'
           ? 'CANCELLED'
           : 'vs'
-  const title = `${home?.name ?? 'Home'} ${label} ${away?.name ?? 'Away'} | Obsidian Elite`
+  const title = `${home?.name ?? 'Home'} ${label} ${away?.name ?? 'Away'} | Coal City Games`
   const desc =
     home && away
       ? `${home.name} vs ${away.name}${fixture.status === 'in_progress' ? ' (LIVE)' : ''}`
-      : 'Obsidian Elite match details'
+      : 'Coal City Games match details'
 
   return {
     title,
@@ -300,7 +300,7 @@ function MatchMetaCard({ fixture }: { fixture: MatchFixtureShape }) {
       <p className="mt-2">
         Competition:{' '}
         <span className="text-white font-medium">
-          Obsidian Elite {fixture.home_team.category} {fixture.home_team.team_type}
+          Coal City Games {fixture.home_team.category} {fixture.home_team.team_type}
         </span>
       </p>
     </div>

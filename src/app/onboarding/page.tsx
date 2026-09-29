@@ -3,14 +3,14 @@ import Navigation from '@/components/Navigation'
 import { OnboardingGuide } from './OnboardingGuide'
 
 export const metadata: Metadata = {
-  title: 'Guide | Obsidian Elite',
+  title: 'Guide | Coal City Games',
   description:
-    'Every feature of Obsidian Elite, explained for fans, users, scouts, tournament admins and app admins — plus a guided tour of the live controls.',
+    'Every feature of Coal City Games 2026, explained for fans, users, scouts, tournament admins and app admins — plus a guided tour of the live controls.',
   openGraph: {
-    title: 'Guide | Obsidian Elite',
+    title: 'Guide | Coal City Games',
     description:
-      'Every feature of Obsidian Elite, explained for fans, users, scouts, tournament admins and app admins — plus a guided tour of the live controls.',
-    siteName: 'Obsidian Elite',
+      'Every feature of Coal City Games 2026, explained for fans, users, scouts, tournament admins and app admins — plus a guided tour of the live controls.',
+    siteName: 'Coal City Games',
     type: 'website',
   },
 }
@@ -23,7 +23,7 @@ export default function OnboardingPage() {
       <div className="pt-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <header className="mb-10 text-center md:text-left">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">
-            How Obsidian Elite works
+            How Coal City Games works
           </h1>
           <p className="text-gray-400 max-w-3xl text-lg">
             One page for every level of user — what each control does, where to find

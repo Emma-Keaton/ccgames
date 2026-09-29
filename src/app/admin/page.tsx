@@ -513,7 +513,7 @@ const handleCreateFixture = async (event: React.FormEvent) => {
       <header className="sticky top-0 z-30 border-b border-white/10 bg-[#0f172a]/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <div>
-            <h1 className="text-xl font-bold">Obsidian Elite Admin</h1>
+            <h1 className="text-xl font-bold">Coal City Games Admin</h1>
             <p className="text-xs text-gray-400">
               {selectedTournament ? selectedTournament.name : 'No tournament selected'}
             </p>

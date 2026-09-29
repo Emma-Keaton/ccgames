@@ -11,8 +11,8 @@ import type { RoleId, TourStep } from '@/lib/onboarding'
  * without importing each other.
  */
 
-export const TOUR_SEEN_KEY = 'obsidian.tour.seen'
-export const WELCOME_SEEN_KEY = 'obsidian.welcome.seen'
+export const TOUR_SEEN_KEY = 'ccgames.tour.seen'
+export const WELCOME_SEEN_KEY = 'ccgames.welcome.seen'
 
 export interface OnboardingState {
   /** A tour is currently running. */

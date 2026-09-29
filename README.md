@@ -1,4 +1,4 @@
-# Obsidian Elite - Tournament Manager
+# Coal City Games - Tournament Manager
 
 A full-stack tournament management platform for multi-sport games: public
 fixtures, live match tracking, squad/roster management, medal tables,
@@ -131,7 +131,7 @@ scripts/
   this limit is hit, switch to Upstash Redis Pub/Sub as the fan-out layer:
   1. Create a Redis database at [upstash.com](https://upstash.com) ($5/mo for 1M ops/day).
   2. Set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` in your env.
-  3. Set `UPSTASH_REALTIME_CHANNEL=obsidian-realtime`.
+  3. Set `UPSTASH_REALTIME_CHANNEL=ccgames-realtime`.
   4. The edge handler at `/api/realtime-sub` streams changes via Server-Sent Events;
      clients fall back to it automatically when the Supabase connection cap is reached.
   See `.env.example` for the full variable list.

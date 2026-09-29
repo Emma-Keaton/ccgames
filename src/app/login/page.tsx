@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import LoginForm from './LoginForm'
 
 export const metadata: Metadata = {
-  title: 'Sign in · Obsidian Elite',
-  description: 'Sign in or create an Obsidian Elite account to follow teams and manage tournaments.',
+  title: 'Sign in · Coal City Games',
+  description: 'Sign in or create a Coal City Games account to follow teams and manage tournaments.',
   robots: { index: false, follow: false },
 }
 

@@ -7,11 +7,11 @@ import { cacheKey } from '@/lib/cache'
 export const revalidate = 60
 
 export const metadata: Metadata = {
-  title: 'Medal Table | Obsidian Elite',
-  description: 'Gold, silver and bronze medal standings for every team and athlete competing in the Obsidian Elite.',
+  title: 'Medal Table | Coal City Games',
+  description: 'Gold, silver and bronze medal standings for every team and athlete competing across the Coal City Games programme.',
   openGraph: {
-    title: 'Medal Table | Obsidian Elite',
-    description: 'Gold, silver and bronze medal standings for every team and athlete competing in the Obsidian Elite.',
+    title: 'Medal Table | Coal City Games',
+    description: 'Gold, silver and bronze medal standings for every team and athlete competing across the Coal City Games programme.',
     siteName: 'Obsidian Elite',
     type: 'website',
   },

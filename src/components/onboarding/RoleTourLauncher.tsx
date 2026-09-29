@@ -24,7 +24,7 @@ export function RoleTourLauncher({ minRole }: { minRole: RoleId }) {
     if (loading || isActive) return
     const detected = viewerRoleFor({ authenticated, role, memberships })
     if (ROLE_ORDER.indexOf(detected) < ROLE_ORDER.indexOf(minRole)) return
-    const key = `obsidian.tour.role.${detected}`
+    const key = `ccgames.tour.role.${detected}`
     if (readFlag(key)) return
     writeFlag(key)
     startTour(detected)

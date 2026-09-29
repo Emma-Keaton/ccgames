@@ -27,8 +27,14 @@ const redis = url && token ? new Redis({ url, token }) : null
 /** `true` when a shared Upstash cache is configured. */
 export const hasSharedCache = Boolean(redis)
 
-/** Every key written here lives under this prefix so it can be purged at once. */
-export const CACHE_PREFIX = 'ol:'
+/**
+ * Every key written here lives under this prefix so it can be purged at once.
+ *
+ * Renamed from `ol:` to `ccg:` as part of the Obsidian Elite → Coal City Games
+ * rebrand. The old `ol:*` keys are left to expire on their own TTL rather than
+ * being migrated or deleted.
+ */
+export const CACHE_PREFIX = 'ccg:'
 
 interface MemoryEntry {
   value: string
@@ -56,7 +62,7 @@ function memorySet(key: string, value: string, ttlSeconds: number) {
   memory.set(key, { value, expiresAt: Date.now() + ttlSeconds * 1000 })
 }
 
-/** Namespaced cache key, e.g. `cacheKey('news', 'list')` → `ol:news:list`. */
+/** Namespaced cache key, e.g. `cacheKey('news', 'list')` → `ccg:news:list`. */
 export function cacheKey(...parts: (string | number | null | undefined)[]): string {
   return (
     CACHE_PREFIX +

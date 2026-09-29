@@ -50,21 +50,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!post) {
     return {
-      title: 'Article not found | Obsidian Elite',
+      title: 'Article not found | Coal City Games',
       description: 'This article is not available.',
     }
   }
 
-  const description = post.excerpt ?? `Read ${post.title} on Obsidian Elite.`
+  const description = post.excerpt ?? `Read ${post.title} on Coal City Games.`
 
   return {
-    title: `${post.title} | Obsidian Elite`,
+    title: `${post.title} | Coal City Games`,
     description,
     openGraph: {
       title: post.title,
       description,
       type: 'article',
-      siteName: 'Obsidian Elite',
+      siteName: 'Coal City Games',
       publishedTime: post.published_at ?? undefined,
       images: [{ url: post.image_url ?? '/og-image.png', alt: post.title }],
     },

@@ -91,14 +91,14 @@ return (
               <Link href="/" className="flex-shrink-0 flex items-center gap-2">
                 <Image
                   src="/logo-compressed.jpeg"
-                  alt="Obsidian Elite logo"
+                  alt="Coal City Games logo"
                   width={32}
                   height={32}
                   className="w-8 h-8 rounded-lg object-cover"
                   priority
                 />
                 <span className="text-white font-bold text-xl tracking-tight">
-                  Obsidian Elite
+                  Coal City Games
                 </span>
               </Link>
 

@@ -117,7 +117,7 @@ export default function LoginForm({ nextPath = '/' }: { nextPath?: string }) {
           <Link href="/" className="flex justify-center">
             <Image
               src="/logo.png"
-              alt="Obsidian Elite logo"
+              alt="Coal City Games logo"
               width={64}
               height={64}
               className="w-16 h-16 rounded-2xl object-cover"

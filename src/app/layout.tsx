@@ -25,7 +25,7 @@ export const metadata: Metadata = {
       return new URL(raw.startsWith("http") ? raw : `https://${raw}`)
     }
   })(),
-  title: 'Obsidian Elite Tournament Manager',
+  title: 'Coal City Games',
   description: 'Manage tournaments and track live match stats.',
   icons: {
     icon: [
@@ -42,22 +42,22 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: 'Obsidian Elite Tournament Manager',
+    title: 'Coal City Games',
     description: 'Manage tournaments and track live match stats.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Obsidian Elite',
+        alt: 'Coal City Games',
       },
     ],
-    siteName: 'Obsidian Elite',
+    siteName: 'Coal City Games',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Obsidian Elite Tournament Manager',
+    title: 'Coal City Games',
     description: 'Manage tournaments and track live match stats.',
     images: ['/og-image.png'],
   },

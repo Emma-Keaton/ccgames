@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!tournament) {
     return {
-      title: "Registration Announcement | Obsidian Elite",
+      title: "Registration Announcement | Coal City Games",
       description: "Tournament registration application details.",
     }
   }
@@ -42,13 +42,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const label = [tournament.name, tournament.edition].filter(Boolean).join(" — ")
 
   return {
-    title: `Register for ${label} | Obsidian Elite`,
+    title: `Register for ${label} | Coal City Games`,
     description: `Official team registrations are open for ${label}. View sports, rules, deadline and contact details.`,
     openGraph: {
-      title: `Register for ${label} | Obsidian Elite`,
+      title: `Register for ${label} | Coal City Games`,
       description: `Official team registrations are open for ${label}. View sports, rules, deadline and contact details.`,
       type: "website",
-      siteName: "Obsidian Elite",
+      siteName: "Coal City Games",
     },
   }
 }

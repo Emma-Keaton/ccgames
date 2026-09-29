@@ -45,7 +45,10 @@ function limiterFor(limit: number, windowSeconds: number): Ratelimit | null {
   const limiter = new Ratelimit({
     redis,
     limiter: Ratelimit.slidingWindow(limit, `${windowSeconds} s`),
-    prefix: 'ol:rl',
+    // Renamed from `ol:rl` as part of the Obsidian Elite → Coal City Games
+    // rebrand. Old counters expire on their own window; the new prefix starts
+    // fresh, which briefly re-opens the rate-limit budget once per limiter.
+    prefix: 'ccg:rl',
     analytics: false,
   })
   limiterCache.set(cacheKey, limiter)
