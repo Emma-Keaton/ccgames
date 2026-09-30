@@ -18,6 +18,8 @@
     "db:setup": "node scripts/build-db-setup.mjs",
     "brand": "node scripts/build-brand-assets.mjs",
     "brand:svg": "node scripts/build-brand-svg.mjs",
+    "mascot": "node scripts/build-mascot-assets.mjs",
+    "verify:mascot": "node scripts/verify-mascot.mjs",
     "verify:db": "node scripts/verify-db.mjs"
   },
   "dependencies": {

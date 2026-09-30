@@ -1,7 +1,9 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
+import { mascotForSport, ribbonOfSport } from '@/lib/mascot'
 
 /** Public team card shape (subset of `teams` used by the explorer). */
 export interface TeamRow {
@@ -162,14 +164,11 @@ export function TeamsExplorer({ teams }: { teams: TeamRow[] }) {
           {filteredTeams.map((team) => (
             <Link href={`/team/${team.id}`} key={team.id} className="block h-full">
               <div className="bg-[#1e293b] rounded-xl overflow-hidden border border-white/5 shadow-xl hover:border-indigo-500/50 hover:shadow-indigo-900/20 transition-all group h-full flex flex-col">
-                <div
-                  className="h-24 w-full flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity"
-                  style={{
-                    backgroundColor:
-                      !team.attire_color || team.attire_color === 'Yet to be decided' ? '#334155' : team.attire_color,
-                  }}
+                <div className="relative h-24 w-full overflow-hidden opacity-90 transition-opacity group-hover:opacity-100"
                 >
-                  <span className="text-3xl font-black text-white/50 group-hover:text-white/80">{team.short_name}</span>
+                  <div className="absolute inset-x-0 top-0 h-1" style={{ background: ribbonOfSport(team.team_type) }} aria-hidden="true" />
+                  <Image src={mascotForSport(team.team_type)} alt="" aria-hidden="true" fill sizes="(max-width: 640px) 100vw, 320px" className="object-contain object-bottom p-2" loading="lazy" />
+                  <span className="absolute bottom-1 right-2 text-2xl font-black text-white/60 drop-shadow">{team.short_name}</span>
                 </div>
                 <div className="p-5 flex-1 flex flex-col">
                   <h2 className="font-bold text-xl mb-1 group-hover:text-indigo-300 transition-colors">{team.name}</h2>

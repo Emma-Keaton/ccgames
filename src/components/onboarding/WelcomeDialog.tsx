@@ -95,11 +95,18 @@ export function WelcomeDialog() {
       <div className="w-full max-w-xl rounded-2xl border border-white/10 bg-[#1e293b] p-6 shadow-2xl">
         <div className="flex items-center gap-3">
           <Image
-            src="/logo-compressed.jpeg"
+            src="/mascot/mascot-hero.webp"
+            alt="Odum Eze mascot"
+            width={48}
+            height={64}
+            className="h-14 w-11 object-contain"
+          />
+          <Image
+            src="/brand/ccgames-mark.svg"
             alt="Coal City Games logo"
             width={40}
             height={40}
-            className="h-10 w-10 rounded-lg object-cover"
+            className="h-10 w-10 object-contain"
           />
           <div>
             <h2 id="welcome-title" className="text-xl font-extrabold tracking-tight text-white">

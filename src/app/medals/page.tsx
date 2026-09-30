@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Navigation from '@/components/Navigation'
+import { Mascot } from '@/components/brand/Mascot'
 import { cachedRestGet } from '@/lib/public-api'
 import { cacheKey } from '@/lib/cache'
 
@@ -201,11 +202,14 @@ export default async function MedalsPage() {
       <Navigation />
 
       <div data-tour="medals-table" className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <header className="mb-10 text-center md:text-left">
+        <header className="mb-10 flex flex-col items-center gap-5 text-center md:flex-row md:text-left">
+          <Mascot size={110} sport="athletics" alt="Odum Eze celebrating athletics gold" />
+          <div>
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">Medal Table</h1>
           <p className="text-gray-400 max-w-2xl text-lg">
             Every gold, silver and bronze awarded across the tournament, for teams and athletes.
           </p>
+          </div>
         </header>
 
         {entries.length === 0 ? (

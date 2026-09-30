@@ -1,7 +1,10 @@
 import { HomeRealtimeMatches } from "@/components/HomeRealtimeMatches"
+import Image from 'next/image'
 import Link from 'next/link'
 import Navigation from '@/components/Navigation'
 import { HomeInsights } from '@/components/HomeInsights'
+import { SportMascotStrip } from '@/components/brand/SportMascotStrip'
+import { MASCOT_HERO } from '@/lib/mascot'
 import { restGet } from '@/lib/public-api'
 import type { InsightPost } from '@/components/HomeInsights'
 import { type RegistrationTarget } from '@/lib/registration'
@@ -203,10 +206,17 @@ export default async function Home() {
       <div className="pt-16">
         <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
 
-          <div className="text-center space-y-4 mb-4">
-            <h1 className="text-gray-400 max-w-2xl mx-auto text-lg font-normal">
-              The premier destination for high-stakes tournament action. Track live scores, view team profiles, and follow the journey to the championship.
+          <div className="flex flex-col items-center gap-4 text-center">
+            <Image src={MASCOT_HERO} alt="Odum Eze, Coal City Games 2026 mascot" width={200} height={268} priority className="h-44 w-auto object-contain drop-shadow-2xl" />
+            <span className="inline-block rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-indigo-300">
+              Enugu 2026 · 23rd National Sports Festival
+            </span>
+            <h1 className="max-w-2xl text-4xl font-black tracking-tight sm:text-5xl">
+              Coal City Games
             </h1>
+            <p className="max-w-2xl text-lg font-normal text-gray-400">
+              The premier destination for high-stakes tournament action. Track live scores, view team profiles, and follow the journey to the championship.
+            </p>
           </div>
 
           {hasMatches ? (
@@ -220,12 +230,14 @@ export default async function Home() {
                 <div data-tour="home-registration">
                   <RegistrationBanner tournament={activeTournament} />
                 </div>
-                <UpcomingFixturesSection matches={upcomingFixtures} />
-                <ConcludedMatchesSection matches={concludedMatches} />
-             </>
-          ) : (
-             <>
-                <UpcomingFixturesSection matches={upcomingFixtures} />
+                 <UpcomingFixturesSection matches={upcomingFixtures} />
+                 <ConcludedMatchesSection matches={concludedMatches} />
+                 <SportMascotStrip />
+              </>
+           ) : (
+              <>
+                 <UpcomingFixturesSection matches={upcomingFixtures} />
+                 <SportMascotStrip />
                 <div data-tour="home-insights">
                   <HomeInsights posts={postsData} />
                 </div>

@@ -30,13 +30,22 @@ export default function SplashScreen() {
 
   return (
     <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0f172a]">
-      {/* Logo */}
-      <div className="relative w-24 h-24 mb-8">
+      {/* Logo + mascot */}
+      <div className="relative mb-4 h-32 w-28">
         <Image
-          src="/logo-compressed.jpeg"
+          src="/mascot/mascot-hero.webp"
+          alt="Odum Eze, Coal City Games mascot"
+          fill
+          className="object-contain"
+          priority
+        />
+      </div>
+      <div className="relative mb-6 h-12 w-12">
+        <Image
+          src="/brand/ccgames-mark.svg"
           alt="Coal City Games logo"
           fill
-          className="rounded-2xl object-cover"
+          className="object-contain"
           priority
         />
       </div>

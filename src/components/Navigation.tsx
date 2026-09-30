@@ -90,11 +90,19 @@ return (
 
               <Link href="/" className="flex-shrink-0 flex items-center gap-2">
                 <Image
-                  src="/logo-compressed.jpeg"
+                  src="/mascot/mascot-hero.webp"
+                  alt="Odum Eze mascot"
+                  width={32}
+                  height={43}
+                  className="h-9 w-7 object-contain"
+                  priority
+                />
+                <Image
+                  src="/brand/ccgames-mark.svg"
                   alt="Coal City Games logo"
                   width={32}
                   height={32}
-                  className="w-8 h-8 rounded-lg object-cover"
+                  className="w-8 h-8 object-contain"
                   priority
                 />
                 <span className="text-white font-bold text-xl tracking-tight">

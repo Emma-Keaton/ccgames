@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Navigation from "@/components/Navigation"
 import { NewsList } from "@/components/NewsList"
 import { PinnedRegistrationCard } from "@/components/PinnedRegistrationCard"
@@ -47,11 +48,14 @@ export default async function NewsPage() {
       <Navigation />
 
       <div data-tour="news-list" className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <header className="mb-8 text-center md:text-left">
+        <header className="mb-8 flex flex-col items-center gap-5 text-center md:flex-row md:text-left">
+          <Image src="/mascot/mascot-base.webp" alt="Odum Eze, Coal City Games mascot" width={100} height={134} className="h-24 w-auto object-contain" />
+          <div>
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">Newsroom</h1>
           <p className="text-gray-400 max-w-2xl text-lg">
             Match reports, tournament registration announcements, and tactical breakdowns from Coal City Games.
           </p>
+          </div>
         </header>
 
         {openRegistrationTournament && (
