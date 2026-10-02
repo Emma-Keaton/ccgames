@@ -77,8 +77,23 @@ const nextConfig: NextConfig = {
  *
  * When those vars are absent (local dev, preview without secrets), Sentry stays
  * disabled silently; the build succeeds with minified traces only.
+ *
+ * NOTE (Oct 2026): `next dev` defaults to Turbopack in Next 16 and the Sentry
+ * instrumentation hook (`src/instrumentation.ts`) is a webpack feature —
+ * Turbopack dev builds can fail with
+ *   "SyntaxError: An error occurred while loading instrumentation hook:
+ *    Invalid or unexpected token"
+ * with a stale `.next/dev` cache. So in dev (or when NEXT_SENTRY_DISABLED=1)
+ * we export the plain config with NO Sentry wrapper. `npm run dev` is also
+ * pinned to `--webpack` in package.json for the same reason.
  */
-export default withSentryConfig(nextConfig, {
+const sentryDisabled =
+  process.env.NEXT_SENTRY_DISABLED === "1" ||
+  process.env.NODE_ENV !== "production"
+
+export default sentryDisabled
+  ? nextConfig
+  : withSentryConfig(nextConfig, {
   // Only upload when we have credentials — prevents noisy failures in local builds.
   org: process.env.SENTRY_ORG ?? undefined,
   project: process.env.SENTRY_PROJECT ?? undefined,

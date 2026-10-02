@@ -3,11 +3,6 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import Navigation from "@/components/Navigation"
 import { cachedRestGet } from "@/lib/public-api"
-import {
-  buildRegistrationMailto,
-  buildWhatsAppUrl,
-  type RegistrationTarget,
-} from "@/lib/registration"
 import type { RegistrationAnnouncementData } from "@/components/PinnedRegistrationCard"
 
 export const revalidate = 60
@@ -60,20 +55,6 @@ export default async function RegistrationDetailPage({ params }: PageProps) {
   if (!tournament) {
     notFound()
   }
-
-  const target: RegistrationTarget = {
-    id: tournament.id,
-    name: tournament.name,
-    slug: tournament.slug,
-    edition: tournament.edition,
-    venue_city: tournament.venue_city,
-    start_date: tournament.start_date,
-    end_date: tournament.end_date,
-    settings: tournament.settings,
-  }
-
-  const whatsappUrl = buildWhatsAppUrl(target)
-  const mailtoUrl = buildRegistrationMailto(target)
 
   const label = [tournament.name, tournament.edition].filter(Boolean).join(" — ")
   const settings = tournament.settings ?? {}
@@ -174,32 +155,11 @@ export default async function RegistrationDetailPage({ params }: PageProps) {
           )}
 
           <section className="pt-6 border-t border-white/10 space-y-4">
-            <h2 className="text-lg font-bold text-white">Contact Organisers & Register</h2>
+            <h2 className="text-lg font-bold text-white">How to follow</h2>
             <p className="text-sm text-gray-300">
-              Submit your team registration or reach out to tournament directors via WhatsApp or Email:
+              Registration is handled by the orchestrators. Teams appear here once an app admin
+              registers them — follow the fixtures, teams and medal tables for the action.
             </p>
-
-            <div className="flex flex-wrap items-center gap-4">
-              {whatsappUrl && (
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-[#25D366] text-[#0b3d20] font-bold py-3 px-6 rounded-xl hover:bg-[#1ebe5b] transition-colors text-sm shadow-lg"
-                >
-                  Register via WhatsApp
-                </a>
-              )}
-
-              {mailtoUrl && (
-                <a
-                  href={mailtoUrl}
-                  className="inline-flex items-center gap-2 bg-white text-indigo-900 font-bold py-3 px-6 rounded-xl hover:bg-indigo-50 transition-colors text-sm shadow-lg"
-                >
-                  Register via Email
-                </a>
-              )}
-            </div>
           </section>
         </article>
       </div>

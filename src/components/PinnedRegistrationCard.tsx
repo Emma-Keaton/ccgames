@@ -2,11 +2,6 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import {
-  buildRegistrationMailto,
-  buildWhatsAppUrl,
-  type RegistrationTarget,
-} from "@/lib/registration"
 
 export interface RegistrationAnnouncementData {
   id: string
@@ -17,9 +12,6 @@ export interface RegistrationAnnouncementData {
   start_date?: string | null
   end_date?: string | null
   settings?: {
-    contact_whatsapp?: string | null
-    contact_email?: string | null
-    contact_preference?: "whatsapp" | "email" | "both" | null
     registration_open?: boolean
     registration_deadline?: string | null
     eligibility?: string | null
@@ -36,20 +28,6 @@ export function PinnedRegistrationCard({
   tournament: RegistrationAnnouncementData
 }) {
   const [modalOpen, setModalOpen] = useState(false)
-
-  const target: RegistrationTarget = {
-    id: tournament.id,
-    name: tournament.name,
-    slug: tournament.slug,
-    edition: tournament.edition,
-    venue_city: tournament.venue_city,
-    start_date: tournament.start_date,
-    end_date: tournament.end_date,
-    settings: tournament.settings,
-  }
-
-  const whatsappUrl = buildWhatsAppUrl(target)
-  const mailtoUrl = buildRegistrationMailto(target)
 
   const label = [tournament.name, tournament.edition].filter(Boolean).join(" — ")
   const settings = tournament.settings ?? {}
@@ -188,28 +166,9 @@ export function PinnedRegistrationCard({
             )}
 
             <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-                {whatsappUrl && (
-                  <a
-                    href={whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 bg-[#25D366] text-[#0b3d20] font-bold py-3 px-5 rounded-xl hover:bg-[#1ebe5b] transition-colors text-sm shadow-md"
-                  >
-                    WhatsApp Agent
-                  </a>
-                )}
-
-                {mailtoUrl && (
-                  <a
-                    href={mailtoUrl}
-                    className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 bg-white text-indigo-900 font-bold py-3 px-5 rounded-xl hover:bg-indigo-50 transition-colors text-sm shadow-md"
-                  >
-                    Email Organisers
-                  </a>
-                )}
-              </div>
-
+              <p className="text-xs text-gray-400">
+                Teams are registered by app admins. Follow the fixtures, teams and medal tables below.
+              </p>
               <Link
                 href={`/news/registration/${tournament.slug}`}
                 className="text-xs text-indigo-300 hover:text-indigo-200 underline"

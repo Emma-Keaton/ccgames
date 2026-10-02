@@ -53,9 +53,6 @@ interface OverviewDraft {
 }
 
 interface RegistrationDraft {
-  contact_whatsapp: string
-  contact_email: string
-  contact_preference: "whatsapp" | "email" | "both"
   registration_open: boolean
   registration_deadline: string
   eligibility: string
@@ -211,9 +208,6 @@ const EMPTY_OVERVIEW_DRAFT: OverviewDraft = {
 }
 
 const EMPTY_REGISTRATION_DRAFT: RegistrationDraft = {
-  contact_whatsapp: "",
-  contact_email: "",
-  contact_preference: "both",
   registration_open: false,
   registration_deadline: "",
   eligibility: "",
@@ -567,9 +561,6 @@ export default function TournamentWorkspacePage({
 
     const tSettingsObj = (detail as unknown as { settings?: Record<string, unknown> }).settings || {}
     setRegistrationDraft({
-      contact_whatsapp: String(tSettingsObj.contact_whatsapp || ""),
-      contact_email: String(tSettingsObj.contact_email || ""),
-      contact_preference: (tSettingsObj.contact_preference as "whatsapp" | "email" | "both") || "both",
       registration_open: Boolean(tSettingsObj.registration_open),
       registration_deadline: String(tSettingsObj.registration_deadline || ""),
       eligibility: String(tSettingsObj.eligibility || ""),
@@ -667,9 +658,6 @@ export default function TournamentWorkspacePage({
     const existingSettings = ((tournament as unknown as { settings?: Record<string, unknown> }).settings) || {}
     const updatedSettings = {
       ...existingSettings,
-      contact_whatsapp: orNull(registrationDraft.contact_whatsapp),
-      contact_email: orNull(registrationDraft.contact_email),
-      contact_preference: registrationDraft.contact_preference,
       registration_open: registrationDraft.registration_open,
       registration_deadline: orNull(registrationDraft.registration_deadline),
       eligibility: orNull(registrationDraft.eligibility),
@@ -1264,8 +1252,8 @@ return (
 
 
         <Section
-          title="Tournament Registration & Contact Settings"
-          description="Configure channels, eligibility, rules, and deadlines shown on the pinned Newsroom announcement."
+          title="Tournament Programme Info"
+          description="Eligibility, rules and deadlines shown on the pinned Newsroom announcement. Registration itself is handled by orchestrators; teams are registered by app admins in the dashboard."
         >
           <form onSubmit={saveRegistration} className="space-y-4">
             <div className="flex items-center gap-3">
@@ -1279,42 +1267,6 @@ return (
                 />
                 Open for Registration (Pins Announcement in Newsroom)
               </label>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <Field label="Contact WhatsApp (e.g. 2348012345678)">
-                <input
-                  className={INPUT}
-                  value={registrationDraft.contact_whatsapp}
-                  disabled={busy}
-                  placeholder="2348012345678"
-                  onChange={(e) => setRegistrationDraft({ ...registrationDraft, contact_whatsapp: e.target.value })}
-                />
-              </Field>
-
-              <Field label="Contact Email">
-                <input
-                  type="email"
-                  className={INPUT}
-                  value={registrationDraft.contact_email}
-                  disabled={busy}
-                  placeholder="organisers@example.com"
-                  onChange={(e) => setRegistrationDraft({ ...registrationDraft, contact_email: e.target.value })}
-                />
-              </Field>
-
-              <Field label="Preferred Channel">
-                <select
-                  className={INPUT}
-                  value={registrationDraft.contact_preference}
-                  disabled={busy}
-                  onChange={(e) => setRegistrationDraft({ ...registrationDraft, contact_preference: e.target.value as "whatsapp" | "email" | "both" })}
-                >
-                  <option value="both">WhatsApp & Email</option>
-                  <option value="whatsapp">WhatsApp Only</option>
-                  <option value="email">Email Only</option>
-                </select>
-              </Field>
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">

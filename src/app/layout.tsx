@@ -25,8 +25,8 @@ export const metadata: Metadata = {
       return new URL(raw.startsWith("http") ? raw : `https://${raw}`)
     }
   })(),
-  title: 'Coal City Games',
-  description: 'Manage tournaments and track live match stats.',
+  title: 'Coal City Games 2026 — Enugu',
+  description: 'The 23rd National Sports Festival — live scores, results, medals and schedules for Coal City Games Enugu 2026.',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '32x32' },
@@ -42,23 +42,23 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: 'Coal City Games',
-    description: 'Manage tournaments and track live match stats.',
+    title: 'Coal City Games 2026 — Enugu',
+    description: 'The 23rd National Sports Festival — live scores, results, medals and schedules for Coal City Games Enugu 2026.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Coal City Games',
+        alt: 'Coal City Games 2026 — Enugu',
       },
     ],
-    siteName: 'Coal City Games',
+    siteName: 'Coal City Games 2026',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Coal City Games',
-    description: 'Manage tournaments and track live match stats.',
+    title: 'Coal City Games 2026 — Enugu',
+    description: 'The 23rd National Sports Festival — live scores, results, medals and schedules for Coal City Games Enugu 2026.',
     images: ['/og-image.png'],
   },
   manifest: '/manifest.json',
