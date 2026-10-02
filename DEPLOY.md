@@ -438,3 +438,87 @@ npm run smoke https://ccgames.com   # routes, headers, authz boundaries
 Point `NEXT_PUBLIC_SITE_URL` back to `https://ccgames.vercel.app` in
 Vercel + the GitHub secret and redeploy. The `*.vercel.app` host stays attached,
 so the site remains reachable at either address — the switch is non-destructive.
+
+---
+
+## 8. Step-by-step deploy runbook (Oct 2026 — mascot + channel-removal release)
+
+> One linear path from a fresh clone to a verified production deploy.
+> Commit `fcf6c84` ("Remove WhatsApp/email registration channels; refresh
+> layout metadata") + mascot commit `391e6e8` are the release under test.
+
+### Step 0 — local setup (5 min)
+
+```powershell
+git clone https://github.com/Emma-Keaton/ccgames.git
+cd ccgames
+npm install
+Copy-Item .env.example .env.local   # then fill Supabase URL + anon key
+npm run verify:mascot               # expect 12/12 PASS
+./node_modules/.bin/tsc --noEmit --pretty false   # expect clean
+./node_modules/.bin/vitest run src/lib/mascot.test.ts src/lib/onboarding.test.ts
+```
+
+### Step 1 — run the app locally (5 min)
+
+```powershell
+Remove-Item -Recurse -Force .next -ErrorAction SilentlyContinue  # clears stale Turbopack/Sentry cache
+npm run dev          # pinned to `next dev --webpack`; open http://localhost:3000
+```
+
+Verify: `/` hero + mascot strip, `/competitions`, `/teams`, `/medals`,
+`/news` headers render; no WhatsApp/Email buttons anywhere; admin
+tournament page shows "Tournament Programme Info" (no contact fields).
+
+> If dev fails with `SyntaxError: An error occurred while loading
+> instrumentation hook: Invalid or unexpected token`, delete `.next/` and
+> retry. `next.config.ts` skips the Sentry wrapper in dev and `npm run dev`
+> uses `--webpack` for exactly this reason.
+
+### Step 2 — link Supabase and push migrations (10 min)
+
+```powershell
+$env:SUPABASE_ACCESS_TOKEN="<token from supabase.com → Account → Access Tokens>"
+supabase login                    # or rely on the env token above
+supabase link --project-ref <your-project-ref>   # ref from Supabase → Project Settings → API
+supabase migration list           # expect 00…15, with 14 + 15 pending on hosted
+supabase db push                  # applies 14_programme_guard + 15_venues_and_programme_status
+```
+
+If the CLI fails with `Access token not provided`, re-export the token.
+If it fails with `EPERM … telemetry.json`, close lingering `supabase.exe` /
+editors locking `~/.supabase/` and retry.
+
+### Step 3 — env vars (5 min)
+
+Local: `.env.local` needs at minimum `NEXT_PUBLIC_SUPABASE_URL`,
+`NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL=http://localhost:3000`.
+Production (Vercel → Project → Settings → Environment Variables,
+Production + Preview): same three keys with the production site URL.
+No `REGISTRATION_*` keys exist any more — do not add any.
+
+### Step 4 — deploy to Vercel (10 min)
+
+```powershell
+git push origin main               # already done for fcf6c84 on 2026-10-02
+```
+
+Vercel auto-builds `main` (`npm run build`). If the first build after the
+Sentry/Turbopack change looks stale, Redeploy with **Use existing build
+cache** unticked.
+
+### Step 5 — production checklist (10 min)
+
+```powershell
+npm run smoke https://<your-domain>   # routes, headers, authz boundaries
+npm run verify:mascot                 # 12/12 local asset check
+```
+
+- `https://<domain>/robots.txt` → `Sitemap: https://<domain>/sitemap.xml`
+- `https://<domain>/sitemap.xml` → every `<loc>` on the new domain
+- `/`, `/competitions`, `/teams`, `/medals`, `/news` show mascot art
+- `/manifest.json` name = "Coal City Games 2026 — Enugu"
+- Browser tab title = "Coal City Games 2026 — Enugu"
+- Favicon + OG image load; `public/mascot/*.webp` (12 files) return 200
+- Admin: tournament workspace has Programme Info, no WhatsApp/email fields
+- Sign in with Google + email; accept an invite link end-to-end
