@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import Navigation from '@/components/Navigation'
 import { TeamsExplorer } from '@/components/TeamsExplorer'
 import { cachedRestGet } from '@/lib/public-api'
@@ -28,16 +27,13 @@ export default async function TeamsPage() {
   })
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white pb-32">
+    <div className="min-h-screen bg-surface text-text pb-32">
       <Navigation />
 
       <div data-tour="teams-explorer" className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <header className="mb-10 flex flex-col items-center gap-5 text-center md:flex-row md:text-left">
-          <Image src="/mascot/mascot-football.webp" alt="Odum Eze with a football" width={120} height={160} className="h-28 w-auto object-contain" />
-          <div>
+        <header className="cc-card mb-10 flex flex-col gap-2 p-6 text-center sm:p-8 md:text-left">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">Registered Teams</h1>
-          <p className="text-gray-400 max-w-2xl text-lg">Browse all teams participating in the Obsidian Elite.</p>
-          </div>
+          <p className="text-text-muted max-w-2xl text-lg">Browse all teams participating in the Obsidian Elite.</p>
         </header>
 
         <TeamsExplorer teams={teams} />

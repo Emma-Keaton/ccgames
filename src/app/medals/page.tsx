@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Navigation from '@/components/Navigation'
-import { Mascot } from '@/components/brand/Mascot'
 import { cachedRestGet } from '@/lib/public-api'
 import { cacheKey } from '@/lib/cache'
 
@@ -198,18 +197,15 @@ export default async function MedalsPage() {
   const athleteRows = Array.from(athleteTallies.values()).sort(compareTallies)
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white pb-32">
+    <div className="min-h-screen bg-surface text-text pb-32">
       <Navigation />
 
       <div data-tour="medals-table" className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <header className="mb-10 flex flex-col items-center gap-5 text-center md:flex-row md:text-left">
-          <Mascot size={110} sport="athletics" alt="Odum Eze celebrating athletics gold" />
-          <div>
+        <header className="cc-card mb-10 flex flex-col gap-2 p-6 text-center sm:p-8 md:text-left">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">Medal Table</h1>
-          <p className="text-gray-400 max-w-2xl text-lg">
+          <p className="text-text-muted max-w-2xl text-lg">
             Every gold, silver and bronze awarded across the tournament, for teams and athletes.
           </p>
-          </div>
         </header>
 
         {entries.length === 0 ? (

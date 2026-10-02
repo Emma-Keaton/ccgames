@@ -29,17 +29,7 @@ export default function SplashScreen() {
   if (!visible) return null
 
   return (
-    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0f172a]">
-      {/* Logo + mascot */}
-      <div className="relative mb-4 h-32 w-28">
-        <Image
-          src="/mascot/mascot-hero.webp"
-          alt="Odum Eze, Coal City Games mascot"
-          fill
-          className="object-contain"
-          priority
-        />
-      </div>
+    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-surface">
       <div className="relative mb-6 h-12 w-12">
         <Image
           src="/brand/ccgames-mark.svg"
@@ -51,14 +41,14 @@ export default function SplashScreen() {
       </div>
 
       {/* App name */}
-      <h1 className="text-white font-bold text-2xl tracking-tight mb-8">
+      <h1 className="text-text font-bold text-2xl tracking-tight mb-8">
         Coal City Games
       </h1>
 
       {/* Animated loading bar */}
-      <div className="w-48 h-1 bg-white/10 rounded-full overflow-hidden">
+      <div className="w-48 h-1 bg-hairline rounded-full overflow-hidden">
         <div
-          className="h-full rounded-full bg-indigo-500 transition-none"
+          className="h-full rounded-full bg-primary transition-none"
           style={{ width: `${progress * 100}%` }}
         />
       </div>

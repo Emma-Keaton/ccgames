@@ -21,7 +21,7 @@ const NavLinks = ({ pathname }: { pathname: string }) => (
           href={link.href}
           className={
             'px-3 py-2 rounded-md text-base md:text-sm font-medium block md:inline-block transition-colors ' +
-            (active ? 'text-white bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/5')
+            (active ? 'text-primary bg-primary-soft' : 'text-text-muted hover:text-text hover:bg-surface-sunken')
           }
         >
           {link.label}
@@ -68,7 +68,7 @@ export default function Navigation() {
     : []
 return (
     <>
-      <nav className="fixed w-full z-50 bg-[#0f172a]/90 backdrop-blur-md border-b border-white/10">
+      <nav className="fixed w-full z-50 bg-surface-card/90 backdrop-blur-md border-b border-border-subtle">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
@@ -90,14 +90,6 @@ return (
 
               <Link href="/" className="flex-shrink-0 flex items-center gap-2">
                 <Image
-                  src="/mascot/mascot-hero.webp"
-                  alt="Odum Eze mascot"
-                  width={32}
-                  height={43}
-                  className="h-9 w-7 object-contain"
-                  priority
-                />
-                <Image
                   src="/brand/ccgames-mark.svg"
                   alt="Coal City Games logo"
                   width={32}
@@ -105,7 +97,7 @@ return (
                   className="w-8 h-8 object-contain"
                   priority
                 />
-                <span className="text-white font-bold text-xl tracking-tight">
+                <span className="text-text font-bold text-xl tracking-tight">
                   Coal City Games
                 </span>
               </Link>

@@ -1,13 +1,9 @@
 import { HomeRealtimeMatches } from "@/components/HomeRealtimeMatches"
-import Image from 'next/image'
 import Link from 'next/link'
 import Navigation from '@/components/Navigation'
 import { HomeInsights } from '@/components/HomeInsights'
-import { SportMascotStrip } from '@/components/brand/SportMascotStrip'
-import { MASCOT_HERO } from '@/lib/mascot'
 import { restGet } from '@/lib/public-api'
 import type { InsightPost } from '@/components/HomeInsights'
-import { type RegistrationTarget } from '@/lib/registration'
 
 /** Live-ish home page: 30s freshness window. */
 export const revalidate = 30
@@ -100,46 +96,6 @@ const ConcludedMatchesSection = ({ matches }: { matches: MatchCardRow[] }) => (
   </section>
 )
 
-/**
- * Team registration CTA.
- *
- * Points at the organisers' WhatsApp / inbox with the shared message template
- * from `@/lib/registration` (documented in the deployment guide) prefilled with the active
- * tournament's name, dates and host city. Falls back to the newsroom when no
- * channel is configured, so the banner is never a dead link.
- */
-const RegistrationBanner = ({ tournament }: { tournament: RegistrationTarget | null }) => {
-  const target: RegistrationTarget = tournament ?? {}
-  const eventLabel =
-    [target.name, target.edition].filter(Boolean).join(" — ") || "the next Coal City Games 2026 tournament"
-
-  return (
-    <section className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 rounded-2xl p-8 sm:p-12 text-center shadow-2xl relative overflow-hidden border border-indigo-500/30">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl -mr-32 -mt-32"></div>
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl -ml-32 -mb-32"></div>
-
-      <div className="relative z-10">
-        <span className="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
-          Tournament Registrations
-        </span>
-        <h2 className="text-3xl sm:text-4xl font-extrabold mb-4 text-white tracking-tight">
-          Ready to Prove Yourself?
-        </h2>
-        <p className="text-indigo-200 mb-6 max-w-2xl mx-auto text-lg">
-          Registration announcements, sports guidelines, and contact links for {eventLabel} are now pinned in the Newsroom.
-        </p>
-
-        <Link
-          href="/news"
-          className="inline-flex items-center gap-3 bg-white text-indigo-900 font-bold py-3.5 px-8 rounded-full hover:bg-indigo-50 transition-all shadow-[0_0_30px_rgba(255,255,255,0.3)] transform hover:-translate-y-0.5"
-        >
-          View Registrations in Newsroom →
-        </Link>
-      </div>
-    </section>
-  )
-}
-
 export default async function Home() {
   const startOfDay = new Date()
   startOfDay.setHours(0, 0, 0, 0)
@@ -155,7 +111,7 @@ export default async function Home() {
   // `restGet` instead of the cookie-bound Supabase client keeps this route
   // cacheable, so a traffic spike is served from the edge/ISR cache rather
   // than from Postgres — see SECURITY_AND_SCALING.md §2.
-  const [todayMatchesData, upcomingMatchesData, concludedMatchesData, postsData, activeTournamentRows] =
+  const [todayMatchesData, upcomingMatchesData, concludedMatchesData, postsData] =
     await Promise.all([
       restGet<FixtureRow>(
         `fixtures?select=${matchesSelect}&match_date=gte.${startOfDay.toISOString()}&match_date=lte.${endOfDay.toISOString()}&order=match_date.asc`
@@ -169,14 +125,10 @@ export default async function Home() {
       restGet<InsightPost>(
         'tournament_posts?select=id,title,slug,excerpt,category,image_url,published_at&published=is.true&order=published_at.desc&limit=6'
       ),
-      restGet<RegistrationTarget & { is_active?: boolean }>(
-        'tournaments?select=name,slug,edition,venue_city,start_date,end_date,is_active&is_active=is.true&limit=1',
-        { revalidate: 300 }
-      ),
+      
     ])
 
-  const activeTournament = activeTournamentRows[0] ?? null
-
+  
   const matchesOfTheDay: MatchCardRow[] = todayMatchesData.map((m) => ({
     id: m.id,
     home: { name: m.home_team?.name || 'Unknown', abbr: m.home_team?.short_name || 'UNK', score: m.home_score ?? undefined },
@@ -206,16 +158,15 @@ export default async function Home() {
       <div className="pt-16">
         <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
 
-          <div className="flex flex-col items-center gap-4 text-center">
-            <Image src={MASCOT_HERO} alt="Odum Eze, Coal City Games 2026 mascot" width={200} height={268} priority className="h-44 w-auto object-contain drop-shadow-2xl" />
-            <span className="inline-block rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-indigo-300">
+          <div className="cc-card flex flex-col items-center gap-4 p-8 text-center sm:p-12">
+            <span className="inline-block rounded-full bg-primary-soft px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-primary">
               Enugu 2026 · 23rd National Sports Festival
             </span>
-            <h1 className="max-w-2xl text-4xl font-black tracking-tight sm:text-5xl">
+            <h1 className="max-w-2xl text-4xl font-black tracking-tight text-text sm:text-5xl">
               Coal City Games
             </h1>
-            <p className="max-w-2xl text-lg font-normal text-gray-400">
-              The premier destination for high-stakes tournament action. Track live scores, view team profiles, and follow the journey to the championship.
+            <p className="max-w-2xl text-lg font-normal text-text-muted">
+              Festival daylight: every result, fixture, medal and story from Enugu 2026 — live as it happens, across all 20 sports.
             </p>
           </div>
 
@@ -227,22 +178,14 @@ export default async function Home() {
                 <div data-tour="home-insights">
                   <HomeInsights posts={postsData} />
                 </div>
-                <div data-tour="home-registration">
-                  <RegistrationBanner tournament={activeTournament} />
-                </div>
                  <UpcomingFixturesSection matches={upcomingFixtures} />
                  <ConcludedMatchesSection matches={concludedMatches} />
-                 <SportMascotStrip />
               </>
            ) : (
               <>
                  <UpcomingFixturesSection matches={upcomingFixtures} />
-                 <SportMascotStrip />
                 <div data-tour="home-insights">
                   <HomeInsights posts={postsData} />
-                </div>
-                <div data-tour="home-registration">
-                  <RegistrationBanner tournament={activeTournament} />
                 </div>
                 <ConcludedMatchesSection matches={concludedMatches} />
              </>

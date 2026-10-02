@@ -92,15 +92,9 @@ export function WelcomeDialog() {
       aria-modal="true"
       aria-labelledby="welcome-title"
     >
-      <div className="w-full max-w-xl rounded-2xl border border-white/10 bg-[#1e293b] p-6 shadow-2xl">
+      <div className="w-full max-w-xl rounded-2xl border border-border-subtle bg-surface-card p-6 shadow-2xl">
         <div className="flex items-center gap-3">
-          <Image
-            src="/mascot/mascot-hero.webp"
-            alt="Odum Eze mascot"
-            width={48}
-            height={64}
-            className="h-14 w-11 object-contain"
-          />
+          
           <Image
             src="/brand/ccgames-mark.svg"
             alt="Coal City Games logo"

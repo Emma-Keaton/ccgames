@@ -1,8 +1,6 @@
 import { Suspense } from 'react'
-import Image from 'next/image'
 import { createClient } from '@/utils/supabase/client'
 import Navigation from '@/components/Navigation'
-import { SportMascotStrip } from '@/components/brand/SportMascotStrip'
 import { CompetitionsTabs } from './CompetitionsTabs'
 
 export const revalidate = 30
@@ -23,22 +21,14 @@ export default async function CompetitionsPage() {
   ])
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white pb-32">
+    <div className="min-h-screen bg-surface text-text pb-32">
       <Navigation />
       <div data-tour="competitions-tabs" className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <header className="mb-10 flex flex-col items-center gap-5 text-center md:flex-row md:justify-between md:text-left">
-          <div className="flex items-center gap-4">
-            <Image src="/mascot/mascot-hero.webp" alt="Odum Eze, Coal City Games mascot" width={84} height={112} className="h-20 w-auto object-contain" />
-          <div>
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">Competitions</h1>
-            <p className="text-gray-400 text-lg">Coal City Games Tournament Hub</p>
-          </div>
-          </div>
+        <header className="cc-card mb-10 flex flex-col gap-2 p-6 text-center sm:p-8 md:text-left">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">Competitions</h1>
+          <p className="text-text-muted text-lg">Coal City Games Tournament Hub</p>
         </header>
-        <div className="mb-10">
-          <SportMascotStrip />
-        </div>
-        <Suspense fallback={<div className="py-20 text-center text-gray-400">Loading competitions…</div>}>
+        <Suspense fallback={<div className="py-20 text-center text-text-muted">Loading competitions…</div>}>
           <CompetitionsTabs
             fixtures={fixturesRes.data ?? []}
             teams={teamsRes.data ?? []}
