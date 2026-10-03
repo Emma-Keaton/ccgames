@@ -80,7 +80,7 @@ export function RosterEditor({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between text-xs text-gray-400">
+      <div className="flex items-center justify-between text-xs text-text-muted">
         <span>
           {rows.length} {rows.length === 1 ? 'player' : 'players'} on the sheet
         </span>
@@ -88,14 +88,14 @@ export function RosterEditor({
       </div>
 
       {rows.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-white/10 px-3 py-4 text-sm text-gray-500">
+        <p className="rounded-lg border border-dashed border-border-subtle px-3 py-4 text-sm text-text-muted">
           {emptyLabel}
         </p>
       ) : (
         <ul className="space-y-2">
           {rows.map((row, index) => (
             <li key={row.key} className="flex flex-wrap items-center gap-2">
-              <span className="w-6 shrink-0 text-center text-xs font-semibold text-gray-500">
+              <span className="w-6 shrink-0 text-center text-xs font-semibold text-text-muted">
                 {index + 1}
               </span>
               <input
@@ -143,7 +143,7 @@ export function RosterEditor({
                   aria-label={`Remove ${row.name || 'player'}`}
                   disabled={disabled}
                   onClick={() => remove(row.key)}
-                  className={adminSubtleButton + ' px-2 text-red-300'}
+                  className={adminSubtleButton + ' px-2 text-live'}
                 >
                   ✕
                 </button>
@@ -329,16 +329,16 @@ export function TeamRosterManager({
   }
 
 return (
-    <div className="space-y-3 rounded-lg border border-white/10 bg-[#0f172a] p-4">
+    <div className="space-y-3 rounded-lg border border-border-subtle bg-surface p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h4 className="text-xs font-semibold uppercase tracking-wide text-indigo-300">
+        <h4 className="text-xs font-semibold uppercase tracking-wide text-primary">
           Squad checklist ({players.length})
         </h4>
         {message && (
           <p
             role="status"
             className={
-              'text-xs ' + (message.kind === 'success' ? 'text-emerald-300' : 'text-red-300')
+              'text-xs ' + (message.kind === 'success' ? 'text-secondary-strong' : 'text-live')
             }
           >
             {message.message}
@@ -347,7 +347,7 @@ return (
       </div>
 
       {sorted.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-white/10 px-3 py-3 text-sm text-gray-500">
+        <p className="rounded-lg border border-dashed border-border-subtle px-3 py-3 text-sm text-text-muted">
           No players registered yet — add the first one below.
         </p>
       ) : (
@@ -395,8 +395,8 @@ return (
                     onClick={() => void removePlayer(player)}
                     className={
                       confirmId === player.id
-                        ? 'rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white'
-                        : adminSubtleButton + ' text-red-300'
+                        ? 'rounded-lg bg-live px-3 py-1.5 text-xs font-semibold text-text'
+                        : adminSubtleButton + ' text-live'
                     }
                   >
                     {confirmId === player.id ? 'Confirm' : 'Remove'}
@@ -408,7 +408,7 @@ return (
         </ul>
       )}
 
-      <div className="flex flex-wrap items-center gap-2 border-t border-white/10 pt-3">
+      <div className="flex flex-wrap items-center gap-2 border-t border-border-subtle pt-3">
         <input
           type="number"
           inputMode="numeric"

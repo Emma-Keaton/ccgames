@@ -11,15 +11,15 @@ import { useState, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttr
  */
 
 export const adminInputClass =
-  'w-full rounded-lg border border-white/10 bg-[#0f172a] px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:border-indigo-500 focus:outline-none'
+  'cc-input text-sm'
 export const adminLabelClass =
-  'mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-400'
+  'cc-label'
 export const adminPrimaryButton =
-  'rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-60'
+  'cc-btn cc-btn--primary cc-btn--sm'
 export const adminSubtleButton =
-  'rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-gray-300 hover:bg-white/5 disabled:opacity-60'
+  'cc-btn cc-btn--secondary cc-btn--sm'
 export const adminDangerButton =
-  'rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-500 disabled:opacity-60'
+  'cc-btn cc-btn--danger cc-btn--sm'
 
 export interface Tournament {
   id: string
@@ -191,27 +191,27 @@ export function SearchableSelect({
         onClick={() => setOpen((previous) => !previous)}
         className={adminInputClass + ' flex items-center justify-between text-left'}
       >
-        <span className={selected ? 'text-white' : 'text-gray-500'}>
+        <span className={selected ? 'text-text' : 'text-text-muted'}>
           {selected ? selected.name : placeholder}
         </span>
-        <span aria-hidden="true" className="text-xs text-gray-500">
+        <span aria-hidden="true" className="text-xs text-text-muted">
           ▼
         </span>
       </button>
 
       {open && (
-        <div className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-lg border border-white/10 bg-[#0f172a] shadow-xl">
-          <div className="sticky top-0 border-b border-white/10 bg-[#0f172a] p-2">
+        <div className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-lg border border-border-subtle bg-surface-elevated shadow-cc-lg">
+          <div className="sticky top-0 border-b border-border-subtle bg-surface-elevated p-2">
             <input
               type="text"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Type to search…"
-              className="w-full rounded border border-white/10 bg-[#1e293b] px-2 py-1 text-sm text-white placeholder:text-gray-500 focus:outline-none"
+              className="cc-input text-sm"
             />
           </div>
           {filtered.length === 0 ? (
-            <p className="p-3 text-sm text-gray-500">No teams found</p>
+            <p className="p-3 text-sm text-text-muted">No teams found</p>
           ) : (
             filtered.map((option) => (
               <button
@@ -222,7 +222,7 @@ export function SearchableSelect({
                   setOpen(false)
                   setSearch('')
                 }}
-                className="block w-full px-3 py-2 text-left text-sm text-gray-200 hover:bg-white/5"
+                className="block w-full px-3 py-2 text-left text-sm text-text hover:bg-surface-sunken"
               >
                 {option.name}
               </button>
@@ -247,8 +247,8 @@ export function StatusBanner({
       className={
         'rounded-lg border px-4 py-3 text-sm ' +
         (status.kind === 'success'
-          ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
-          : 'border-red-500/30 bg-red-500/10 text-red-300')
+          ? 'border-secondary/30 bg-emerald-500/10 text-secondary-strong'
+          : 'border-danger/30 bg-danger/10 text-live')
       }
     >
       {status.message}
@@ -269,13 +269,13 @@ export function AccessPanel({
   linkLabel: string
 }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0f172a] px-4 text-white">
-      <div className="w-full max-w-md rounded-xl border border-white/5 bg-[#1e293b] p-8 text-center">
+    <div className="flex min-h-screen items-center justify-center bg-surface px-4 text-text">
+      <div className="cc-card w-full max-w-md p-8 text-center">
         <h1 className="text-2xl font-bold">{title}</h1>
-        <p className="mt-2 text-sm text-gray-400">{body}</p>
+        <p className="mt-2 text-sm text-text-muted">{body}</p>
         <a
           href={href}
-          className="mt-6 inline-block rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+          className="cc-btn cc-btn--primary mt-6 inline-flex"
         >
           {linkLabel}
         </a>

@@ -50,7 +50,10 @@ export function TourOverlay() {
       return
     }
 
-    document.querySelector(step.selector)?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+    document.querySelector(step.selector)?.scrollIntoView({
+      block: 'center',
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+    })
 
     // Measure now, on the next frame, and once more after the smooth scroll
     // settles, so the ring lands on the element whichever way it scrolls.
@@ -129,28 +132,28 @@ export function TourOverlay() {
       )}
 
       <div
-        className="absolute rounded-2xl border border-indigo-400/30 bg-[#1e293b] p-5 shadow-2xl"
+        className="absolute rounded-2xl border border-indigo-400/30 bg-[#1e293b] p-5 shadow-cc-lg"
         style={{ top: cardTop, left: cardLeft, width: cardWidth }}
       >
         <div className="mb-2 flex items-center justify-between gap-3">
-          <span className="text-[11px] font-semibold uppercase tracking-widest text-indigo-300">
+          <span className="text-[11px] font-semibold uppercase tracking-widest text-primary">
             Step {stepIndex + 1} of {total}
           </span>
           <button
             type="button"
             onClick={stopTour}
-            className="text-xs text-gray-400 underline decoration-dotted hover:text-white"
+            className="text-xs text-text-muted underline decoration-dotted hover:text-text"
           >
             Skip tour
           </button>
         </div>
 
-        <h3 className="text-base font-bold text-white">{step.title}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-gray-300">{step.body}</p>
+        <h3 className="text-base font-bold text-text">{step.title}</h3>
+        <p className="mt-2 text-sm leading-relaxed text-text-muted">{step.body}</p>
 
-        <div className="mt-4 h-1 w-full overflow-hidden rounded-full bg-white/10">
+        <div className="mt-4 h-1 w-full overflow-hidden rounded-full bg-surface-sunken">
           <div
-            className="h-full rounded-full bg-indigo-500 transition-all duration-200"
+            className="h-full rounded-full bg-primary transition-all duration-200"
             style={{ width: `${((stepIndex + 1) / total) * 100}%` }}
           />
         </div>
@@ -160,21 +163,21 @@ export function TourOverlay() {
             type="button"
             onClick={previous}
             disabled={stepIndex === 0}
-            className="rounded-lg border border-white/15 px-3 py-2 text-xs font-semibold text-gray-300 hover:bg-white/5 disabled:opacity-40"
+            className="rounded-lg border border-border-subtle px-3 py-2 text-xs font-semibold text-text-muted hover:bg-surface-sunken disabled:opacity-40"
           >
             Back
           </button>
           <div className="flex items-center gap-2">
             <a
               href="/onboarding"
-              className="rounded-lg px-2 py-2 text-xs font-semibold text-indigo-300 hover:text-indigo-200"
+              className="rounded-lg px-2 py-2 text-xs font-semibold text-primary hover:text-text-muted"
             >
               Full guide
             </a>
             <button
               type="button"
               onClick={next}
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-xs font-semibold text-white hover:bg-indigo-500"
+              className="rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-white hover:bg-primary"
             >
               {isLast ? 'Finish' : 'Next'}
             </button>

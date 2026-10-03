@@ -87,17 +87,17 @@ export default function InvitePage({ params }: { params: Promise<{ token: string
 
   if (!info?.valid) {
     return (
-      <div className="min-h-screen bg-[#0f172a] text-white flex items-center justify-center px-4 py-16">
-        <div className="w-full max-w-md rounded-xl border border-white/5 bg-[#1e293b] p-8 text-center">
+      <div className="min-h-screen bg-[#0f172a] text-text flex items-center justify-center px-4 py-16">
+        <div className="w-full max-w-md rounded-xl border border-border-subtle bg-[#1e293b] p-8 text-center">
           <h1 className="text-2xl font-bold">Invite unavailable</h1>
-          <p className="mt-2 text-sm text-gray-400">
+          <p className="mt-2 text-sm text-text-muted">
             This invite link is expired, revoked, or does not exist. Ask a tournament manager for a
             fresh link.
           </p>
-          {error && <p className="mt-3 text-xs text-red-400">{error}</p>}
+          {error && <p className="mt-3 text-xs text-live">{error}</p>}
           <Link
             href="/"
-            className="mt-6 inline-block rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+            className="mt-6 inline-block rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-strong"
           >
             Return home
           </Link>
@@ -108,19 +108,19 @@ export default function InvitePage({ params }: { params: Promise<{ token: string
 const duties = info.duties ?? []
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white flex items-center justify-center px-4 py-16">
-      <div className="w-full max-w-lg rounded-xl border border-white/5 bg-[#1e293b] p-8">
-        <p className="text-xs font-semibold uppercase tracking-widest text-indigo-400">
+    <div className="min-h-screen bg-[#0f172a] text-text flex items-center justify-center px-4 py-16">
+      <div className="w-full max-w-lg rounded-xl border border-border-subtle bg-[#1e293b] p-8">
+        <p className="text-xs font-semibold uppercase tracking-widest text-primary">
           Tournament invite
         </p>
         <h1 className="mt-2 text-3xl font-extrabold tracking-tight">{info.tournament_name}</h1>
         {info.tournament_slug && (
-          <p className="mt-1 text-sm text-gray-400">/{info.tournament_slug}</p>
+          <p className="mt-1 text-sm text-text-muted">/{info.tournament_slug}</p>
         )}
 
         <dl className="mt-6 space-y-3 text-sm">
           <div className="flex justify-between gap-4">
-            <dt className="text-gray-400">Access</dt>
+            <dt className="text-text-muted">Access</dt>
             <dd className="text-right font-medium">
               {duties.length > 0
                 ? duties.map((duty) => DUTY_LABELS[duty] ?? duty).join(', ')
@@ -129,7 +129,7 @@ const duties = info.duties ?? []
           </div>
           {info.expires_at && (
             <div className="flex justify-between gap-4">
-              <dt className="text-gray-400">Expires</dt>
+              <dt className="text-text-muted">Expires</dt>
               <dd className="text-right font-medium">
                 {new Date(info.expires_at).toLocaleString()}
               </dd>
@@ -138,7 +138,7 @@ const duties = info.duties ?? []
         </dl>
 
         {error && (
-          <p className="mt-4 rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+          <p className="mt-4 rounded-md border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-live">
             {error}
           </p>
         )}
@@ -146,26 +146,26 @@ const duties = info.duties ?? []
         <div className="mt-8 flex flex-col gap-3">
           {signedInAs ? (
             <>
-              <p className="text-sm text-gray-400">
-                Signed in as <span className="text-white">{signedInAs}</span>
+              <p className="text-sm text-text-muted">
+                Signed in as <span className="text-text">{signedInAs}</span>
               </p>
               <button
                 type="button"
                 onClick={accept}
                 disabled={accepting}
-                className="w-full rounded-md bg-green-600 px-4 py-3 text-sm font-semibold text-white hover:bg-green-500 disabled:opacity-60"
+                className="w-full rounded-md bg-green-600 px-4 py-3 text-sm font-semibold text-text hover:bg-green-500 disabled:opacity-60"
               >
                 {accepting ? 'Accepting…' : 'Accept invite'}
               </button>
             </>
           ) : (
             <>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-text-muted">
                 Sign in or create an account, then accept this invite to get tournament access.
               </p>
               <Link
                 href={`/login?next=${encodeURIComponent(`/invite/${token}`)}`}
-                className="w-full rounded-md bg-indigo-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-indigo-500"
+                className="w-full rounded-md bg-primary px-4 py-3 text-center text-sm font-semibold text-white hover:bg-primary-strong"
               >
                 Sign in to accept
               </Link>
@@ -173,7 +173,7 @@ const duties = info.duties ?? []
           )}
           <Link
             href="/"
-            className="w-full rounded-md px-4 py-3 text-center text-sm font-semibold text-gray-300 ring-1 ring-inset ring-white/10 hover:bg-white/5"
+            className="w-full rounded-md px-4 py-3 text-center text-sm font-semibold text-text-muted ring-1 ring-inset ring-white/10 hover:bg-surface-sunken"
           >
             Not now
           </Link>

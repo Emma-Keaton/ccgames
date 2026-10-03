@@ -507,30 +507,30 @@ const handleCreateFixture = async (event: React.FormEvent) => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0f172a] pb-24 text-white">
+    <div className="min-h-screen bg-surface pb-24 text-text">
       {/* First visit at this level: introduce the staff member to their own controls. */}
       <RoleTourLauncher minRole="scout" />
-      <header className="sticky top-0 z-30 border-b border-white/10 bg-[#0f172a]/95 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b border-border-subtle bg-surface/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <div>
             <h1 className="text-xl font-bold">Coal City Games Admin</h1>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-text-muted">
               {selectedTournament ? selectedTournament.name : 'No tournament selected'}
             </p>
           </div>
           <nav className="flex flex-wrap items-center gap-4 text-sm">
-            <Link href="/admin/tournaments" className="text-indigo-400 hover:text-indigo-300">
+            <Link href="/admin/tournaments" className="text-primary hover:text-primary">
               Tournaments
             </Link>
-            <Link href="/admin/posts" className="text-indigo-400 hover:text-indigo-300">
+            <Link href="/admin/posts" className="text-primary hover:text-primary">
               Posts
             </Link>
             {isAppAdmin && (
-              <Link href="/admin/users" className="text-indigo-400 hover:text-indigo-300">
+              <Link href="/admin/users" className="text-primary hover:text-primary">
                 Users
               </Link>
             )}
-            <Link href="/" className="text-gray-300 hover:text-white">
+            <Link href="/" className="text-text-muted hover:text-text">
               View public site
             </Link>
           </nav>
@@ -541,27 +541,27 @@ const handleCreateFixture = async (event: React.FormEvent) => {
         <StatusBanner status={status} />
 
         {tournaments.length === 0 ? (
-          <section className="rounded-xl border border-white/5 bg-[#1e293b] p-8 text-center">
+          <section className="rounded-xl border border-border-subtle bg-surface-elevated p-8 text-center">
             <h2 className="text-lg font-semibold">No tournaments yet</h2>
-            <p className="mt-2 text-sm text-gray-400">
+            <p className="mt-2 text-sm text-text-muted">
               Create the first tournament edition to start registering teams and scheduling
               fixtures.
             </p>
             <Link
               href="/admin/tournaments"
-              className="mt-5 inline-block rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+              className="mt-5 inline-block rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary"
             >
               Manage tournaments
             </Link>
           </section>
         ) : (
           <>
-            <section data-tour="admin-tournament-picker" className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+            <section data-tour="admin-tournament-picker" className="rounded-xl border border-border-subtle bg-surface-elevated p-6">
               <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div className="w-full md:max-w-md">
                   <label
                     htmlFor="tournament-selector"
-                    className="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-400"
+                    className="mb-1 block text-xs font-semibold uppercase tracking-wide text-text-muted"
                   >
                     Working tournament
                   </label>
@@ -580,7 +580,7 @@ const handleCreateFixture = async (event: React.FormEvent) => {
                     ))}
                   </select>
                 </div>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-text-muted">
                   {memberships.length > 0
                     ? `Your scope: ${memberships
                         .map(
@@ -593,7 +593,7 @@ const handleCreateFixture = async (event: React.FormEvent) => {
             </section>
 
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-              <section data-tour="admin-team-form" className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+              <section data-tour="admin-team-form" className="rounded-xl border border-border-subtle bg-surface-elevated p-6">
                 <h2 className="mb-4 text-lg font-semibold">Register a team</h2>
                 <form onSubmit={handleCreateTeam} className="space-y-4">
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -684,7 +684,7 @@ const handleCreateFixture = async (event: React.FormEvent) => {
                   </div>
 
                   <div>
-                    <p className="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-400">
+                    <p className="mb-1 block text-xs font-semibold uppercase tracking-wide text-text-muted">
                       Squad checklist
                     </p>
                     <RosterEditor
@@ -694,7 +694,7 @@ const handleCreateFixture = async (event: React.FormEvent) => {
                       addLabel="Add player"
                       emptyLabel="No players yet — add each player name with their shirt number."
                     />
-                    <p className="mt-2 text-xs text-gray-500">
+                    <p className="mt-2 text-xs text-text-muted">
                       Each line is a player: type the name, the shirt number, then press
                       &ldquo;Add player&rdquo;. The list can be edited and reordered after the team
                       is saved.
@@ -707,7 +707,7 @@ const handleCreateFixture = async (event: React.FormEvent) => {
                 </form>
               </section>
 
-              <section data-tour="admin-fixture-form" className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+              <section data-tour="admin-fixture-form" className="rounded-xl border border-border-subtle bg-surface-elevated p-6">
                 <h2 className="mb-4 text-lg font-semibold">Schedule a fixture</h2>
                 <form onSubmit={handleCreateFixture} className="space-y-4">
                   <Field label="Home team">
@@ -760,17 +760,17 @@ const handleCreateFixture = async (event: React.FormEvent) => {
               </section>
             </div>
 
-<section data-tour="admin-fixture-list" className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+<section data-tour="admin-fixture-list" className="rounded-xl border border-border-subtle bg-surface-elevated p-6">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-lg font-semibold">Fixtures ({fixtures.length})</h2>
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-text-muted">
                   {loading ? 'Refreshing…' : 'Up to date'}
                 </span>
               </div>
               {fixtures.length === 0 ? (
-                <p className="text-sm text-gray-500">No fixtures scheduled for this tournament.</p>
+                <p className="text-sm text-text-muted">No fixtures scheduled for this tournament.</p>
               ) : (
-                <ul className="divide-y divide-white/5">
+                <ul className="divide-y divide-border-subtle">
                   {fixtures.map((fixture) => (
                     <li key={fixture.id} className="py-4">
                       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -778,7 +778,7 @@ const handleCreateFixture = async (event: React.FormEvent) => {
                           <p className="font-medium">
                             {fixture.home_team?.name ?? 'TBD'} vs {fixture.away_team?.name ?? 'TBD'}
                           </p>
-                          <p className="mt-1 text-xs text-gray-400">
+                          <p className="mt-1 text-xs text-text-muted">
                             {new Date(fixture.match_date).toLocaleString()} &bull; {fixture.status}
                             {fixture.stage ? ` • ${fixture.stage.replace(/_/g, ' ')}` : ''} &bull;{' '}
                             {fixture.home_score ?? 0}-{fixture.away_score ?? 0}
@@ -788,7 +788,7 @@ const handleCreateFixture = async (event: React.FormEvent) => {
                         <div className="flex flex-wrap items-center gap-2">
                           <Link
                             href={`/admin/match/${fixture.id}`}
-                            className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-500"
+                            className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary"
                           >
                             Manage match
                           </Link>
@@ -805,7 +805,7 @@ const handleCreateFixture = async (event: React.FormEvent) => {
                             disabled={busy}
                             className={
                               confirmId === fixture.id
-                                ? 'rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white'
+                                ? 'rounded-lg bg-live px-3 py-1.5 text-xs font-semibold text-text'
                                 : adminSubtleButton
                             }
                           >
@@ -815,7 +815,7 @@ const handleCreateFixture = async (event: React.FormEvent) => {
                       </div>
 
                       {editingFixtureId === fixture.id && (
-                        <div className="mt-3 grid grid-cols-1 gap-3 rounded-lg border border-white/10 bg-[#0f172a] p-4 md:grid-cols-3">
+                        <div className="mt-3 grid grid-cols-1 gap-3 rounded-lg border border-border-subtle bg-surface p-4 md:grid-cols-3">
                           <Field label="Kick-off">
                             <input
                               type="datetime-local"
@@ -871,26 +871,26 @@ const handleCreateFixture = async (event: React.FormEvent) => {
               )}
             </section>
 
-<section data-tour="admin-team-list" className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+<section data-tour="admin-team-list" className="rounded-xl border border-border-subtle bg-surface-elevated p-6">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-lg font-semibold">Teams ({teams.length})</h2>
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-text-muted">
                   Squad sizes are counted from the players table.
                 </span>
               </div>
               {teams.length === 0 ? (
-                <p className="text-sm text-gray-500">No teams registered for this tournament yet.</p>
+                <p className="text-sm text-text-muted">No teams registered for this tournament yet.</p>
               ) : (
-                <ul className="divide-y divide-white/5">
+                <ul className="divide-y divide-border-subtle">
                   {teams.map((team) => (
                     <li key={team.id} className="py-4">
                       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                         <div>
                           <p className="font-medium">
                             {team.name}{' '}
-                            <span className="text-gray-500">({team.short_name ?? '—'})</span>
+                            <span className="text-text-muted">({team.short_name ?? '—'})</span>
                           </p>
-                          <p className="mt-1 text-xs text-gray-400">
+                          <p className="mt-1 text-xs text-text-muted">
                             {team.category ?? 'Male'} &bull; {team.team_type ?? 'Football'}
                             {team.group_name ? ` • ${team.group_name}` : ''} &bull; Coach:{' '}
                             {team.coach || '—'} &bull; Squad: {playerCounts[team.id] ?? 0}
@@ -911,7 +911,7 @@ const handleCreateFixture = async (event: React.FormEvent) => {
                             disabled={busy}
                             className={
                               confirmId === team.id
-                                ? 'rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white'
+                                ? 'rounded-lg bg-live px-3 py-1.5 text-xs font-semibold text-text'
                                 : adminSubtleButton
                             }
                           >
@@ -921,7 +921,7 @@ const handleCreateFixture = async (event: React.FormEvent) => {
                       </div>
 
                       {editingTeamId === team.id && (
-                        <div className="mt-3 space-y-3 rounded-lg border border-white/10 bg-[#0f172a] p-4">
+                        <div className="mt-3 space-y-3 rounded-lg border border-border-subtle bg-surface p-4">
                           <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                             <Field label="Team name">
                               <TextInput
@@ -1020,7 +1020,7 @@ const handleCreateFixture = async (event: React.FormEvent) => {
                             </Field>
                           </div>
 
-                          <p className="text-xs text-gray-400">
+                          <p className="text-xs text-text-muted">
                             Squad members are managed line by line below — the team sheet
                             (<code>teams.roster</code>) is regenerated automatically from the
                             checklist.
@@ -1058,7 +1058,7 @@ const handleCreateFixture = async (event: React.FormEvent) => {
               )}
             </section>
 
-<section data-tour="admin-settings" className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+<section data-tour="admin-settings" className="rounded-xl border border-border-subtle bg-surface-elevated p-6">
               <h2 className="mb-4 text-lg font-semibold">Tournament settings</h2>
               <form onSubmit={handleSaveSettings} className="space-y-4">
                 <Field label="Format">

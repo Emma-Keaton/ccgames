@@ -15,7 +15,7 @@ export default function ScoutMatchPage({ params }: { params: Promise<{ id: strin
   const { id } = use(params)
 
   return (
-    <div className="min-h-screen bg-[#0f172a] pb-24 text-white">
+    <div className="min-h-dvh bg-surface pb-24 text-text">
       <Navigation />
       <main className="mx-auto max-w-5xl px-4 pt-24 sm:px-6 lg:px-8">
         <ScoutLogPanel fixtureId={id} />

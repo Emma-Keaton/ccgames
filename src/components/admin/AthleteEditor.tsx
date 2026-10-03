@@ -76,21 +76,21 @@ export function AthleteEditor({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between text-xs text-gray-400">
+      <div className="flex items-center justify-between text-xs text-text-muted">
         <span>
           {rows.length} {rows.length === 1 ? 'athlete' : 'athletes'} on the sheet
         </span>
       </div>
 
       {rows.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-white/10 px-3 py-4 text-sm text-gray-500">
+        <p className="rounded-lg border border-dashed border-border-subtle px-3 py-4 text-sm text-text-muted">
           {emptyLabel}
         </p>
       ) : (
         <ul className="space-y-2">
           {rows.map((row, index) => (
             <li key={row.key} className="flex flex-wrap items-start gap-2">
-              <span className="w-6 shrink-0 pt-6 text-center text-xs font-semibold text-gray-500">
+              <span className="w-6 shrink-0 pt-6 text-center text-xs font-semibold text-text-muted">
                 {index + 1}
               </span>
 
@@ -180,7 +180,7 @@ export function AthleteEditor({
                   aria-label={`Remove ${row.name || 'athlete'}`}
                   disabled={disabled}
                   onClick={() => remove(row.key)}
-                  className={adminSubtleButton + ' px-2 text-red-300'}
+                  className={adminSubtleButton + ' px-2 text-live'}
                 >
                   ✕
                 </button>
@@ -318,20 +318,20 @@ export function TournamentAthletesManager({
   }
 
   return (
-    <div className="space-y-3 rounded-lg border border-white/10 bg-[#0f172a] p-4">
+    <div className="space-y-3 rounded-lg border border-border-subtle bg-surface p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h4 className="text-xs font-semibold uppercase tracking-wide text-indigo-300">
+        <h4 className="text-xs font-semibold uppercase tracking-wide text-primary">
           Athletes ({athletes.length})
         </h4>
         {message && (
-          <p role="status" className={'text-xs ' + (message.kind === 'success' ? 'text-emerald-300' : 'text-red-300')}>
+          <p role="status" className={'text-xs ' + (message.kind === 'success' ? 'text-secondary-strong' : 'text-live')}>
             {message.message}
           </p>
         )}
       </div>
 
       {athletes.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-white/10 px-3 py-3 text-sm text-gray-500">
+        <p className="rounded-lg border border-dashed border-border-subtle px-3 py-3 text-sm text-text-muted">
           No athletes registered yet — add the first one below.
         </p>
       ) : (
@@ -376,7 +376,7 @@ export function TournamentAthletesManager({
                       Save
                     </button>
                   )}
-                  <button type="button" disabled={busy} onClick={() => void removeAthlete(athlete)} className={confirmId === athlete.id ? 'rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white' : adminSubtleButton + ' text-red-300'}>
+                  <button type="button" disabled={busy} onClick={() => void removeAthlete(athlete)} className={confirmId === athlete.id ? 'rounded-lg bg-live px-3 py-1.5 text-xs font-semibold text-text' : adminSubtleButton + ' text-live'}>
                     {confirmId === athlete.id ? 'Confirm' : 'Remove'}
                   </button>
                 </div>
@@ -386,7 +386,7 @@ export function TournamentAthletesManager({
         </ul>
       )}
 
-      <div className="flex flex-wrap items-center gap-2 border-t border-white/10 pt-3">
+      <div className="flex flex-wrap items-center gap-2 border-t border-border-subtle pt-3">
         <input
           type="text"
           aria-label="New athlete name"

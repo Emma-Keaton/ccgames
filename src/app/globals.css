@@ -1,4 +1,8 @@
 @import "tailwindcss";
+/* The shared component kit. Imported immediately after Tailwind so its
+   `@layer components` rules sit below utilities in the cascade. */
+@import './cc-kit.css';
+
 
 /* ============================================================================
    Coal City Games — Enugu 2026 design tokens
@@ -70,6 +74,33 @@
   src: url('/fonts/Inter-ExtraBold.woff2') format('woff2');
 }
 
+/* JetBrains Mono — the numerals face. Every score, clock, rank and table figure
+   is set in this so columns stay aligned and a live counter never reflows.
+   Self-hosted woff2 only: no build-time network dependency (see layout.tsx). */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/JetBrainsMono-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+}
+
 /* ---------------------------------------------------------------------------
    Raw brand swatches + neutrals. These generate utilities such as
    `bg-enugu-blue`, `text-coal`, `border-hairline`, `bg-surface-app`.
@@ -88,6 +119,20 @@
   --color-ink-muted: #6B7280;
   --color-hairline: #E5E7EB;
 
+  /* Text-safe counterparts. The brand sheet forbids amber as text on white, and
+     green/amber at full strength fail AA at small sizes, so these darkened
+     variants are for text and 1px borders only. */
+  --color-accent-strong: #8A5A06;
+  --color-secondary-strong: #3F7A1F;
+  --color-bronze: #B45309;
+  --color-silver: #64748B;
+
+  /* One radius scale and one shadow family (DESIGN.md §1, §3). */
+  --radius-cc: 0.75rem;
+  --radius-cc-lg: 1rem;
+  --shadow-cc: 0 1px 2px rgb(20 20 22 / 0.04), 0 8px 24px -12px rgb(20 20 22 / 0.1);
+  --shadow-cc-lg: 0 2px 4px rgb(20 20 22 / 0.05), 0 24px 48px -24px rgb(20 20 22 / 0.18);
+
   --font-sans:
     'Inter',
     system-ui,
@@ -97,6 +142,19 @@
     'Helvetica Neue',
     Arial,
     sans-serif;
+
+  /* JetBrains Mono for tabular/numeric display — drop woff2 files into
+     public/fonts/ when ready (Regular, Bold, SemiBold). Falls back to the
+     built-in ui-monospace stack if the files are absent.
+     See scripts/subset-fonts.py for the conversion pipeline. */
+  --font-mono:
+    'JetBrains Mono',
+    ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    Liberation Mono,
+    Menlo,
+    monospace;
 }
 
 /* ---------------------------------------------------------------------------
@@ -161,11 +219,69 @@
   --role-border: #2A3448;
 }
 
-body {
-  background-color: var(--role-surface);
-  color: var(--role-text);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
+@layer base {
+  html {
+    /* Painted behind the body so the overscroll rubber-band matches the canvas
+       instead of flashing white/black at the edges. */
+    background-color: var(--role-surface);
+    -webkit-text-size-adjust: 100%;
+    color-scheme: light;
+  }
+
+  [data-theme='dark'] html {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--role-surface);
+    color: var(--role-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Interactive controls never show the grey mobile tap flash; each control
+       sets its own intentional feedback instead. */
+    -webkit-tap-highlight-color: transparent;
+    /* Full-bleed rows (carousels, tab strips) must not create a page scrollbar. */
+    overflow-x: hidden;
+  }
+
+  /* Headings never leave a widow; body copy avoids rivers. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+
+  /* Anchor targets must clear the 64px fixed nav when jumped to. */
+  :target,
+  [id] {
+    scroll-margin-top: 5rem;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--role-primary) 22%, transparent);
+  }
+
+  /* One focus treatment for the whole app. `:focus-visible` only, so clicking a
+     button does not leave a ring behind. */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--role-primary);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
 }
 
 /* Used by the root layout. Keeps the same chain as `body` so switching to the
@@ -174,15 +290,11 @@ body {
   font-family: var(--font-sans);
 }
 
+
 /* ---------------------------------------------------------------------------
    Shared primitives. Deliberately few: every surface that repeats (cards, the
    live pulse, focus rings) is defined once so the 20-sport UI cannot drift.
    --------------------------------------------------------------------------- */
-.cc-card {
-  background-color: var(--role-surface-elevated);
-  border: 1px solid var(--role-border);
-  border-radius: 0.75rem;
-}
 
 .cc-live-dot {
   display: inline-block;
@@ -211,7 +323,4 @@ body {
   }
 }
 
-:where(a, button, input, select, textarea, [tabindex]):focus-visible {
-  outline: 2px solid var(--role-primary);
-  outline-offset: 2px;
-}
+

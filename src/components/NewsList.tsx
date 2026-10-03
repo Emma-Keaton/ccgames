@@ -3,6 +3,7 @@
 
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
+import { EmptyState } from '@/components/ui/feedback'
 
 /**
  * Public news feed item. Mirrors the PostgREST projection used by `/news`
@@ -35,8 +36,7 @@ const formatPostDate = (value: string | null) => {
   return `${date.getUTCDate()} ${MONTHS[date.getUTCMonth()]} ${date.getUTCFullYear()}`
 }
 
-const FIELD_CLASSES =
-  'bg-[#1e293b] border border-white/10 rounded-lg py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors'
+const FIELD_CLASSES = 'cc-input'
 
 export function NewsList({ posts }: { posts: NewsPost[] }) {
   const [query, setQuery] = useState('')
@@ -79,10 +79,10 @@ export function NewsList({ posts }: { posts: NewsPost[] }) {
 
   return (
     <div className="space-y-8">
-      <div className="bg-[#1e293b] rounded-xl border border-white/5 p-4 sm:p-6 flex flex-col lg:flex-row lg:items-center gap-4">
+      <div className="cc-card p-4 sm:p-6 flex flex-col lg:flex-row lg:items-center gap-4">
         <div className="relative flex-1">
           <svg
-            className="w-4 h-4 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
+            className="w-4 h-4 text-text-muted absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -132,15 +132,15 @@ export function NewsList({ posts }: { posts: NewsPost[] }) {
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <p className="text-sm text-gray-400">
-          Showing <span className="text-white font-semibold">{filteredPosts.length}</span> of {posts.length}{' '}
+        <p className="text-sm text-text-muted">
+          Showing <span className="text-text font-semibold">{filteredPosts.length}</span> of {posts.length}{' '}
           {posts.length === 1 ? 'article' : 'articles'}
         </p>
         {filtersActive ? (
           <button
             type="button"
             onClick={clearFilters}
-            className="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
+            className="text-sm font-medium text-primary hover:text-primary-strong transition-colors"
           >
             Clear filters
           </button>
@@ -148,49 +148,50 @@ export function NewsList({ posts }: { posts: NewsPost[] }) {
       </div>
 
       {filteredPosts.length === 0 ? (
-        <div className="bg-[#1e293b] rounded-xl p-12 text-center border border-white/5">
-          <div className="text-gray-400 text-lg mb-2">
-            {posts.length === 0 ? 'No articles have been published yet.' : 'No articles match your filters.'}
-          </div>
-          <p className="text-gray-500 text-sm">
-            {posts.length === 0
-              ? 'Check back soon for tournament coverage.'
-              : 'Try a different search term or clear the filters.'}
-          </p>
-        </div>
+        <EmptyState
+          title={posts.length === 0 ? 'No articles have been published yet.' : 'No articles match your filters.'}
+          hint={posts.length === 0 ? 'Check back soon for tournament coverage.' : 'Try a different search term or clear the filters.'}
+          action={filtersActive ? (
+            <button type="button" onClick={clearFilters} className="cc-btn cc-btn--ghost cc-btn--sm hover:text-primary">
+              Clear filters
+            </button>
+          ) : undefined}
+        />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPosts.map((post) => (
-            <Link key={post.id} href={`/news/${post.slug}`} className="block h-full">
-              <article className="bg-[#1e293b] rounded-xl overflow-hidden border border-white/5 shadow-xl hover:border-indigo-500/50 hover:shadow-indigo-900/20 transition-all group h-full flex flex-col">
-                <div className="h-44 w-full bg-gradient-to-br from-indigo-900 to-slate-800 relative overflow-hidden">
+            <Link key={post.id} href={`/news/${post.slug}`} className="block h-full rounded-xl focus-visible:outline-2 focus-visible:outline-primary">
+              <article className="cc-card cc-card--interactive group flex h-full flex-col overflow-hidden">
+                <div className="h-44 w-full bg-surface-sunken relative overflow-hidden">
                   {post.image_url ? (
                     <img
                       src={post.image_url}
                       alt={post.title}
+                      width={640}
+                      height={360}
                       loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-800 via-purple-900 to-slate-900">
-                      <span className="text-xs uppercase tracking-widest text-white/40 px-4 text-center">
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 via-primary/10 to-transparent">
+                      <span className="text-xs uppercase tracking-widest text-primary/50 px-4 text-center">
                         {post.category ?? 'Coal City Games'}
                       </span>
                     </div>
                   )}
                   {post.category ? (
-                    <span className="absolute top-3 left-3 text-xs font-medium bg-black/60 backdrop-blur px-2 py-1 rounded text-indigo-300 border border-indigo-500/30">
+                    <span className="absolute top-3 left-3 text-xs font-semibold bg-primary/90 text-white px-2 py-1 rounded">
                       {post.category}
                     </span>
                   ) : null}
                 </div>
 
                 <div className="p-5 flex-1 flex flex-col">
-                  <h2 className="font-bold text-lg mb-2 line-clamp-2 group-hover:text-indigo-300 transition-colors">
+                  <h2 className="font-bold text-lg mb-2 line-clamp-2 text-text group-hover:text-primary transition-colors">
                     {post.title}
                   </h2>
-                  {post.excerpt ? <p className="text-gray-400 text-sm line-clamp-3">{post.excerpt}</p> : null}
-                  <div className="mt-auto pt-4 flex items-center justify-between gap-3 text-xs text-gray-500">
+                  {post.excerpt ? <p className="text-text-muted text-sm line-clamp-3">{post.excerpt}</p> : null}
+                  <div className="mt-auto pt-4 flex items-center justify-between gap-3 text-xs text-text-muted">
                     <span className="truncate">{post.tournaments?.name ?? 'Coal City Games'}</span>
                     <span className="shrink-0">{formatPostDate(post.published_at)}</span>
                   </div>

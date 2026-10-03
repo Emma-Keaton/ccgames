@@ -62,8 +62,8 @@ export function RealtimeClient({ liveFixtures: initial }: RealtimeClientProps) {
 
   return (
     <section className="space-y-4">
-      <h2 className="text-2xl font-bold text-red-400 flex items-center gap-3">
-        <span className="inline-block w-3 h-3 rounded-full bg-red-500 animate-pulse" />
+      <h2 className="text-2xl font-bold text-live flex items-center gap-3">
+        <span className="inline-block w-3 h-3 rounded-full bg-live animate-pulse" />
         Live Now
       </h2>
       <div className="grid gap-4">

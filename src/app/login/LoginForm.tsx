@@ -111,7 +111,7 @@ export default function LoginForm({ nextPath = '/' }: { nextPath?: string }) {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0f172a] px-4 py-12 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center bg-surface px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div>
           <Link href="/" className="flex justify-center">
@@ -124,32 +124,32 @@ export default function LoginForm({ nextPath = '/' }: { nextPath?: string }) {
               priority
             />
           </Link>
-          <h1 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
+          <h1 className="mt-6 text-center text-3xl font-extrabold tracking-tight text-ink">
             {mode === 'signin' ? 'Sign in to your account' : 'Create your account'}
           </h1>
-          <p className="mt-2 text-center text-sm text-gray-400">
+          <p className="mt-2 text-center text-sm text-text-muted">
             {mode === 'signin'
               ? 'Follow your teams and manage your tournaments.'
               : 'Free to create — no card required.'}
           </p>
         </div>
 
-        <div className="rounded-xl border border-white/5 bg-[#1e293b] p-6 sm:p-8">
+        <div className="cc-card p-6 sm:p-8">
           <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
-              <p className="rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+              <p className="rounded-md border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger">
                 {error}
               </p>
             )}
             {notice && (
-              <p className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">
+              <p className="rounded-md border border-enugu-green/30 bg-enugu-green/10 px-3 py-2 text-sm text-enugu-green">
                 {notice}
               </p>
             )}
 
             <div className="space-y-3">
               <div>
-                <label htmlFor="email-address" className="mb-1 block text-sm font-medium text-gray-300">
+                <label htmlFor="email-address" className="mb-1 block text-sm font-semibold text-ink uppercase tracking-wide">
                   Email address
                 </label>
                 <input
@@ -158,7 +158,7 @@ export default function LoginForm({ nextPath = '/' }: { nextPath?: string }) {
                   type="email"
                   autoComplete="email"
                   required
-                  className="block w-full rounded-md border-0 bg-[#0f172a] px-3 py-2 text-white ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm"
+                  className="block w-full rounded-lg border border-hairline bg-surface-elevated px-3 py-2 text-text placeholder:text-text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none sm:text-sm transition-colors"
                   placeholder="you@example.com"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
@@ -166,7 +166,7 @@ export default function LoginForm({ nextPath = '/' }: { nextPath?: string }) {
               </div>
               <div>
                 <div className="mb-1 flex items-center justify-between">
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+                  <label htmlFor="password" className="block text-sm font-semibold text-ink uppercase tracking-wide">
                     Password
                   </label>
                   {mode === 'signin' && (
@@ -174,7 +174,7 @@ export default function LoginForm({ nextPath = '/' }: { nextPath?: string }) {
                       type="button"
                       onClick={handlePasswordReset}
                       disabled={loading}
-                      className="text-xs font-medium text-indigo-400 hover:text-indigo-300 disabled:opacity-60"
+                      className="text-xs font-semibold text-primary hover:text-primary-strong disabled:opacity-60"
                     >
                       Forgot password?
                     </button>
@@ -187,7 +187,7 @@ export default function LoginForm({ nextPath = '/' }: { nextPath?: string }) {
                   autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
                   required
                   minLength={6}
-                  className="block w-full rounded-md border-0 bg-[#0f172a] px-3 py-2 text-white ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm"
+                  className="block w-full rounded-lg border border-hairline bg-surface-elevated px-3 py-2 text-text placeholder:text-text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none sm:text-sm transition-colors"
                   placeholder="At least 6 characters"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
@@ -198,10 +198,10 @@ export default function LoginForm({ nextPath = '/' }: { nextPath?: string }) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-60"
+              className="w-full rounded-lg bg-enugu-blue px-3 py-2.5 text-sm font-semibold text-text hover:bg-enugu-blue/90 disabled:opacity-60 transition-colors"
             >
               {loading
-                ? 'Please wait…'
+                ? 'Please wait...'
                 : mode === 'signin'
                   ? 'Sign in with Email'
                   : 'Create account'}
@@ -210,10 +210,10 @@ export default function LoginForm({ nextPath = '/' }: { nextPath?: string }) {
             <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-white/10" />
+                <div className="w-full border-t border-hairline" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="bg-[#1e293b] px-2 text-gray-500">Or continue with</span>
+                <span className="bg-surface-elevated px-2 text-text-muted">Or continue with</span>
               </div>
             </div>
 
@@ -221,7 +221,7 @@ export default function LoginForm({ nextPath = '/' }: { nextPath?: string }) {
               type="button"
               onClick={handleGoogleLogin}
               disabled={loading}
-              className="mt-6 flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-100 disabled:opacity-60"
+              className="mt-6 flex w-full items-center justify-center gap-3 rounded-lg border border-hairline bg-surface-elevated px-3 py-2.5 text-sm font-semibold text-ink hover:bg-surface-sunken disabled:opacity-60 transition-colors"
             >
               <svg className="h-5 w-5" aria-hidden="true" viewBox="0 0 24 24">
                 <path
@@ -245,7 +245,7 @@ export default function LoginForm({ nextPath = '/' }: { nextPath?: string }) {
             </button>
           </div>
 
-          <p className="mt-6 text-center text-sm text-gray-400">
+          <p className="mt-6 text-center text-sm text-text-muted">
             {mode === 'signin' ? "Don't have an account? " : 'Already have an account? '}
             <button
               type="button"
@@ -254,14 +254,14 @@ export default function LoginForm({ nextPath = '/' }: { nextPath?: string }) {
                 setError(null)
                 setNotice(null)
               }}
-              className="font-semibold text-indigo-400 hover:text-indigo-300"
+              className="font-semibold text-primary hover:text-primary-strong"
             >
               {mode === 'signin' ? 'Create one' : 'Sign in'}
             </button>
           </p>
         </div>
 
-        <p className="text-center text-xs text-gray-500">
+        <p className="text-center text-xs text-text-muted">
           By continuing you agree to follow tournament rules and the code of conduct.
         </p>
       </div>

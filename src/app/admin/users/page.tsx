@@ -38,13 +38,10 @@ const ROLE_LABELS: Record<RoleValue, string> = {
   user: 'User',
 }
 
-const PANEL = 'bg-[#1e293b] rounded-xl border border-white/5 p-6'
-const INPUT =
-  'w-full rounded-lg border border-white/10 bg-[#0f172a] px-3 py-2 text-white focus:border-indigo-500 focus:outline-none'
-const PRIMARY =
-  'bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg px-4 py-2 text-sm font-semibold disabled:opacity-60'
-const SECONDARY =
-  'rounded-lg px-4 py-2 text-sm font-semibold text-gray-300 ring-1 ring-inset ring-white/10 hover:bg-white/5 disabled:opacity-60'
+const PANEL = 'cc-card p-6'
+const INPUT = 'cc-input w-full'
+const PRIMARY = 'cc-btn cc-btn--primary text-sm'
+const SECONDARY = 'cc-btn cc-btn--secondary text-sm'
 
 const formatDateTime = (value: string | null | undefined) => {
   if (!value) return 'Unknown'
@@ -66,12 +63,12 @@ function GatePanel({
   action: string
 }) {
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24">
-        <div className="mx-auto max-w-lg bg-[#1e293b] rounded-xl border border-white/5 p-8 text-center">
+    <div className="cc-app">
+      <div className="cc-page cc-page--narrow">
+        <div className="cc-card mx-auto max-w-lg p-8 text-center">
           <h1 className="text-2xl font-bold">{title}</h1>
-          <p className="mt-2 text-sm text-gray-400">{body}</p>
-          <Link href={href} className={`mt-6 inline-block ${PRIMARY}`}>
+          <p className="mt-2 text-sm text-text-muted">{body}</p>
+          <Link href={href} className={`cc-btn cc-btn--primary mt-6 inline-flex ${PRIMARY}`}>
             {action}
           </Link>
         </div>
@@ -187,25 +184,35 @@ export default function AdminUsersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 space-y-6">
-        <header className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-widest text-indigo-400">Admin</p>
-          <h1 className="text-3xl font-extrabold tracking-tight">Users</h1>
-          <p className="text-sm text-gray-400">
-            Global roles come from <code className="text-gray-300">user_roles</code>. Tournament
-            access is granted per tournament through invites, not here.
-          </p>
+    <div className="cc-app">
+      <div className="cc-page cc-page--narrow space-y-6">
+        <header className="cc-card">
+          <div className="cc-header">
+            <p className="cc-eyebrow">Admin</p>
+            <h1 className="cc-title">Users</h1>
+            <p className="cc-lede">
+              Global roles come from <code className="text-text-muted">user_roles</code>. Tournament
+              access is granted per tournament through invites, not here.
+            </p>
+          </div>
         </header>
 
-        {error && <p className="text-sm text-red-400">{error}</p>}
-        {notice && <p className="text-sm text-green-400">{notice}</p>}
+        {error && (
+          <p role="alert" className="cc-error">
+            {error}
+          </p>
+        )}
+        {notice && (
+          <p role="status" className="rounded-lg border border-secondary/30 bg-secondary/10 px-4 py-3 text-sm text-secondary-strong">
+            {notice}
+          </p>
+        )}
 
         <section data-tour="users-directory" className={PANEL}>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <h2 className="text-lg font-semibold">Directory</h2>
-              <p className="mt-1 text-sm text-gray-400">
+              <p className="mt-1 text-sm text-text-muted">
                 {users.length} {users.length === 1 ? 'user' : 'users'} · {adminCount}{' '}
                 {adminCount === 1 ? 'app admin' : 'app admins'}
               </p>
@@ -227,37 +234,37 @@ export default function AdminUsersPage() {
               ))}
             </div>
           ) : (
-            <div className="mt-4 overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead className="text-xs uppercase tracking-wide text-gray-400">
+            <div className="cc-table-scroll mt-4">
+              <table className="cc-table">
+                <thead className="cc-thead">
                   <tr>
-                    <th className="px-3 py-2 font-medium">Email</th>
-                    <th className="px-3 py-2 font-medium">Role</th>
-                    <th className="px-3 py-2 font-medium">Created</th>
-                    <th className="px-3 py-2 text-right font-medium">Change role</th>
+                    <th className="cc-th">Email</th>
+                    <th className="cc-th">Role</th>
+                    <th className="cc-th">Created</th>
+                    <th className="cc-th text-right">Change role</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody>
                   {users.map((user) => {
                     const isSelf = user.user_id === currentUserId
                     const pendingRole = selectedRole[user.user_id] ?? user.role
                     const saving = savingId === user.user_id
 
                     return (
-                      <tr key={user.user_id} className="align-top">
-                        <td className="px-3 py-3">
+                      <tr key={user.user_id} className="cc-tr align-top">
+                        <td className="cc-td">
                           <p className="font-medium break-all">
                             {user.email ?? 'No email on file'}
                           </p>
-                          {isSelf && <p className="mt-1 text-xs text-indigo-300">This is you</p>}
+                          {isSelf && <p className="mt-1 text-xs text-primary">This is you</p>}
                         </td>
-                        <td className="px-3 py-3 whitespace-nowrap">{roleLabel(user.role)}</td>
-                        <td className="px-3 py-3 whitespace-nowrap text-gray-400">
+                        <td className="cc-td whitespace-nowrap">{roleLabel(user.role)}</td>
+                        <td className="cc-td cc-num whitespace-nowrap text-text-muted">
                           {formatDateTime(user.created_at)}
                         </td>
-                        <td className="px-3 py-3">
+                        <td className="cc-td">
                           {isSelf ? (
-                            <p className="ml-auto max-w-xs text-xs text-gray-400">
+                            <p className="ml-auto max-w-xs text-xs text-text-muted">
                               Your own role is locked: the database rejects self-demotion so an app
                               admin can never lock the last admin out. Ask another app admin to
                               change it.
@@ -325,8 +332,13 @@ export default function AdminUsersPage() {
 
                   {users.length === 0 && (
                     <tr>
-                      <td colSpan={4} className="px-3 py-8 text-center text-gray-400">
-                        No users were returned by the directory.
+                      <td colSpan={4} className="cc-td">
+                        <div className="cc-empty">
+                          <p className="text-base font-semibold text-text">No users found</p>
+                          <p className="mx-auto mt-1 max-w-md text-sm text-text-muted">
+                            No users were returned by the directory.
+                          </p>
+                        </div>
                       </td>
                     </tr>
                   )}

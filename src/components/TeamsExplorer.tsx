@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
+import { EmptyState } from '@/components/ui/feedback'
 
 /** Public team card shape (subset of `teams` used by the explorer). */
 export interface TeamRow {
@@ -14,8 +15,7 @@ export interface TeamRow {
   group_name: string | null
 }
 
-const FIELD_CLASSES =
-  'bg-[#1e293b] border border-white/10 rounded-lg py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors'
+const FIELD_CLASSES = 'cc-input'
 
 const sortValues = (values: string[]) => values.sort((a, b) => a.localeCompare(b))
 
@@ -62,14 +62,11 @@ export function TeamsExplorer({ teams }: { teams: TeamRow[] }) {
 
   return (
     <div className="space-y-8">
-      <div className="bg-[#1e293b] rounded-xl border border-white/5 p-4 sm:p-6 flex flex-col xl:flex-row xl:items-center gap-4">
+      <div className="cc-card p-4 sm:p-6 flex flex-col xl:flex-row xl:items-center gap-4">
         <div className="relative flex-1">
           <svg
-            className="w-4 h-4 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+            className="w-4 h-4 text-text-muted absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
+            fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
           </svg>
@@ -131,15 +128,15 @@ export function TeamsExplorer({ teams }: { teams: TeamRow[] }) {
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <p className="text-sm text-gray-400">
-          Showing <span className="text-white font-semibold">{filteredTeams.length}</span> of {teams.length}{' '}
+        <p className="text-sm text-text-muted">
+          Showing <span className="text-text font-semibold">{filteredTeams.length}</span> of {teams.length}{' '}
           {teams.length === 1 ? 'team' : 'teams'}
         </p>
         {filtersActive ? (
           <button
             type="button"
             onClick={clearFilters}
-            className="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
+            className="text-sm font-medium text-primary hover:text-primary-strong transition-colors"
           >
             Clear filters
           </button>
@@ -147,35 +144,34 @@ export function TeamsExplorer({ teams }: { teams: TeamRow[] }) {
       </div>
 
       {filteredTeams.length === 0 ? (
-        <div className="bg-[#1e293b] rounded-xl p-12 text-center border border-white/5">
-          <div className="text-gray-400 text-lg mb-2">
-            {teams.length === 0 ? 'No teams found.' : 'No teams match your filters.'}
-          </div>
-          <p className="text-gray-500 text-sm">
-            {teams.length === 0
-              ? 'Admins must register teams in the dashboard first.'
-              : 'Try a different search term or clear the filters.'}
-          </p>
-        </div>
+        <EmptyState
+          title={teams.length === 0 ? 'No teams found.' : 'No teams match your filters.'}
+          hint={teams.length === 0 ? 'Admins must register teams in the dashboard first.' : 'Try a different search term or clear the filters.'}
+          action={filtersActive ? (
+            <button type="button" onClick={clearFilters} className="cc-btn cc-btn--ghost cc-btn--sm hover:text-primary">
+              Clear filters
+            </button>
+          ) : undefined}
+        />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredTeams.map((team) => (
-            <Link href={`/team/${team.id}`} key={team.id} className="block h-full">
-              <div className="cc-card group flex h-full flex-col overflow-hidden transition-all hover:border-primary">
+            <Link href={`/team/${team.id}`} key={team.id} className="block h-full rounded-xl focus-visible:outline-2 focus-visible:outline-primary">
+              <div className="cc-card cc-card--interactive group flex h-full flex-col overflow-hidden">
                 <div className="relative flex h-24 w-full items-center justify-center overflow-hidden bg-surface-sunken">
                   <span className="text-2xl font-black text-text-muted">{team.short_name}</span>
                 </div>
                 <div className="p-5 flex-1 flex flex-col">
-                  <h2 className="font-bold text-xl mb-1 group-hover:text-indigo-300 transition-colors">{team.name}</h2>
+                  <h2 className="font-bold text-xl mb-1 group-hover:text-primary transition-colors">{team.name}</h2>
                   <div className="flex flex-wrap items-center gap-2 mt-auto pt-4">
-                    <span className="text-xs font-medium bg-gray-800 text-gray-300 px-2 py-1 rounded border border-gray-700">
+                    <span className="text-xs font-medium bg-surface-sunken text-text-muted px-2 py-1 rounded">
                       {team.category || 'Male'}
                     </span>
-                    <span className="text-xs font-medium bg-gray-800 text-gray-300 px-2 py-1 rounded border border-gray-700">
+                    <span className="text-xs font-medium bg-surface-sunken text-text-muted px-2 py-1 rounded">
                       {team.team_type || 'Football'}
                     </span>
                     {team.group_name ? (
-                      <span className="text-xs font-medium bg-indigo-500/15 text-indigo-300 px-2 py-1 rounded border border-indigo-500/30">
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded">
                         {team.group_name}
                       </span>
                     ) : null}

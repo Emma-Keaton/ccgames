@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Fixture } from '@/lib/competitions-standings'
 import { formatMatchTimeLabel } from '@/lib/match-clock'
+import { LiveBadge } from '@/components/ui/feedback'
 
 export interface ServerMatchCardProps {
   match: Fixture
@@ -14,39 +15,36 @@ export function ServerMatchCard({ match }: ServerMatchCardProps) {
   const stageLabel = (match.stage ?? 'Group stage').replace(/_/g, ' ')
 
   return (
-    <Link href={`/match/${match.id}`} className="block">
-      <div className="bg-[#1e293b] rounded-lg p-4 flex flex-col md:flex-row items-center justify-between border border-white/10 hover:border-indigo-500 transition-colors group cursor-pointer">
-        <div className="text-sm text-gray-400 mb-2 md:mb-0 w-full md:w-32 text-center md:text-left">
+    <Link href={`/match/${match.id}`} className="block rounded-xl focus-visible:outline-2 focus-visible:outline-primary">
+      <div className="cc-card cc-card--interactive group flex flex-col items-center justify-between p-4 md:flex-row">
+        <div className="mb-2 w-full text-center text-sm text-text-muted md:mb-0 md:w-32 md:text-left">
           {dateLabel}
-          <div className="text-xs uppercase mt-1">{stageLabel}</div>
+          <div className="mt-1 text-xs uppercase">{stageLabel}</div>
         </div>
 
-        <div className="flex items-center justify-center gap-4 flex-1">
-          <div className="text-right flex-1 font-bold text-lg group-hover:text-indigo-300 transition-colors">
+        <div className="flex flex-1 items-center justify-center gap-4">
+          <div className="flex-1 text-right text-lg font-bold transition-colors group-hover:text-primary">
             {match.home_team?.name ?? 'Unknown'}
           </div>
-          <div className="bg-slate-900 px-4 py-2 rounded font-mono text-xl tracking-wider min-w-[80px] text-center border border-white/5">
+          <div className="cc-score min-w-[80px] px-4 py-2 text-center">
             {match.status === 'scheduled'
               ? 'vs'
               : `${match.home_score ?? '-'} - ${match.away_score ?? '-'}`}
           </div>
-          <div className="text-left flex-1 font-bold text-lg group-hover:text-indigo-300 transition-colors">
+          <div className="flex-1 text-left text-lg font-bold transition-colors group-hover:text-primary">
             {match.away_team?.name ?? 'Unknown'}
           </div>
         </div>
 
-        <div className="w-full md:w-32 flex justify-end mt-2 md:mt-0">
+        <div className="mt-2 flex w-full justify-end md:mt-0 md:w-32">
           {isLive ? (
-            <span className="text-red-500 font-bold animate-pulse text-sm flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
-              {timeLabel}
-            </span>
+            <LiveBadge label={timeLabel} />
           ) : match.status === 'full_time' ? (
-            <span className="text-gray-500 text-sm">FT</span>
+            <span className="cc-num text-sm text-text-muted">FT</span>
           ) : match.status === 'cancelled' ? (
-            <span className="text-gray-600 text-sm">CANCELLED</span>
+            <span className="text-sm text-text-muted">CANCELLED</span>
           ) : (
-            <span className="text-indigo-400 text-sm">
+            <span className="cc-num text-sm text-primary">
               {new Date(match.match_date).toLocaleTimeString([], {
                 hour: '2-digit',
                 minute: '2-digit',
@@ -58,3 +56,4 @@ export function ServerMatchCard({ match }: ServerMatchCardProps) {
     </Link>
   )
 }
+

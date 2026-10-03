@@ -120,13 +120,13 @@ export function OnboardingGuideInner() {
   return (
     <div className="space-y-10">
       {visitor ? (
-        <p className="rounded-xl border border-indigo-400/30 bg-indigo-500/10 px-4 py-3 text-sm text-indigo-200">
+        <p className="rounded-xl border border-indigo-400/30 bg-primary-soft px-4 py-3 text-sm text-text-muted">
           {visitor} This guide shows exactly what your account can do.
         </p>
       ) : null}
 
       {/* Role tabs — only the visitor's own level and below are ever listed. */}
-      <div data-tour="guide-tabs" className="rounded-2xl border border-white/10 bg-[#1e293b] p-2">
+      <div data-tour="guide-tabs" className="rounded-2xl border border-border-subtle bg-[#1e293b] p-2">
         <div className="flex flex-wrap gap-1" role="tablist" aria-label="Onboarding roles">
           {visibleRoles.map((option) => {
             const selected = option.id === activeRole
@@ -139,11 +139,11 @@ export function OnboardingGuideInner() {
                 onClick={() => navigateTo(option.id)}
                 className={
                   'flex-1 min-w-[140px] rounded-xl px-4 py-3 text-left transition ' +
-                  (selected ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:bg-white/5')
+                  (selected ? 'bg-primary text-text' : 'text-text-muted hover:bg-surface-sunken')
                 }
               >
                 <span className="block text-sm font-bold">{option.label}</span>
-                <span className={'mt-0.5 block text-xs ' + (selected ? 'text-indigo-100' : 'text-gray-500')}>
+                <span className={'mt-0.5 block text-xs ' + (selected ? 'text-primary-strong' : 'text-text-muted')}>
                   {option.tagline}
                 </span>
               </button>
@@ -156,25 +156,25 @@ export function OnboardingGuideInner() {
       <section className="space-y-6">
         <div>
           <h2 className="text-2xl font-extrabold tracking-tight">{role.label}</h2>
-          <p className="mt-2 max-w-3xl text-gray-300">{role.summary}</p>
+          <p className="mt-2 max-w-3xl text-text-muted">{role.summary}</p>
           {isStaff ? (
             <Link
               href="/admin"
-              className="mt-4 inline-block rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500"
+              className="mt-4 inline-block rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary"
             >
               Open your workspace →
             </Link>
           ) : null}
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-[#1e293b] p-6">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-indigo-300">
+        <div className="rounded-2xl border border-border-subtle bg-[#1e293b] p-6">
+          <h3 className="text-sm font-bold uppercase tracking-widest text-primary">
             Before you start
           </h3>
           <ul className="mt-3 space-y-2">
             {role.needs.map((need) => (
-              <li key={need} className="flex gap-2 text-sm text-gray-300">
-                <span aria-hidden="true" className="text-indigo-400">✓</span>
+              <li key={need} className="flex gap-2 text-sm text-text-muted">
+                <span aria-hidden="true" className="text-primary">✓</span>
                 <span>{need}</span>
               </li>
             ))}
@@ -185,14 +185,14 @@ export function OnboardingGuideInner() {
           <h3 className="mb-3 text-lg font-bold">Your first session</h3>
           <ol className="grid gap-4 md:grid-cols-3">
             {role.journey.map((step, index) => (
-              <li key={step.title} className="rounded-2xl border border-white/10 bg-[#1e293b] p-5">
-                <span className="text-xs font-bold uppercase tracking-widest text-indigo-300">
+              <li key={step.title} className="rounded-2xl border border-border-subtle bg-[#1e293b] p-5">
+                <span className="text-xs font-bold uppercase tracking-widest text-primary">
                   Step {index + 1}
                 </span>
-                <p className="mt-1 font-bold text-white">{step.title}</p>
-                <p className="mt-2 text-sm leading-relaxed text-gray-400">{step.detail}</p>
+                <p className="mt-1 font-bold text-text">{step.title}</p>
+                <p className="mt-2 text-sm leading-relaxed text-text-muted">{step.detail}</p>
                 {step.href ? (
-                  <Link href={step.href} className="mt-3 inline-block text-sm font-semibold text-indigo-300 hover:text-indigo-200">
+                  <Link href={step.href} className="mt-3 inline-block text-sm font-semibold text-primary hover:text-text-muted">
                     Open →
                   </Link>
                 ) : null}
@@ -206,13 +206,13 @@ export function OnboardingGuideInner() {
             type="button"
             onClick={() => startTour(role.tourRole)}
             disabled={isActive}
-            className="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white hover:bg-indigo-500 disabled:opacity-50"
+            className="rounded-xl bg-primary px-5 py-3 text-sm font-bold text-white hover:bg-primary disabled:opacity-50"
           >
             {isActive
               ? 'Tour running — follow the spotlight'
               : `Take the ${role.label.toLowerCase()} tour (${steps.length} stops)`}
           </button>
-          <Link href="/" className="rounded-xl border border-white/15 px-5 py-3 text-sm font-semibold text-gray-200 hover:bg-white/5">
+          <Link href="/" className="rounded-xl border border-border-subtle px-5 py-3 text-sm font-semibold text-text hover:bg-surface-sunken">
             Back to the hub
           </Link>
         </div>
@@ -221,31 +221,31 @@ export function OnboardingGuideInner() {
       {/* Feature catalogue */}
       <section>
         <h3 className="mb-1 text-lg font-bold">Everything {role.label.toLowerCase()} can use</h3>
-        <p className="mb-4 text-sm text-gray-400">
+        <p className="mb-4 text-sm text-text-muted">
           {features.length} feature{features.length === 1 ? '' : 's'} — what it does, how to reach it, and where it stops.
         </p>
         <div className="grid gap-4 md:grid-cols-2">
           {features.map((feature) => (
-            <article key={feature.id} className="rounded-2xl border border-white/10 bg-[#1e293b] p-5">
+            <article key={feature.id} className="rounded-2xl border border-border-subtle bg-[#1e293b] p-5">
               <div className="flex items-start justify-between gap-3">
-                <h4 className="font-bold text-white">{feature.title}</h4>
-                <code className="shrink-0 rounded-md bg-white/5 px-2 py-1 text-[11px] text-indigo-300">
+                <h4 className="font-bold text-text">{feature.title}</h4>
+                <code className="shrink-0 rounded-md bg-surface-sunken px-2 py-1 text-[11px] text-primary">
                   {feature.route}
                 </code>
               </div>
-              <p className="mt-2 text-sm leading-relaxed text-gray-300">{feature.what}</p>
-              <p className="mt-2 text-sm leading-relaxed text-gray-400">
-                <span className="font-semibold text-gray-200">How: </span>
+              <p className="mt-2 text-sm leading-relaxed text-text-muted">{feature.what}</p>
+              <p className="mt-2 text-sm leading-relaxed text-text-muted">
+                <span className="font-semibold text-text">How: </span>
                 {feature.how}
               </p>
               {feature.limits ? (
-                <p className="mt-2 text-sm leading-relaxed text-gray-500">
-                  <span className="font-semibold text-gray-400">Limits: </span>
+                <p className="mt-2 text-sm leading-relaxed text-text-muted">
+                  <span className="font-semibold text-text-muted">Limits: </span>
                   {feature.limits}
                 </p>
               ) : null}
               {feature.route.startsWith('/') && !feature.route.includes('[') ? (
-                <Link href={feature.route} className="mt-3 inline-block text-sm font-semibold text-indigo-300 hover:text-indigo-200">
+                <Link href={feature.route} className="mt-3 inline-block text-sm font-semibold text-primary hover:text-text-muted">
                   Open {feature.route} →
                 </Link>
               ) : null}
@@ -258,14 +258,14 @@ export function OnboardingGuideInner() {
       {(activeRole === 'scout' || activeRole === 'tournament_admin' || activeRole === 'app_admin') && (
         <section>
           <h3 className="mb-1 text-lg font-bold">The duty grammar, exactly as the database enforces it</h3>
-          <p className="mb-4 text-sm text-gray-400">
+          <p className="mb-4 text-sm text-text-muted">
             Your membership carries a duty list. This table is the full grammar from PART 13 —
             the guide cannot drift from it because it is tested against the source.
           </p>
-          <div className="overflow-x-auto rounded-2xl border border-white/10">
+          <div className="overflow-x-auto rounded-2xl border border-border-subtle">
             <table className="w-full min-w-[560px] text-left text-sm">
               <thead>
-                <tr className="border-b border-white/10 text-xs uppercase tracking-widest text-gray-400">
+                <tr className="border-b border-border-subtle text-xs uppercase tracking-widest text-text-muted">
                   <th className="px-4 py-3">Duty</th>
                   <th className="px-4 py-3">Kind</th>
                   <th className="px-4 py-3">Grants</th>
@@ -273,10 +273,10 @@ export function OnboardingGuideInner() {
               </thead>
               <tbody>
                 {dutyRows.map((duty) => (
-                  <tr key={duty.token} className="border-b border-white/5 last:border-0">
-                    <td className="px-4 py-3 font-mono text-[13px] text-indigo-300">{duty.token}</td>
-                    <td className="px-4 py-3 font-semibold text-white">{duty.kind}</td>
-                    <td className="px-4 py-3 text-gray-300">{duty.can}</td>
+                  <tr key={duty.token} className="border-b border-border-subtle last:border-0">
+                    <td className="px-4 py-3 font-mono text-[13px] text-primary">{duty.token}</td>
+                    <td className="px-4 py-3 font-semibold text-text">{duty.kind}</td>
+                    <td className="px-4 py-3 text-text-muted">{duty.can}</td>
                   </tr>
                 ))}
               </tbody>
@@ -291,7 +291,7 @@ export function OnboardingGuideInner() {
 /** Exported wrapper: `useSearchParams` requires a Suspense boundary. */
 export function OnboardingGuide() {
   return (
-    <Suspense fallback={<div className="py-20 text-center text-gray-400">Loading the guide…</div>}>
+    <Suspense fallback={<div className="py-20 text-center text-text-muted">Loading the guide…</div>}>
       <OnboardingGuideInner />
     </Suspense>
   )

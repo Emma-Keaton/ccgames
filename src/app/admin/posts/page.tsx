@@ -362,23 +362,23 @@ const visiblePosts = posts.filter((post) => {
   const canWrite = isAppAdmin || writableTournamentIds.length > 0
 
   return (
-    <div className="min-h-screen bg-[#0f172a] pb-24 text-white">
-      <header className="sticky top-0 z-30 border-b border-white/10 bg-[#0f172a]/95 backdrop-blur">
+    <div className="min-h-screen bg-surface pb-24 text-text">
+      <header className="sticky top-0 z-30 border-b border-border-subtle bg-surface/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <div>
             <h1 className="text-xl font-bold">Newsroom</h1>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-text-muted">
               Articles feed the home-page carousel and the public /news page.
             </p>
           </div>
           <nav className="flex flex-wrap items-center gap-4 text-sm">
-            <Link href="/admin" className="text-indigo-400 hover:text-indigo-300">
+            <Link href="/admin" className="text-primary hover:text-primary">
               Dashboard
             </Link>
-            <Link href="/admin/tournaments" className="text-indigo-400 hover:text-indigo-300">
+            <Link href="/admin/tournaments" className="text-primary hover:text-primary">
               Tournaments
             </Link>
-            <Link href="/news" className="text-gray-300 hover:text-white">
+            <Link href="/news" className="text-text-muted hover:text-text">
               Public news
             </Link>
           </nav>
@@ -389,7 +389,7 @@ const visiblePosts = posts.filter((post) => {
         <StatusBanner status={status} />
 
         {!isAppAdmin && (
-          <p className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-xs text-gray-300">
+          <p className="rounded-lg border border-border-subtle bg-surface-sunken px-4 py-3 text-xs text-text-muted">
             You can write for:{' '}
             {tournaments.length > 0
               ? tournaments.map((row) => row.name).join(', ')
@@ -397,7 +397,7 @@ const visiblePosts = posts.filter((post) => {
           </p>
         )}
 
-        <section data-tour="newsroom-filters" className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+        <section data-tour="newsroom-filters" className="rounded-xl border border-border-subtle bg-surface-elevated p-6">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <Field label="Tournament">
               <SelectInput
@@ -433,18 +433,18 @@ const visiblePosts = posts.filter((post) => {
           </div>
         </section>
 
-<section className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+<section className="rounded-xl border border-border-subtle bg-surface-elevated p-6">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Articles ({visiblePosts.length})</h2>
-            <span className="text-xs text-gray-400">{loading ? 'Refreshing…' : 'Up to date'}</span>
+            <span className="text-xs text-text-muted">{loading ? 'Refreshing…' : 'Up to date'}</span>
           </div>
 
           {visiblePosts.length === 0 ? (
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-text-muted">
               No articles match these filters yet. Write the first update below.
             </p>
           ) : (
-            <ul className="divide-y divide-white/5">
+            <ul className="divide-y divide-border-subtle">
               {visiblePosts.map((post) => (
                 <li key={post.id} className="py-4">
                   <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -452,16 +452,16 @@ const visiblePosts = posts.filter((post) => {
                       <p className="font-medium">
                         {post.title}{' '}
                         {post.published ? (
-                          <span className="ml-2 rounded-full bg-emerald-500/15 px-2 py-0.5 text-xs text-emerald-300">
+                          <span className="ml-2 rounded-full bg-emerald-500/15 px-2 py-0.5 text-xs text-secondary-strong">
                             published
                           </span>
                         ) : (
-                          <span className="ml-2 rounded-full bg-white/10 px-2 py-0.5 text-xs text-gray-300">
+                          <span className="ml-2 rounded-full bg-surface-sunken px-2 py-0.5 text-xs text-text-muted">
                             draft
                           </span>
                         )}
                       </p>
-                      <p className="mt-1 text-xs text-gray-400">
+                      <p className="mt-1 text-xs text-text-muted">
                         {tournamentName(post.tournament_id)} &bull; {post.category || 'News'} &bull;{' '}
                         {formatDateTime(post.published_at)} &bull; /news/{post.slug}
                       </p>
@@ -494,7 +494,7 @@ const visiblePosts = posts.filter((post) => {
                         onClick={() => void remove(post)}
                         className={
                           confirmId === post.id
-                            ? 'rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white'
+                            ? 'rounded-lg bg-live px-3 py-1.5 text-xs font-semibold text-text'
                             : adminSubtleButton
                         }
                       >
@@ -509,7 +509,7 @@ const visiblePosts = posts.filter((post) => {
         </section>
 
         {canWrite ? (
-          <section className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+          <section className="rounded-xl border border-border-subtle bg-surface-elevated p-6">
             <h2 className="mb-4 text-lg font-semibold">
               {editingId ? 'Edit article' : 'Write a new article'}
             </h2>
@@ -583,10 +583,10 @@ const visiblePosts = posts.filter((post) => {
                 </div>
               </div>
 
-              <label className="flex items-center gap-3 text-sm text-gray-300">
+              <label className="flex items-center gap-3 text-sm text-text-muted">
                 <input
                   type="checkbox"
-                  className="h-4 w-4 rounded border-white/20 bg-[#0f172a]"
+                  className="h-4 w-4 rounded border-border-subtle bg-surface"
                   checked={draft.published}
                   onChange={(event) => setDraft({ ...draft, published: event.target.checked })}
                 />
@@ -606,7 +606,7 @@ const visiblePosts = posts.filter((post) => {
             </form>
           </section>
         ) : (
-          <p className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-gray-300">
+          <p className="rounded-lg border border-border-subtle bg-surface-sunken px-4 py-3 text-sm text-text-muted">
             You have read-only access to these articles. Ask a director for an invite whose duty is
             “News &amp; posts” to publish updates.
           </p>

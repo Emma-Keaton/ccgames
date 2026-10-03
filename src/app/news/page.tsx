@@ -9,10 +9,10 @@ export const revalidate = 60
 
 export const metadata: Metadata = {
   title: "Newsroom | Coal City Games",
-  description: "Match reports, tournament registration announcements, and tactical breakdowns from Coal City Games.",
+  description: "Match reports and tactical breakdowns from Coal City Games.",
   openGraph: {
     title: "Newsroom | Coal City Games",
-    description: "Match reports, tournament registration announcements, and tactical breakdowns from Coal City Games.",
+    description: "Match reports and tactical breakdowns from Coal City Games.",
     siteName: "Coal City Games",
     type: "website",
   },

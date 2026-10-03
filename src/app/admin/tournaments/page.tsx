@@ -61,15 +61,11 @@ const DUTY_LABELS: Record<string, string> = {
   posts: 'News & posts',
 }
 
-const PANEL = 'bg-[#1e293b] rounded-xl border border-white/5 p-6'
-const INPUT =
-  'w-full rounded-lg border border-white/10 bg-[#0f172a] px-3 py-2 text-white focus:border-indigo-500 focus:outline-none'
-const PRIMARY =
-  'bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg px-4 py-2 text-sm font-semibold disabled:opacity-60'
-const DANGER =
-  'bg-red-600 hover:bg-red-500 text-white rounded-lg px-4 py-2 text-sm font-semibold disabled:opacity-60'
-const SECONDARY =
-  'rounded-lg px-4 py-2 text-sm font-semibold text-gray-300 ring-1 ring-inset ring-white/10 hover:bg-white/5 disabled:opacity-60'
+const PANEL = 'cc-card p-6'
+const INPUT = 'cc-input w-full'
+const PRIMARY = 'cc-btn cc-btn--primary text-sm'
+const DANGER = 'cc-btn cc-btn--danger text-sm'
+const SECONDARY = 'cc-btn cc-btn--secondary text-sm'
 
 /** Lowercase, non-alphanumerics to dashes, trimmed, runs collapsed. */
 const slugify = (value: string) =>
@@ -112,12 +108,12 @@ function GatePanel({
   action: string
 }) {
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24">
-        <div className="mx-auto max-w-lg bg-[#1e293b] rounded-xl border border-white/5 p-8 text-center">
+    <div className="cc-app">
+      <div className="cc-page cc-page--narrow">
+        <div className="cc-card mx-auto max-w-lg p-8 text-center">
           <h1 className="text-2xl font-bold">{title}</h1>
-          <p className="mt-2 text-sm text-gray-400">{body}</p>
-          <Link href={href} className={`mt-6 inline-block ${PRIMARY}`}>
+          <p className="mt-2 text-sm text-text-muted">{body}</p>
+          <Link href={href} className="cc-btn cc-btn--primary mt-6 inline-flex">
             {action}
           </Link>
         </div>
@@ -129,7 +125,7 @@ function GatePanel({
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-gray-400">
+      <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-text-muted">
         {label}
       </span>
       {children}
@@ -379,53 +375,63 @@ export default function AdminTournamentsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 space-y-6">
-        <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-400">Admin</p>
-            <h1 className="text-3xl font-extrabold tracking-tight">Tournaments</h1>
-            <p className="text-sm text-gray-400">
-              Every edition in the database. Open one to manage its settings, posts, invites,
-              members and sports.
-            </p>
+    <div className="cc-app">
+      <div className="cc-page cc-page--narrow space-y-6">
+        <header className="cc-card">
+          <div className="cc-header sm:flex-row sm:items-end sm:justify-between">
+            <div className="flex flex-col gap-2">
+              <p className="cc-eyebrow">Admin</p>
+              <h1 className="cc-title">Tournaments</h1>
+              <p className="cc-lede">
+                Every edition in the database. Open one to manage its settings, posts, invites,
+                members and sports.
+              </p>
+            </div>
+            <button
+              type="button"
+              className={SECONDARY}
+              onClick={() => void load()}
+              disabled={dataLoading}
+            >
+              {dataLoading ? 'Refreshing…' : 'Refresh'}
+            </button>
           </div>
-          <button
-            type="button"
-            className={SECONDARY}
-            onClick={() => void load()}
-            disabled={dataLoading}
-          >
-            {dataLoading ? 'Refreshing…' : 'Refresh'}
-          </button>
         </header>
 
-        {error && <p className="text-sm text-red-400">{error}</p>}
-        {notice && <p className="text-sm text-green-400">{notice}</p>}
+        {error && (
+          <p role="alert" className="cc-error">
+            {error}
+          </p>
+        )}
+        {notice && (
+          <p role="status" className="rounded-lg border border-secondary/30 bg-secondary/10 px-4 py-3 text-sm text-secondary-strong">
+            {notice}
+          </p>
+        )}
 
         {!isAppAdmin && (
           <section className={PANEL}>
             <h2 className="text-lg font-semibold">Your manager scope</h2>
-            <p className="mt-1 text-sm text-gray-400">
+            <p className="mt-1 text-sm text-text-muted">
               Creating, editing, deleting or activating tournaments is limited to app admins. You
               manage the tournaments below.
             </p>
             <ul className="mt-4 space-y-2 text-sm">
               {memberships.length === 0 && (
-                <li className="text-gray-400">You have no tournament memberships yet.</li>
+                <li className="text-text-muted">You have no tournament memberships yet.</li>
               )}
               {memberships.map((membership) => (
                 <li
                   key={membership.id}
-                  className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-white/5 bg-[#0f172a] px-3 py-2"
+                  className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border-subtle bg-surface px-3 py-2"
                 >
                   <Link
                     href={`/admin/tournaments/${membership.tournament_id}`}
-                    className="font-medium text-indigo-300 hover:text-indigo-200"
+                    className="font-medium text-primary hover:text-text-muted"
                   >
                     {membership.tournament_name || membership.tournament_slug || 'Tournament'}
                   </Link>
-                  <span className="text-xs text-gray-400">{formatDuties(membership.duties)}</span>
+                  <span className="text-xs text-text-muted">{formatDuties(membership.duties)}</span>
                 </li>
               ))}
             </ul>
@@ -435,7 +441,7 @@ export default function AdminTournamentsPage() {
         {isAppAdmin && (
           <section data-tour="tournaments-new" className={PANEL}>
             <h2 className="text-lg font-semibold">New tournament</h2>
-            <p className="mt-1 text-sm text-gray-400">
+            <p className="mt-1 text-sm text-text-muted">
               The slug is derived from the name (lower case, dashes) but stays editable, and must be
               unique.
             </p>
@@ -532,7 +538,7 @@ export default function AdminTournamentsPage() {
               ))}
             </div>
           ) : tournaments.length === 0 ? (
-            <p className={`${PANEL} text-sm text-gray-400`}>
+            <p className={`${PANEL} text-sm text-text-muted`}>
               No tournaments in the database yet. Create the first one above.
             </p>
           ) : (
@@ -549,7 +555,7 @@ export default function AdminTournamentsPage() {
                         <div className="flex flex-wrap items-center gap-2">
                           <Link
                             href={`/admin/tournaments/${row.id}`}
-                            className="text-lg font-semibold hover:text-indigo-300"
+                            className="text-lg font-semibold hover:text-primary"
                           >
                             {row.name}
                           </Link>
@@ -558,14 +564,14 @@ export default function AdminTournamentsPage() {
                               Active
                             </span>
                           )}
-                          <span className="rounded-full bg-white/5 px-2 py-0.5 text-xs text-gray-300">
+                          <span className="rounded-full bg-surface-sunken px-2 py-0.5 text-xs text-text-muted">
                             {row.status}
                           </span>
                         </div>
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-text-muted">
                           {row.edition ?? 'No edition'} · {row.venue_city ?? 'No venue'}
                         </p>
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-text-muted">
                           {formatDate(row.start_date)} to {formatDate(row.end_date)} · /{row.slug}
                         </p>
                       </div>
@@ -610,7 +616,7 @@ export default function AdminTournamentsPage() {
                     </div>
 
                     {confirmingDelete && (
-                      <div className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200">
+                      <div className="mt-4 rounded-lg border border-danger/30 bg-danger/10 p-3 text-sm text-red-200">
                         <p>
                           Delete {row.name}? This also removes its settings, posts, sport links and
                           fixtures. Teams are kept but unlinked from the tournament.
@@ -641,7 +647,7 @@ export default function AdminTournamentsPage() {
                         onSubmit={(event) => {
                           void saveEdit(event, row)
                         }}
-                        className="mt-4 grid grid-cols-1 gap-4 border-t border-white/5 pt-4 sm:grid-cols-2 lg:grid-cols-3"
+                        className="mt-4 grid grid-cols-1 gap-4 border-t border-border-subtle pt-4 sm:grid-cols-2 lg:grid-cols-3"
                       >
                         <Field label="Name">
                           <input

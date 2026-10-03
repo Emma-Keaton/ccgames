@@ -507,7 +507,7 @@ export function ScoutLogPanel({ fixtureId }: { fixtureId: string }) {
 
 
   if (authLoading || loading) {
-    return <div className="h-48 animate-pulse rounded-xl bg-white/10" />
+    return <div className="h-48 animate-pulse rounded-xl bg-surface-sunken" />
   }
 
   if (!authenticated) {
@@ -558,22 +558,22 @@ export function ScoutLogPanel({ fixtureId }: { fixtureId: string }) {
 
       <header
         data-tour="console-header"
-        className="rounded-xl border border-white/5 bg-[#1e293b] p-6"
+        className="rounded-xl border border-border-subtle bg-surface-elevated p-6"
       >
-        <p className="text-xs font-semibold uppercase tracking-widest text-indigo-400">
+        <p className="text-xs font-semibold uppercase tracking-widest text-primary">
           Match logging
         </p>
         <h1 className="mt-1 text-2xl font-extrabold tracking-tight">
           {fixture.home_team?.name ?? 'Home'}{' '}
-          <span className="text-indigo-300">
+          <span className="text-primary">
             {homeScore} – {awayScore}
           </span>{' '}
           {fixture.away_team?.name ?? 'Away'}
         </h1>
-        <p className="mt-1 text-sm text-gray-400">
+        <p className="mt-1 text-sm text-text-muted">
           {(fixture.status ?? 'scheduled').replace(/_/g, ' ')} · minute {fixture.current_minute ?? 0}
         </p>
-        <p className="mt-3 text-xs text-gray-500">
+        <p className="mt-3 text-xs text-text-muted">
           You see only the controls your duties cover; every tap is re-checked in the database.
         </p>
       </header>
@@ -581,7 +581,7 @@ export function ScoutLogPanel({ fixtureId }: { fixtureId: string }) {
       <StatusBanner status={status} />
 
       {canScore && (
-        <section className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+        <section className="rounded-xl border border-border-subtle bg-surface-elevated p-6">
           <h2 className="mb-4 text-lg font-semibold">Score</h2>
           <form onSubmit={(event) => void saveScore(event)} className="flex flex-wrap items-end gap-4">
             <Field label={fixture.home_team?.name ?? 'Home'}>
@@ -613,7 +613,7 @@ export function ScoutLogPanel({ fixtureId }: { fixtureId: string }) {
 
 
       {statGroups.some((group) => group.options.some((option) => statAccess[option.key])) && (
-        <section data-tour="console-stats" className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+        <section data-tour="console-stats" className="rounded-xl border border-border-subtle bg-surface-elevated p-6">
           <h2 className="mb-4 text-lg font-semibold">Statistics</h2>
           <div className="space-y-6">
             {statGroups.map((group) => {
@@ -621,19 +621,19 @@ export function ScoutLogPanel({ fixtureId }: { fixtureId: string }) {
               if (writable.length === 0) return null
               return (
                 <div key={group.group ?? 'General'}>
-                  <h3 className="mb-2 text-xs font-bold uppercase tracking-widest text-gray-400">
+                  <h3 className="mb-2 text-xs font-bold uppercase tracking-widest text-text-muted">
                     {group.group ?? 'General'}
                   </h3>
                   <div className="space-y-2">
                     {writable.map((option) => (
                       <div
                         key={option.key}
-                        className="grid grid-cols-[1fr_auto_auto] items-center gap-3 rounded-lg bg-white/5 px-3 py-2"
+                        className="grid grid-cols-[1fr_auto_auto] items-center gap-3 rounded-lg bg-surface-sunken px-3 py-2"
                       >
-                        <span className="text-sm text-gray-200">{option.label}</span>
+                        <span className="text-sm text-text">{option.label}</span>
                         {sides.map((side) => (
                           <div key={side.id} className="flex items-center gap-2">
-                            <span className="w-8 text-center text-sm font-semibold text-indigo-300">
+                            <span className="w-8 text-center text-sm font-semibold text-primary">
                               {statNumber(stats, side.id, option.key)}
                             </span>
                             {option.input === 'value' ? (
@@ -642,7 +642,7 @@ export function ScoutLogPanel({ fixtureId }: { fixtureId: string }) {
                                   type="number"
                                   inputMode="decimal"
                                   placeholder={side.team?.short_name ?? side.id}
-                                  className="w-20 rounded-md border border-white/10 bg-[#0f172a] px-2 py-1 text-sm"
+                                  className="w-20 rounded-md border border-border-subtle bg-surface px-2 py-1 text-sm"
                                   value={valueInputs[`${side.id}:${option.key}`] ?? ''}
                                   onChange={(event) =>
                                     setValueInputs((current) => ({
@@ -685,7 +685,7 @@ export function ScoutLogPanel({ fixtureId }: { fixtureId: string }) {
 
 
       {loggableEvents.length > 0 && (
-        <section data-tour="console-timeline" className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+        <section data-tour="console-timeline" className="rounded-xl border border-border-subtle bg-surface-elevated p-6">
           <h2 className="mb-4 text-lg font-semibold">Timeline</h2>
           <form
             onSubmit={(event) => void addEvent(event)}
@@ -750,16 +750,16 @@ export function ScoutLogPanel({ fixtureId }: { fixtureId: string }) {
           </form>
 
           {events.length === 0 ? (
-            <p className="text-sm text-gray-500">Nothing logged yet.</p>
+            <p className="text-sm text-text-muted">Nothing logged yet.</p>
           ) : (
             <ul className="space-y-2">
               {events.map((row) => (
                 <li
                   key={row.id}
-                  className="flex items-center justify-between gap-3 rounded-lg bg-white/5 px-3 py-2 text-sm"
+                  className="flex items-center justify-between gap-3 rounded-lg bg-surface-sunken px-3 py-2 text-sm"
                 >
-                  <span className="text-gray-200">
-                    <span className="font-semibold text-indigo-300">{row.minute}&prime;</span>{' '}
+                  <span className="text-text">
+                    <span className="font-semibold text-primary">{row.minute}&prime;</span>{' '}
                     {row.event_type.replace(/_/g, ' ')}
                     {row.player_name ? ` — ${row.player_name}` : ''}
                     {row.details ? ` (${row.details})` : ''}
@@ -768,7 +768,7 @@ export function ScoutLogPanel({ fixtureId }: { fixtureId: string }) {
                     type="button"
                     disabled={busy}
                     onClick={() => void deleteEvent(row.id)}
-                    className="text-xs text-red-300 hover:text-red-200"
+                    className="text-xs text-live hover:text-red-200"
                   >
                     Delete
                   </button>
@@ -781,7 +781,7 @@ export function ScoutLogPanel({ fixtureId }: { fixtureId: string }) {
 
 
       {canLineup && (
-        <section data-tour="console-lineup" className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+        <section data-tour="console-lineup" className="rounded-xl border border-border-subtle bg-surface-elevated p-6">
           <h2 className="mb-4 text-lg font-semibold">Line-ups</h2>
           <div className="grid gap-6 md:grid-cols-2">
             {sides.map((side) => {
@@ -795,19 +795,19 @@ export function ScoutLogPanel({ fixtureId }: { fixtureId: string }) {
               )
               return (
                 <div key={side.id} className="space-y-3">
-                  <h3 className="text-sm font-bold uppercase tracking-widest text-gray-300">
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-text-muted">
                     {side.team.name}
                   </h3>
                   {named.length === 0 ? (
-                    <p className="text-sm text-gray-500">No one named yet.</p>
+                    <p className="text-sm text-text-muted">No one named yet.</p>
                   ) : (
                     <ul className="space-y-1">
                       {named.map((row) => (
                         <li
                           key={row.id}
-                          className="flex items-center justify-between gap-2 rounded-lg bg-white/5 px-3 py-1.5 text-sm"
+                          className="flex items-center justify-between gap-2 rounded-lg bg-surface-sunken px-3 py-1.5 text-sm"
                         >
-                          <span className="text-gray-200">
+                          <span className="text-text">
                             {row.slot}.{' '}
                             {players.find((player) => player.id === row.player_id)?.name ?? '—'}
                             {row.is_captain ? ' (c)' : ''}
@@ -816,7 +816,7 @@ export function ScoutLogPanel({ fixtureId }: { fixtureId: string }) {
                             type="button"
                             disabled={busy}
                             onClick={() => void removeFromLineup(row, side.team!.id)}
-                            className="text-xs text-red-300 hover:text-red-200"
+                            className="text-xs text-live hover:text-red-200"
                           >
                             Remove
                           </button>
@@ -850,8 +850,8 @@ export function ScoutLogPanel({ fixtureId }: { fixtureId: string }) {
         </section>
       )}
 
-      <p className="text-xs text-gray-500">
-        Prefer the full console? <Link href={`/admin/match/${fixtureId}`} className="text-indigo-400 hover:text-indigo-300">Open the match console</Link>.
+      <p className="text-xs text-text-muted">
+        Prefer the full console? <Link href={`/admin/match/${fixtureId}`} className="text-primary hover:text-primary">Open the match console</Link>.
       </p>
     </div>
   )

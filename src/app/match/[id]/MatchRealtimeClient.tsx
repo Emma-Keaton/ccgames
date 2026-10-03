@@ -168,8 +168,8 @@ export function MatchRealtimeClient({
             }}
             className={`px-6 py-4 font-semibold text-sm whitespace-nowrap transition-colors border-b-2 ${
               activeTab === tab
-                ? 'border-indigo-500 text-white bg-white/5'
-                : 'border-transparent text-gray-400 hover:text-white hover:bg-white/5'
+                ? 'border-primary text-text bg-surface-sunken'
+                : 'border-transparent text-text-muted hover:text-text hover:bg-surface-sunken'
             }`}
           >
             {tab}
@@ -210,36 +210,36 @@ function OverviewPanel({ fixture, events, isLive }: { fixture: MatchFixtureShape
   const initialEvents = events.slice(0, 5)
   return (
     <div className="space-y-6">
-      <div className="bg-[#1e293b] rounded-xl p-6 border border-white/5 text-center text-gray-400">
+      <div className="cc-card p-6 text-center text-text-muted">
         <p>
-          Venue: <span className="text-white font-medium">{fixture.venue || 'TBD'}</span>
+          Venue: <span className="text-text font-medium">{fixture.venue || 'TBD'}</span>
         </p>
         <p className="mt-2">
           Competition:{' '}
-          <span className="text-white font-medium">
+          <span className="text-text font-medium">
             Coal City Games {fixture.home_team.category} {fixture.home_team.team_type}
           </span>
         </p>
         {isLive && (
-          <p className="mt-2 text-red-400 font-semibold animate-pulse">
+          <p className="mt-2 text-live font-semibold animate-pulse">
             Minute {getEffectiveMinute(fixture)}&apos;
           </p>
         )}
       </div>
 
-      <div className="bg-[#1e293b] rounded-xl p-6 border border-white/5">
+      <div className="cc-card p-6">
         <h3 className="font-bold text-lg mb-4 text-center">Match Events</h3>
         {initialEvents.length === 0 ? (
-          <p className="text-gray-500 text-center text-sm">No events logged yet.</p>
+          <p className="text-text-muted text-center text-sm">No events logged yet.</p>
         ) : (
           <div className="space-y-3 max-h-60 overflow-y-auto">
             {initialEvents.map((e) => (
-              <div key={e.id} className="flex items-center justify-between text-sm py-2 border-b border-white/5 last:border-0">
-                <span className="text-gray-400 w-12">{e.minute}&apos;</span>
-                <span className="flex-1 font-medium text-center text-white">
+              <div key={e.id} className="flex items-center justify-between text-sm py-2 border-b border-border-subtle last:border-0">
+                <span className="text-text-muted w-12">{e.minute}&apos;</span>
+                <span className="flex-1 font-medium text-center text-text">
                   {e.event_type.replace(/_/g, ' ')}
                 </span>
-                <span className="text-gray-400 flex-1 text-right truncate">
+                <span className="text-text-muted flex-1 text-right truncate">
                   {e.player_name || 'N/A'}
                 </span>
               </div>
@@ -255,14 +255,14 @@ function StatsPanel({ fixture }: { fixture: MatchFixtureShape }) {
   const stats = fixture.stats
   if (!stats) {
     return (
-      <div className="bg-[#1e293b] rounded-xl p-6 border border-white/5 text-center text-gray-500">
+      <div className="cc-empty">
         No statistics available yet.
       </div>
     )
   }
 
   return (
-    <div className="bg-[#1e293b] rounded-xl p-6 sm:p-10 border border-white/5">
+    <div className="cc-card p-6 sm:p-10">
       <h3 className="font-bold text-xl mb-8 text-center">Match Statistics</h3>
       <div className="space-y-8">
         {STAT_KEYS.map((stat) => {
@@ -275,13 +275,13 @@ function StatsPanel({ fixture }: { fixture: MatchFixtureShape }) {
           return (
             <div key={stat}>
               <div className="flex justify-between text-sm font-bold mb-2">
-                <span className={hVal > aVal ? 'text-white' : 'text-gray-500'}>{hVal}</span>
-                <span className="uppercase tracking-wider text-gray-400">{stat.replace(/_/g, ' ')}</span>
-                <span className={aVal > hVal ? 'text-white' : 'text-gray-500'}>{aVal}</span>
+                <span className={hVal > aVal ? 'text-text' : 'text-text-muted'}>{hVal}</span>
+                <span className="uppercase tracking-wider text-text-muted">{stat.replace(/_/g, ' ')}</span>
+                <span className={aVal > hVal ? 'text-text' : 'text-text-muted'}>{aVal}</span>
               </div>
-              <div className="flex h-2 bg-gray-800 rounded-full overflow-hidden">
-                <div style={{ width: `${hPct}%` }} className={`transition-all duration-500 ${hVal > aVal ? 'bg-indigo-500' : 'bg-gray-600'}`} />
-                <div style={{ width: `${aPct}%` }} className={`transition-all duration-500 ${aVal >= hVal ? 'bg-blue-500' : 'bg-gray-600'}`} />
+              <div className="flex h-2 bg-surface-sunken rounded-full overflow-hidden">
+                <div style={{ width: `${hPct}%` }} className={`transition-all duration-500 ${hVal > aVal ? 'bg-primary' : 'bg-surface-sunken'}`} />
+                <div style={{ width: `${aPct}%` }} className={`transition-all duration-500 ${aVal >= hVal ? 'bg-secondary' : 'bg-surface-sunken'}`} />
               </div>
             </div>
           )
@@ -306,39 +306,39 @@ function TimelinePanel({
 }) {
   if (events.length === 0) {
     return (
-      <div className="bg-[#1e293b] rounded-xl p-6 border border-white/5 text-center text-gray-500">
+      <div className="cc-empty">
         No events logged yet.
       </div>
     )
   }
 
   return (
-    <div className="bg-[#1e293b] rounded-xl p-6 border border-white/5">
+    <div className="cc-card p-6">
       <h3 className="font-bold text-xl mb-8 text-center">Match Timeline</h3>
-      <div className="relative border-l border-white/10 ml-6 space-y-6">
+      <div className="relative border-l border-border-subtle ml-6 space-y-6">
         {events.map((e) => {
           const isHome = e.team_id === homeId
           const isAway = e.team_id === awayId
           return (
             <div key={e.id} className="relative pl-6">
-              <div className="absolute w-3 h-3 bg-indigo-500 rounded-full -left-[6.5px] top-1.5 shadow-[0_0_10px_rgba(99,102,241,0.8)]" />
+              <div className="absolute w-3 h-3 bg-primary rounded-full -left-[6.5px] top-1.5 shadow-cc" />
               <div className="flex items-start gap-4">
-                <span className="font-bold text-indigo-400 text-lg w-10 shrink-0">
+                <span className="font-bold text-primary text-lg w-10 shrink-0">
                   {e.minute}&apos;
                 </span>
-                <div className="bg-white/5 border border-white/10 rounded-lg p-3 flex-1">
+                <div className="bg-surface-sunken border border-border-subtle rounded-lg p-3 flex-1">
                   <div className="flex justify-between items-start mb-1">
                     <span className="font-bold capitalize">{e.event_type.replace(/_/g, ' ')}</span>
                     {e.team_id && (
-                      <span className="text-xs font-semibold px-2 py-1 bg-black/30 rounded text-gray-300">
+                      <span className="text-xs font-semibold px-2 py-1 bg-surface-sunken rounded text-text-muted">
                         {isHome ? homeShort : isAway ? awayShort : ''}
                       </span>
                     )}
                   </div>
                   {e.player_name && (
-                    <p className="text-sm font-medium text-white/90">{e.player_name}</p>
+                    <p className="text-sm font-medium text-text">{e.player_name}</p>
                   )}
-                  {e.details && <p className="text-xs text-gray-400 mt-1">{e.details}</p>}
+                  {e.details && <p className="text-xs text-text-muted mt-1">{e.details}</p>}
                 </div>
               </div>
             </div>
@@ -384,8 +384,8 @@ function LineupPanel({
       ].map(({ team, accent }) => {
         const slots = slotsFor(team.id)
         return (
-          <div key={team.id} className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
-            <h3 className="mb-6 border-b border-white/10 pb-2 text-center text-lg font-bold">
+          <div key={team.id} className="cc-card p-6">
+            <h3 className="mb-6 border-b border-border-subtle pb-2 text-center text-lg font-bold">
               {team.name} Lineup
             </h3>
             {slots.length > 0 ? (
@@ -399,13 +399,13 @@ function LineupPanel({
             ) : team.roster ? (
               <ul className="space-y-3">
                 {team.roster.split(',').map((player: string, index: number) => (
-                  <li key={index} className="rounded bg-white/5 py-2 text-center text-sm">
+                  <li key={index} className="rounded bg-surface-sunken py-2 text-center text-sm">
                     {player.trim()}
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="text-center text-sm text-gray-500">No data available yet.</p>
+              <p className="text-center text-sm text-text-muted">No data available yet.</p>
             )}
           </div>
         )
@@ -416,13 +416,13 @@ function LineupPanel({
 
 function TablePanel() {
   return (
-    <div className="bg-[#1e293b] rounded-xl p-6 border border-white/5 text-center flex flex-col items-center justify-center py-20">
-      <svg className="w-16 h-16 text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div className="cc-empty flex flex-col items-center justify-center py-20">
+      <svg className="w-16 h-16 text-text-muted mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
       </svg>
-      <h3 className="font-bold text-xl mb-2 text-gray-300">Competition Standings</h3>
-      <p className="text-gray-500">Live table data is not available for this competition yet.</p>
-      <Link href="/competitions" className="mt-6 text-indigo-400 hover:text-indigo-300 font-medium">
+      <h3 className="font-bold text-xl mb-2 text-text-muted">Competition Standings</h3>
+      <p className="text-text-muted">Live table data is not available for this competition yet.</p>
+      <Link href="/competitions" className="mt-6 text-primary hover:text-primary font-medium">
         View Group Stage Settings
       </Link>
     </div>

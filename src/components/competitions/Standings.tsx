@@ -103,31 +103,27 @@ export function StandingsTable({ rows }: StandingsTableProps) {
 
   if (rows.length === 0) {
     return (
-      <table className="w-full text-left text-sm">
-        <tbody>
-          <tr>
-            <td colSpan={7} className="p-8 text-center text-gray-500 italic">
-              No teams assigned to this group yet.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="cc-empty">
+        <p className="text-base font-semibold text-text">No teams assigned to this group yet.</p>
+        <p className="mx-auto mt-1 max-w-md text-sm text-text-muted">Standings appear here once teams are assigned.</p>
+      </div>
     )
   }
 
   return (
-    <div className="bg-[#1e293b] rounded-lg p-6 border border-white/5 overflow-x-auto">
-      <table className="w-full text-left text-sm">
-        <thead className="bg-black/20 text-gray-400">
+    <div className="cc-table-shell">
+      <div className="cc-table-scroll">
+      <table className="cc-table">
+        <thead className="cc-thead">
           <tr>
-            <th className="px-4 py-3">#</th>
-            <th className="px-4 py-3">Team</th>
-            <th className="px-4 py-3 text-center">P</th>
-            <th className="px-4 py-3 text-center">W</th>
-            <th className="px-4 py-3 text-center">D</th>
-            <th className="px-4 py-3 text-center">L</th>
-            <th className="px-4 py-3 text-center">GD</th>
-            <th className="px-4 py-3 text-right">Pts</th>
+            <th scope="col" className="cc-th cc-num">#</th>
+            <th scope="col" className="cc-th">Team</th>
+            <th scope="col" className="cc-th cc-num text-center">P</th>
+            <th scope="col" className="cc-th cc-num text-center">W</th>
+            <th scope="col" className="cc-th cc-num text-center">D</th>
+            <th scope="col" className="cc-th cc-num text-center">L</th>
+            <th scope="col" className="cc-th cc-num text-center">GD</th>
+            <th scope="col" className="cc-th cc-num text-right">Pts</th>
           </tr>
         </thead>
         <tbody>
@@ -142,8 +138,8 @@ export function StandingsTable({ rows }: StandingsTableProps) {
                 }}
                 style={delta ? { transform: `translateY(${delta}px)` } : undefined}
                 className={[
-                  'hover:bg-white/5',
-                  index < 2 ? 'border-l-4 border-indigo-500' : '',
+                  'cc-tr',
+                  index < 2 ? 'border-l-4 border-primary' : '',
                   // `playing` alone gates this, NOT `delta && playing`: the Play
                   // phase is precisely the frame where the transform has been
                   // released, so keying the class off `delta` would find it
@@ -157,19 +153,20 @@ export function StandingsTable({ rows }: StandingsTableProps) {
                   .filter(Boolean)
                   .join(' ')}
               >
-                <td className="px-4 py-3 font-semibold">{index + 1}</td>
-                <td className="px-4 py-3">{t.name}</td>
-                <td className="px-4 py-3 text-center">{t.played}</td>
-                <td className="px-4 py-3 text-center">{t.won}</td>
-                <td className="px-4 py-3 text-center">{t.drawn}</td>
-                <td className="px-4 py-3 text-center">{t.lost}</td>
-                <td className="px-4 py-3 text-center">{t.gd > 0 ? `+${t.gd}` : t.gd}</td>
-                <td className="px-4 py-3 text-right font-bold text-lg text-indigo-400">{t.points}</td>
+                <td className="cc-td cc-num font-semibold">{index + 1}</td>
+                <td className="cc-td">{t.name}</td>
+                <td className="cc-td cc-num text-center">{t.played}</td>
+                <td className="cc-td cc-num text-center">{t.won}</td>
+                <td className="cc-td cc-num text-center">{t.drawn}</td>
+                <td className="cc-td cc-num text-center">{t.lost}</td>
+                <td className="cc-td cc-num text-center">{t.gd > 0 ? `+${t.gd}` : t.gd}</td>
+                <td className="cc-td cc-num text-right font-bold text-lg text-primary">{t.points}</td>
               </tr>
             )
           })}
         </tbody>
       </table>
+      </div>
     </div>
   )
 }

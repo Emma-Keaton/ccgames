@@ -85,14 +85,14 @@ export default async function NewsArticlePage({ params }: PageProps) {
     .filter((paragraph) => paragraph.length > 0)
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white pb-32">
+    <div className="min-h-dvh bg-surface text-text pb-32">
       <Navigation />
 
       <div className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <article className="max-w-3xl mx-auto">
           <Link
             href="/news"
-            className="inline-flex items-center gap-2 text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors mb-8"
+            className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary transition-colors mb-8"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 17l-5-5m0 0l5-5m-5 5h12" />
@@ -103,28 +103,30 @@ export default async function NewsArticlePage({ params }: PageProps) {
           <header className="mb-8">
             <div className="flex flex-wrap items-center gap-3 mb-4">
               {post.category ? (
-                <span className="text-xs font-semibold uppercase tracking-wider bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 px-3 py-1 rounded-full">
+                <span className="text-xs font-semibold uppercase tracking-wider bg-primary-soft text-primary border border-primary/30 px-3 py-1 rounded-full">
                   {post.category}
                 </span>
               ) : null}
               {post.tournaments ? (
-                <span className="text-xs font-semibold uppercase tracking-wider bg-white/5 text-gray-300 border border-white/10 px-3 py-1 rounded-full">
+                <span className="text-xs font-semibold uppercase tracking-wider bg-surface-sunken text-text-muted border border-border-subtle px-3 py-1 rounded-full">
                   {post.tournaments.name}
                 </span>
               ) : null}
-              {post.published_at ? <span className="text-xs text-gray-500">{formatPostDate(post.published_at)}</span> : null}
+              {post.published_at ? <span className="text-xs text-text-muted">{formatPostDate(post.published_at)}</span> : null}
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4">{post.title}</h1>
 
-            {post.excerpt ? <p className="text-lg text-gray-400 leading-relaxed">{post.excerpt}</p> : null}
+            {post.excerpt ? <p className="text-lg text-text-muted leading-relaxed">{post.excerpt}</p> : null}
           </header>
 
           {post.image_url ? (
-            <div className="rounded-xl overflow-hidden border border-white/5 bg-[#1e293b] mb-10">
+            <div className="cc-card overflow-hidden mb-10">
               <img
                 src={post.image_url}
                 alt={post.title}
+                width={1200}
+                height={460}
                 loading="lazy"
                 className="w-full h-auto max-h-[460px] object-cover"
               />
@@ -132,7 +134,7 @@ export default async function NewsArticlePage({ params }: PageProps) {
           ) : null}
 
           {paragraphs.length > 0 ? (
-            <div className="space-y-5 text-gray-300 leading-relaxed text-base sm:text-lg">
+            <div className="space-y-5 text-text-muted leading-relaxed text-base sm:text-lg">
               {paragraphs.map((paragraph, index) => (
                 <p key={index} className="whitespace-pre-line">
                   {paragraph}
@@ -140,7 +142,7 @@ export default async function NewsArticlePage({ params }: PageProps) {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 italic">This article has no content yet.</p>
+            <p className="text-text-muted italic">This article has no content yet.</p>
           )}
         </article>
       </div>

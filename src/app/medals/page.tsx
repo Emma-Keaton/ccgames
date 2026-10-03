@@ -29,15 +29,15 @@ const MEDAL_HEADINGS: Record<MedalKind, string> = {
 
 /** Medal colour chips (gold / silver / bronze). */
 const MEDAL_CHIP: Record<MedalKind, string> = {
-  gold: 'text-amber-400 border-amber-400/30 bg-amber-400/10',
-  silver: 'text-gray-300 border-gray-300/30 bg-gray-300/10',
-  bronze: 'text-orange-400 border-orange-400/30 bg-orange-400/10',
+  gold: 'text-accent-strong border-accent/30 bg-accent/10',
+  silver: 'text-text-muted border-hairline bg-surface-sunken',
+  bronze: 'text-bronze border-bronze/30 bg-bronze/10',
 }
 
 const MEDAL_HEADING_COLOUR: Record<MedalKind, string> = {
-  gold: 'text-amber-400',
-  silver: 'text-gray-300',
-  bronze: 'text-orange-400',
+  gold: 'text-accent-strong',
+  silver: 'text-text-muted',
+  bronze: 'text-bronze',
 }
 
 interface MedalEntry {
@@ -88,10 +88,10 @@ const fetchEntries = () =>
 
 function MedalTable({ rows, linkTeams = false }: { rows: MedalTally[]; linkTeams?: boolean }) {
   return (
-    <div className="bg-[#1e293b] rounded-xl border border-white/5 overflow-hidden">
+    <div className="cc-card overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm">
-          <thead className="bg-white/5 text-xs uppercase tracking-wider text-gray-400">
+          <thead className="bg-surface-sunken text-xs uppercase tracking-wider text-text-muted">
             <tr>
               <th scope="col" className="px-4 py-3 font-semibold">
                 #
@@ -109,32 +109,32 @@ function MedalTable({ rows, linkTeams = false }: { rows: MedalTally[]; linkTeams
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody className="divide-y divide-hairline">
             {rows.map((row, index) => (
-              <tr key={row.id} className="hover:bg-white/5 transition-colors">
-                <td className="px-4 py-3 text-gray-500 tabular-nums">{index + 1}</td>
+              <tr key={row.id} className="hover:bg-surface-sunken/50 transition-colors">
+                <td className="px-4 py-3 text-text-muted tabular-nums">{index + 1}</td>
                 <td className="px-4 py-3">
                   {linkTeams ? (
-                    <Link href={`/team/${row.id}`} className="font-semibold hover:text-indigo-300 transition-colors">
+                    <Link href={`/team/${row.id}`} className="font-semibold hover:text-primary transition-colors">
                       {row.name}
                     </Link>
                   ) : (
-                    <span className="font-semibold">{row.name}</span>
+                    <span className="font-semibold text-text">{row.name}</span>
                   )}
-                  {row.subtitle ? <span className="block text-xs text-gray-500">{row.subtitle}</span> : null}
+                  {row.subtitle ? <span className="block text-xs text-text-muted">{row.subtitle}</span> : null}
                 </td>
                 {MEDAL_KINDS.map((kind) => (
                   <td key={kind} className="px-4 py-3 text-center">
                     <span
                       className={`inline-flex min-w-[2rem] justify-center rounded-full border px-2 py-0.5 font-bold tabular-nums ${
-                        row[kind] > 0 ? MEDAL_CHIP[kind] : 'text-gray-600 border-white/5 bg-white/[0.02]'
+                        row[kind] > 0 ? MEDAL_CHIP[kind] : 'text-text-muted border-hairline bg-surface-sunken/50'
                       }`}
                     >
                       {row[kind]}
                     </span>
                   </td>
                 ))}
-                <td className="px-4 py-3 text-center font-bold text-white tabular-nums">{row.total}</td>
+                <td className="px-4 py-3 text-center font-bold text-text tabular-nums">{row.total}</td>
               </tr>
             ))}
           </tbody>
@@ -145,9 +145,9 @@ function MedalTable({ rows, linkTeams = false }: { rows: MedalTally[]; linkTeams
 }
 
 const EmptyPanel = ({ message, hint }: { message: string; hint: string }) => (
-  <div className="bg-[#1e293b] rounded-xl p-12 text-center border border-white/5">
-    <div className="text-gray-400 text-lg mb-2">{message}</div>
-    <p className="text-gray-500 text-sm">{hint}</p>
+  <div className="cc-card p-12 text-center">
+    <div className="text-text-muted text-lg mb-2">{message}</div>
+    <p className="text-text-muted text-sm">{hint}</p>
   </div>
 )
 export default async function MedalsPage() {
@@ -202,7 +202,7 @@ export default async function MedalsPage() {
 
       <div data-tour="medals-table" className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <header className="cc-card mb-10 flex flex-col gap-2 p-6 text-center sm:p-8 md:text-left">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">Medal Table</h1>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2 text-ink">Medal Table</h1>
           <p className="text-text-muted max-w-2xl text-lg">
             Every gold, silver and bronze awarded across the tournament, for teams and athletes.
           </p>
@@ -216,17 +216,17 @@ export default async function MedalsPage() {
         ) : (
           <div className="space-y-16">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-[#1e293b] rounded-xl border border-white/5 p-5">
-                <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Medals awarded</div>
-                <div className="text-2xl font-bold">{entries.length}</div>
+              <div className="cc-card p-5">
+                <div className="text-xs uppercase tracking-wider text-text-muted mb-1">Medals awarded</div>
+                <div className="text-2xl font-extrabold text-ink tabular-nums">{entries.length}</div>
               </div>
-              <div className="bg-[#1e293b] rounded-xl border border-white/5 p-5">
-                <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Teams on the board</div>
-                <div className="text-2xl font-bold">{teamRows.length}</div>
+              <div className="cc-card p-5">
+                <div className="text-xs uppercase tracking-wider text-text-muted mb-1">Teams on the board</div>
+                <div className="text-2xl font-extrabold text-ink tabular-nums">{teamRows.length}</div>
               </div>
-              <div className="bg-[#1e293b] rounded-xl border border-white/5 p-5">
-                <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Athletes on the board</div>
-                <div className="text-2xl font-bold">{athleteRows.length}</div>
+              <div className="cc-card p-5">
+                <div className="text-xs uppercase tracking-wider text-text-muted mb-1">Athletes on the board</div>
+                <div className="text-2xl font-extrabold text-ink tabular-nums">{athleteRows.length}</div>
               </div>
             </div>
 

@@ -27,13 +27,13 @@ export default function Error({
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#0f172a] px-4 py-12">
-      <div className="w-full max-w-md rounded-xl border border-white/5 bg-[#1e293b] p-8 text-center">
-        <h2 className="text-2xl font-bold text-white">Something went wrong!</h2>
-        <p className="mt-2 text-sm text-gray-400">
+      <div className="w-full max-w-md rounded-xl border border-border-subtle bg-[#1e293b] p-8 text-center">
+        <h2 className="text-2xl font-bold text-text">Something went wrong!</h2>
+        <p className="mt-2 text-sm text-text-muted">
           An unexpected error occurred while rendering this section.
         </p>
         {error?.digest && (
-          <p className="mt-2 text-xs text-gray-500">
+          <p className="mt-2 text-xs text-text-muted">
             Error digest: {error.digest}
           </p>
         )}
@@ -46,7 +46,7 @@ export default function Error({
               window.location.reload()
             }
           }}
-          className="mt-6 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+          className="mt-6 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary"
         >
           Try again
         </button>

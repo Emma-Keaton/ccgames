@@ -2,6 +2,8 @@ import { Suspense } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import Navigation from '@/components/Navigation'
 import { CompetitionsTabs } from './CompetitionsTabs'
+import { PageHeader } from '@/components/ui/PageHeader'
+import { Spinner } from '@/components/ui/feedback'
 
 export const revalidate = 30
 
@@ -21,14 +23,15 @@ export default async function CompetitionsPage() {
   ])
 
   return (
-    <div className="min-h-screen bg-surface text-text pb-32">
+    <div className="min-h-dvh bg-surface pb-24 text-text">
       <Navigation />
-      <div data-tour="competitions-tabs" className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <header className="cc-card mb-10 flex flex-col gap-2 p-6 text-center sm:p-8 md:text-left">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">Competitions</h1>
-          <p className="text-text-muted text-lg">Coal City Games Tournament Hub</p>
-        </header>
-        <Suspense fallback={<div className="py-20 text-center text-text-muted">Loading competitions…</div>}>
+      <div data-tour="competitions-tabs" className="cc-page space-y-10">
+        <PageHeader
+          eyebrow="Tournament hub"
+          title="Competitions"
+          lede="Coal City Games Tournament Hub"
+        />
+        <Suspense fallback={<div className="py-20 text-center"><Spinner label="Loading competitions…" /></div>}>
           <CompetitionsTabs
             fixtures={fixturesRes.data ?? []}
             teams={teamsRes.data ?? []}

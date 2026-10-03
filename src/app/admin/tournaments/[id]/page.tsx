@@ -52,15 +52,6 @@ interface OverviewDraft {
   status: TournamentStatus
 }
 
-interface RegistrationDraft {
-  registration_open: boolean
-  registration_deadline: string
-  eligibility: string
-  team_size_limit: string
-  entry_fee: string
-  registration_rules: string
-}
-
 interface SettingsDraft {
   format: SettingsFormat
   table_arrangement: string
@@ -207,15 +198,6 @@ const EMPTY_OVERVIEW_DRAFT: OverviewDraft = {
   status: 'upcoming',
 }
 
-const EMPTY_REGISTRATION_DRAFT: RegistrationDraft = {
-  registration_open: false,
-  registration_deadline: "",
-  eligibility: "",
-  team_size_limit: "",
-  entry_fee: "",
-  registration_rules: "",
-}
-
 const EMPTY_SETTINGS_DRAFT: SettingsDraft = {
   format: 'league',
   table_arrangement: '',
@@ -232,17 +214,12 @@ const EMPTY_POST_DRAFT: PostDraft = {
   published: false,
 }
 
-const PANEL = 'bg-[#1e293b] rounded-xl border border-white/5 p-6'
-const INPUT =
-  'w-full rounded-lg border border-white/10 bg-[#0f172a] px-3 py-2 text-white focus:border-indigo-500 focus:outline-none'
-const PRIMARY =
-  'bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg px-4 py-2 text-sm font-semibold disabled:opacity-60'
-const DANGER =
-  'bg-red-600 hover:bg-red-500 text-white rounded-lg px-4 py-2 text-sm font-semibold disabled:opacity-60'
-const SECONDARY =
-  'rounded-lg px-4 py-2 text-sm font-semibold text-gray-300 ring-1 ring-inset ring-white/10 hover:bg-white/5 disabled:opacity-60'
-const SUBTLE =
-  'rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-gray-300 hover:bg-white/5 disabled:opacity-60'
+const PANEL = 'cc-card p-6'
+const INPUT = 'cc-input w-full'
+const PRIMARY = 'cc-btn cc-btn--primary text-sm'
+const DANGER = 'cc-btn cc-btn--danger text-sm'
+const SECONDARY = 'cc-btn cc-btn--secondary text-sm'
+const SUBTLE = 'cc-btn cc-btn--ghost cc-btn--sm'
 
 /** Lowercase, non-alphanumerics to dashes, trimmed, runs collapsed. */
 const slugify = (value: string) =>
@@ -297,11 +274,11 @@ function GatePanel({
   action: string
 }) {
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white pb-24">
+    <div className="min-h-screen bg-[#0f172a] text-text pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24">
-        <div className="mx-auto max-w-lg bg-[#1e293b] rounded-xl border border-white/5 p-8 text-center">
+        <div className="mx-auto max-w-lg bg-[#1e293b] rounded-xl border border-border-subtle p-8 text-center">
           <h1 className="text-2xl font-bold">{title}</h1>
-          <p className="mt-2 text-sm text-gray-400">{body}</p>
+          <p className="mt-2 text-sm text-text-muted">{body}</p>
           <Link href={href} className={`mt-6 inline-block ${PRIMARY}`}>
             {action}
           </Link>
@@ -314,7 +291,7 @@ function GatePanel({
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-gray-400">
+      <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-text-muted">
         {label}
       </span>
       {children}
@@ -341,7 +318,7 @@ function Section({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h2 className="text-lg font-semibold">{title}</h2>
-          {description ? <p className="mt-1 text-sm text-gray-400">{description}</p> : null}
+          {description ? <p className="mt-1 text-sm text-text-muted">{description}</p> : null}
         </div>
         {aside}
       </div>
@@ -423,10 +400,10 @@ function PostFormFields({
           />
         </Field>
       </div>
-      <label className="flex items-center gap-2 text-sm text-gray-300">
+      <label className="flex items-center gap-2 text-sm text-text-muted">
         <input
           type="checkbox"
-          className="h-4 w-4 rounded border-white/20 bg-[#0f172a]"
+          className="h-4 w-4 rounded border-border-subtle bg-[#0f172a]"
           checked={draft.published}
           disabled={disabled}
           onChange={(event) => onChange({ published: event.target.checked })}
@@ -462,7 +439,6 @@ export default function TournamentWorkspacePage({
   const [tournament, setTournament] = useState<TournamentDetail | null>(null)
   const [overviewDraft, setOverviewDraft] = useState<OverviewDraft>(EMPTY_OVERVIEW_DRAFT)
   const [settingsDraft, setSettingsDraft] = useState<SettingsDraft>(EMPTY_SETTINGS_DRAFT)
-  const [registrationDraft, setRegistrationDraft] = useState<RegistrationDraft>(EMPTY_REGISTRATION_DRAFT)
   const [posts, setPosts] = useState<PostRow[]>([])
   const [postDraft, setPostDraft] = useState<PostDraft>(EMPTY_POST_DRAFT)
   const [slugEdited, setSlugEdited] = useState(false)
@@ -559,16 +535,6 @@ export default function TournamentWorkspacePage({
 
     ])
 
-    const tSettingsObj = (detail as unknown as { settings?: Record<string, unknown> }).settings || {}
-    setRegistrationDraft({
-      registration_open: Boolean(tSettingsObj.registration_open),
-      registration_deadline: String(tSettingsObj.registration_deadline || ""),
-      eligibility: String(tSettingsObj.eligibility || ""),
-      team_size_limit: String(tSettingsObj.team_size_limit || ""),
-      entry_fee: String(tSettingsObj.entry_fee || ""),
-      registration_rules: String(tSettingsObj.registration_rules || ""),
-    })
-
     const settings = settingsRes.data as SettingsRow | null
     setSettingsDraft({
       format: (settings?.format as SettingsFormat) ?? 'league',
@@ -649,38 +615,6 @@ export default function TournamentWorkspacePage({
     await loadAll()
   }
 
-
-  const saveRegistration = async (event: FormEvent) => {
-    event.preventDefault()
-    if (!tournament) return
-
-    setBusy(true)
-    const existingSettings = ((tournament as unknown as { settings?: Record<string, unknown> }).settings) || {}
-    const updatedSettings = {
-      ...existingSettings,
-      registration_open: registrationDraft.registration_open,
-      registration_deadline: orNull(registrationDraft.registration_deadline),
-      eligibility: orNull(registrationDraft.eligibility),
-      team_size_limit: orNull(registrationDraft.team_size_limit),
-      entry_fee: orNull(registrationDraft.entry_fee),
-      registration_rules: orNull(registrationDraft.registration_rules),
-    }
-
-    const { error: updateError } = await supabase
-      .from("tournaments")
-      .update({ settings: updatedSettings })
-      .eq("id", tournament.id)
-    setBusy(false)
-
-    if (updateError) {
-      fail("Could not save registration settings: " + updateError.message)
-      return
-    }
-
-    succeed("Registration settings saved.")
-    await bustCache()
-    await loadAll()
-  }
 
   const saveSettings = async (event: FormEvent) => {
     event.preventDefault()
@@ -1105,16 +1039,16 @@ export default function TournamentWorkspacePage({
   const publishedCount = posts.filter((post) => post.published).length
 
 return (
-    <div className="min-h-screen bg-[#0f172a] text-white pb-24">
-      <header className="sticky top-0 z-30 border-b border-white/10 bg-[#0f172a]/95 backdrop-blur">
+    <div className="min-h-screen bg-[#0f172a] text-text pb-24">
+      <header className="sticky top-0 z-30 border-b border-border-subtle bg-[#0f172a]/95 backdrop-blur">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/admin/tournaments" className="text-sm text-gray-400 hover:text-white">
+            <Link href="/admin/tournaments" className="text-sm text-text-muted hover:text-text">
               ← All tournaments
             </Link>
             <div>
               <h1 className="text-lg font-bold">{tournament.name}</h1>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-text-muted">
                 {tournament.edition || 'No edition label'} &bull; {formatDate(tournament.start_date)}{' '}
                 → {formatDate(tournament.end_date)}
                 {tournament.is_active ? ' • active' : ''}
@@ -1122,10 +1056,10 @@ return (
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3 text-sm">
-            <Link href="/competitions" className="text-indigo-400 hover:text-indigo-300">
+            <Link href="/competitions" className="text-primary hover:text-primary">
               Public hub
             </Link>
-            <span className="rounded-full bg-white/10 px-3 py-1 text-xs uppercase tracking-wide text-gray-300">
+            <span className="rounded-full bg-surface-sunken px-3 py-1 text-xs uppercase tracking-wide text-text-muted">
               {isAppAdmin ? 'App admin' : formatDuties(membership?.duties)}
             </span>
           </div>
@@ -1136,7 +1070,7 @@ return (
         {error && (
           <p
             role="status"
-            className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300"
+            className="rounded-lg border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-live"
           >
             {error}
           </p>
@@ -1144,14 +1078,14 @@ return (
         {notice && (
           <p
             role="status"
-            className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300"
+            className="rounded-lg border border-secondary/30 bg-emerald-500/10 px-4 py-3 text-sm text-secondary-strong"
           >
             {notice}
           </p>
         )}
 
         {!isAppAdmin && (
-          <p className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-xs text-gray-300">
+          <p className="rounded-lg border border-border-subtle bg-surface-sunken px-4 py-3 text-xs text-text-muted">
             Editing as a tournament member ({formatDuties(membership?.duties)}). Overview fields and
             the sports picker are app-admin only — your scope is enforced by RLS.
           </p>
@@ -1252,82 +1186,6 @@ return (
 
 
         <Section
-          title="Tournament Programme Info"
-          description="Eligibility, rules and deadlines shown on the pinned Newsroom announcement. Registration itself is handled by orchestrators; teams are registered by app admins in the dashboard."
-        >
-          <form onSubmit={saveRegistration} className="space-y-4">
-            <div className="flex items-center gap-3">
-              <label className="flex items-center gap-2 text-sm font-semibold text-white cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-white/20 bg-[#0f172a]"
-                  checked={registrationDraft.registration_open}
-                  disabled={busy}
-                  onChange={(e) => setRegistrationDraft({ ...registrationDraft, registration_open: e.target.checked })}
-                />
-                Open for Registration (Pins Announcement in Newsroom)
-              </label>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <Field label="Registration Deadline">
-                <input
-                  type="date"
-                  className={INPUT}
-                  value={registrationDraft.registration_deadline}
-                  disabled={busy}
-                  onChange={(e) => setRegistrationDraft({ ...registrationDraft, registration_deadline: e.target.value })}
-                />
-              </Field>
-
-              <Field label="Team Size Limit">
-                <input
-                  className={INPUT}
-                  value={registrationDraft.team_size_limit}
-                  disabled={busy}
-                  placeholder="e.g. 18-25 players"
-                  onChange={(e) => setRegistrationDraft({ ...registrationDraft, team_size_limit: e.target.value })}
-                />
-              </Field>
-
-              <Field label="Entry Fee (Optional)">
-                <input
-                  className={INPUT}
-                  value={registrationDraft.entry_fee}
-                  disabled={busy}
-                  placeholder="e.g. $500 or Discuss via contact"
-                  onChange={(e) => setRegistrationDraft({ ...registrationDraft, entry_fee: e.target.value })}
-                />
-              </Field>
-            </div>
-
-            <Field label="Eligibility Criteria">
-              <textarea
-                className={INPUT + " min-h-[70px]"}
-                value={registrationDraft.eligibility}
-                disabled={busy}
-                placeholder="e.g. Open to all registered clubs and university teams."
-                onChange={(e) => setRegistrationDraft({ ...registrationDraft, eligibility: e.target.value })}
-              />
-            </Field>
-
-            <Field label="Registration Rules & Guidelines">
-              <textarea
-                className={INPUT + " min-h-[90px]"}
-                value={registrationDraft.registration_rules}
-                disabled={busy}
-                placeholder="e.g. Submissions require official squad roster and proof of identification."
-                onChange={(e) => setRegistrationDraft({ ...registrationDraft, registration_rules: e.target.value })}
-              />
-            </Field>
-
-            <button type="submit" className={PRIMARY} disabled={busy}>
-              Save Registration Settings
-            </button>
-          </form>
-        </Section>
-
-<Section
           title="Competition settings"
           description="Format, table arrangement and the rules block shown to the public."
         >
@@ -1387,7 +1245,7 @@ return (
           description="Written by tournament staff, published instantly to the home carousel and /news."
           aside={
             canWritePosts ? (
-              <span className="text-xs text-gray-400">Duty: news &amp; posts</span>
+              <span className="text-xs text-text-muted">Duty: news &amp; posts</span>
             ) : (
               <span className="text-xs text-amber-300">
                 Read-only — your duties do not include posts
@@ -1396,9 +1254,9 @@ return (
           }
         >
           {posts.length === 0 ? (
-            <p className="text-sm text-gray-500">No articles yet for this tournament.</p>
+            <p className="text-sm text-text-muted">No articles yet for this tournament.</p>
           ) : (
-            <ul className="divide-y divide-white/5">
+            <ul className="divide-y divide-border-subtle">
               {posts.map((post) => (
                 <li key={post.id} className="py-4">
                   <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -1406,16 +1264,16 @@ return (
                       <p className="font-medium">
                         {post.title}{' '}
                         {post.published ? (
-                          <span className="ml-2 rounded-full bg-emerald-500/15 px-2 py-0.5 text-xs text-emerald-300">
+                          <span className="ml-2 rounded-full bg-emerald-500/15 px-2 py-0.5 text-xs text-secondary-strong">
                             published
                           </span>
                         ) : (
-                          <span className="ml-2 rounded-full bg-white/10 px-2 py-0.5 text-xs text-gray-300">
+                          <span className="ml-2 rounded-full bg-surface-sunken px-2 py-0.5 text-xs text-text-muted">
                             draft
                           </span>
                         )}
                       </p>
-                      <p className="mt-1 text-xs text-gray-400">
+                      <p className="mt-1 text-xs text-text-muted">
                         /news/{post.slug} &bull; {post.category || 'News'} &bull;{' '}
                         {post.published_at ? formatDateTime(post.published_at) : 'never published'}
                       </p>
@@ -1458,8 +1316,8 @@ return (
           )}
 
           {canWritePosts && (
-            <form onSubmit={savePost} className="mt-6 space-y-4 border-t border-white/10 pt-6">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-indigo-300">
+            <form onSubmit={savePost} className="mt-6 space-y-4 border-t border-border-subtle pt-6">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-primary">
                 {editingPostId ? 'Edit article' : 'New article'}
               </h3>
 
@@ -1490,7 +1348,7 @@ return (
           tour="workspace-invites"
           description="Unlimited-use links. Anyone who signs in and opens a link joins this tournament with the chosen duty."
           aside={
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-text-muted">
               {canManageInvites ? 'You can create and revoke' : 'Read-only'}
             </span>
           }
@@ -1540,9 +1398,9 @@ return (
           )}
 
           {invites.length === 0 ? (
-            <p className="mt-4 text-sm text-gray-500">No invites created yet.</p>
+            <p className="mt-4 text-sm text-text-muted">No invites created yet.</p>
           ) : (
-            <ul className="mt-5 divide-y divide-white/5">
+            <ul className="mt-5 divide-y divide-border-subtle">
               {invites.map((invite) => {
                 const expired = isExpired(invite.expires_at)
                 const dead = invite.revoked || expired
@@ -1550,10 +1408,10 @@ return (
                   <li key={invite.invite_id} className="py-3">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                       <div>
-                        <p className="font-mono text-xs break-all text-gray-300">
+                        <p className="font-mono text-xs break-all text-text-muted">
                           /invite/{invite.token}
                         </p>
-                        <p className="mt-1 text-xs text-gray-400">
+                        <p className="mt-1 text-xs text-text-muted">
                           {formatDuties(invite.duties)} &bull;{' '}
                           {invite.revoked
                             ? 'revoked'
@@ -1594,23 +1452,23 @@ return (
           description="Everyone with scoped access to this tournament."
         >
           {members.length === 0 ? (
-            <p className="text-sm text-gray-500">No members yet — create an invite above.</p>
+            <p className="text-sm text-text-muted">No members yet — create an invite above.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="text-xs uppercase tracking-wide text-gray-400">
+                <thead className="text-xs uppercase tracking-wide text-text-muted">
                   <tr>
                     <th className="px-3 py-2">Email</th>
                     <th className="px-3 py-2">Duties</th>
                     <th className="px-3 py-2">Granted</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody className="divide-y divide-border-subtle">
                   {members.map((member) => (
                     <tr key={member.membership_id}>
-                      <td className="px-3 py-3 text-gray-200">{member.email ?? 'Unknown email'}</td>
-                      <td className="px-3 py-3 text-gray-300">{formatDuties(member.duties)}</td>
-                      <td className="px-3 py-3 text-gray-400">{formatDateTime(member.granted_at)}</td>
+                      <td className="px-3 py-3 text-text">{member.email ?? 'Unknown email'}</td>
+                      <td className="px-3 py-3 text-text-muted">{formatDuties(member.duties)}</td>
+                      <td className="px-3 py-3 text-text-muted">{formatDateTime(member.granted_at)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -1637,8 +1495,8 @@ return (
                     className={
                       'rounded-full border px-4 py-2 text-sm transition-colors ' +
                       (enabled
-                        ? 'border-indigo-500/60 bg-indigo-600/20 text-white'
-                        : 'border-white/10 text-gray-300 hover:bg-white/5')
+                        ? 'border-indigo-500/60 bg-indigo-600/20 text-text'
+                        : 'border-border-subtle text-text-muted hover:bg-surface-sunken')
                     }
                   >
                     {sport.name}
@@ -1646,15 +1504,15 @@ return (
                 )
               })}
               {sports.length === 0 && (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-text-muted">
                   No sports in the catalogue yet — run the sports-catalog migration.
                 </p>
               )}
             </div>
 
             {/* Catalogue editor — upsert_sport / upsert_sport_vocab (app-admin only RPCs). */}
-            <form onSubmit={saveSport} className="mt-6 grid gap-3 border-t border-white/10 pt-5 sm:grid-cols-2">
-              <p className="sm:col-span-2 text-xs uppercase tracking-widest text-indigo-300">
+            <form onSubmit={saveSport} className="mt-6 grid gap-3 border-t border-border-subtle pt-5 sm:grid-cols-2">
+              <p className="sm:col-span-2 text-xs uppercase tracking-widest text-primary">
                 Catalogue editor — creates or updates one sport
               </p>
               <Field label="Sport">
@@ -1730,7 +1588,7 @@ return (
           title={`Athletes (${athletes.length})`}
           description="Individual-sport competitors registered for this tournament. Writes are duty-checked via the database."
           aside={
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-text-muted">
               {isAppAdmin || hasDuty(membership?.duties, '*') ? 'Can manage' : 'Read-only'}
             </span>
           }
@@ -1742,7 +1600,7 @@ return (
               onChanged={loadAll}
             />
           ) : (
-            <p className="text-sm text-gray-500">Your duties do not include athlete management.</p>
+            <p className="text-sm text-text-muted">Your duties do not include athlete management.</p>
           )}
         </Section>
 
@@ -1751,7 +1609,7 @@ return (
           tour="workspace-entries"
           description="Rank and medal entries for individual-sport fixtures. Toggled by duty: '*' or 'score'."
           aside={
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-text-muted">
               {isAppAdmin || hasDuty(membership?.duties, '*') || hasDuty(membership?.duties, 'score') ? 'Can manage' : 'Read-only'}
             </span>
           }
@@ -1849,11 +1707,11 @@ return (
               </form>
 
               {entries.length === 0 ? (
-                <p className="text-sm text-gray-500">No result entries recorded yet.</p>
+                <p className="text-sm text-text-muted">No result entries recorded yet.</p>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">
-                    <thead className="text-xs uppercase tracking-wide text-gray-400 bg-black/20">
+                    <thead className="text-xs uppercase tracking-wide text-text-muted bg-surface-sunken">
                       <tr>
                         <th className="px-3 py-2">Fixture</th>
                         <th className="px-3 py-2">Competitor</th>
@@ -1863,7 +1721,7 @@ return (
                         <th className="px-3 py-2" aria-label="Actions" />
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
+                    <tbody className="divide-y divide-border-subtle">
                       {entries.map((entry) => {
                         const athlete = athletes.find((a) => a.id === entry.athlete_id)
                         const fixture = fixtures.find((f) => f.id === entry.fixture_id)
@@ -1872,24 +1730,24 @@ return (
                           : entry.fixture_id.slice(0, 8) + '…'
                         const confirmDelete = confirmEntryId === entry.id
                         return (
-                          <tr key={entry.id} className="hover:bg-white/5">
-                            <td className="px-3 py-2 font-mono text-xs text-gray-400" title={entry.fixture_id}>
+                          <tr key={entry.id} className="hover:bg-surface-sunken">
+                            <td className="px-3 py-2 font-mono text-xs text-text-muted" title={entry.fixture_id}>
                               {fixtureLabel}
                             </td>
-                            <td className="px-3 py-2 text-white">{athlete?.name ?? <span className="text-gray-500">—</span>}</td>
-                            <td className="px-3 py-2 text-right tabular-nums text-gray-300">{entry.position}</td>
-                            <td className="px-3 py-2 text-right tabular-nums text-gray-300">{entry.rank ?? '—'}</td>
+                            <td className="px-3 py-2 text-text">{athlete?.name ?? <span className="text-text-muted">—</span>}</td>
+                            <td className="px-3 py-2 text-right tabular-nums text-text-muted">{entry.position}</td>
+                            <td className="px-3 py-2 text-right tabular-nums text-text-muted">{entry.rank ?? '—'}</td>
                             <td className="px-3 py-2 text-center">
                               {entry.medal ? (
                                 <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${
-                                  entry.medal === 'gold' ? 'bg-yellow-500/20 text-yellow-300'
-                                  : entry.medal === 'silver' ? 'bg-gray-400/20 text-gray-200'
-                                  : 'bg-amber-700/20 text-amber-300'
+                                  entry.medal === 'gold' ? 'bg-accent/15 text-accent-strong'
+                                  : entry.medal === 'silver' ? 'bg-silver/20 text-text'
+                                  : 'bg-bronze/15 text-bronze'
                                 }`}>
                                   {entry.medal}
                                 </span>
                               ) : (
-                                <span className="text-gray-600">—</span>
+                                <span className="text-text-muted">—</span>
                               )}
                             </td>
                             <td className="px-3 py-2 text-right">
@@ -1900,8 +1758,8 @@ return (
                                 className={
                                   'rounded-md px-2 py-1 text-xs font-semibold ' +
                                   (confirmDelete
-                                    ? 'bg-red-500/80 text-white'
-                                    : 'text-gray-400 hover:text-white hover:bg-white/5')
+                                    ? 'bg-danger/90 text-white'
+                                    : 'text-text-muted hover:text-text hover:bg-surface-sunken')
                                 }
                               >
                                 {confirmDelete ? 'Confirm' : 'Delete'}
@@ -1916,7 +1774,7 @@ return (
               )}
             </>
           ) : (
-            <p className="text-sm text-gray-500">Your duties do not include results management.</p>
+            <p className="text-sm text-text-muted">Your duties do not include results management.</p>
           )}
         </Section>
       </div>

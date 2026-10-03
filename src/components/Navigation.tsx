@@ -21,7 +21,7 @@ const NavLinks = ({ pathname }: { pathname: string }) => (
           href={link.href}
           className={
             'px-3 py-2 rounded-md text-base md:text-sm font-medium block md:inline-block transition-colors ' +
-            (active ? 'text-primary bg-primary-soft' : 'text-text-muted hover:text-text hover:bg-surface-sunken')
+            (active ? 'text-primary bg-primary-soft' : 'text-ink-muted hover:text-ink hover:bg-surface-sunken')
           }
         >
           {link.label}
@@ -39,6 +39,15 @@ export default function Navigation() {
   const pathname = usePathname()
   const router = useRouter()
   const prevPathname = useRef(pathname)
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsMobileMenuOpen(false)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [isMobileMenuOpen])
 
   useEffect(() => {
     if (prevPathname.current !== pathname) {
@@ -77,7 +86,7 @@ return (
                 aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
                 aria-expanded={isMobileMenuOpen}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-2 -ml-2 mr-2 text-gray-400 hover:text-white focus:outline-none"
+                className="md:hidden p-2 -ml-2 mr-2 text-ink-muted hover:text-ink focus:outline-none"
               >
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   {isMobileMenuOpen ? (
@@ -97,7 +106,7 @@ return (
                   className="w-8 h-8 object-contain"
                   priority
                 />
-                <span className="text-text font-bold text-xl tracking-tight">
+                <span className="font-bold text-xl tracking-tight text-ink">
                   Coal City Games
                 </span>
               </Link>
@@ -119,8 +128,8 @@ return (
                       className={
                         'text-sm font-medium hidden sm:block ' +
                         (isActivePath(pathname, link.href)
-                          ? 'text-white font-bold'
-                          : 'text-indigo-400 hover:text-indigo-300')
+                          ? 'text-primary font-bold'
+                          : 'text-primary hover:text-primary-strong')
                       }
                     >
                       {link.label}
@@ -130,15 +139,15 @@ return (
                     type="button"
                     onClick={handleSignOut}
                     disabled={signingOut}
-                    className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium border border-gray-600 hidden sm:block disabled:opacity-60"
+                    className="text-ink-muted hover:text-ink px-3 py-2 rounded-md text-sm font-medium border border-hairline hidden sm:block disabled:opacity-60"
                   >
-                    {signingOut ? 'Signing out…' : 'Sign Out'}
+                    {signingOut ? 'Signing out...' : 'Sign Out'}
                   </button>
                 </>
               ) : (
                 <Link
                   href="/login"
-                  className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors hidden sm:block"
+                  className="bg-enugu-blue text-text px-4 py-2 rounded-md text-sm font-medium hover:bg-enugu-blue/90 transition-colors hidden sm:block"
                 >
                   Sign In
                 </Link>
@@ -150,17 +159,21 @@ return (
 
       {/* Mobile Sliding Menu Overlay */}
       <div
-        className={`fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 bg-ink/50 z-40 md:hidden transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setIsMobileMenuOpen(false)}
+        aria-hidden="true"
       />
 
       {/* Mobile Sliding Menu Panel */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-[#1e293b] z-50 transform transition-transform duration-300 ease-in-out border-r border-white/10 flex flex-col md:hidden pt-20 pb-6 px-4 shadow-2xl overflow-y-auto ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site navigation"
+        className={`cc-safe-b fixed inset-y-0 left-0 w-64 bg-surface-elevated z-50 transform transition-transform duration-300 ease-in-out border-r border-border-subtle flex flex-col md:hidden pt-20 pb-6 px-4 shadow-cc-lg overflow-y-auto ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col space-y-2">
           <NavLinks pathname={pathname} />
-          <hr className="border-white/10 my-4" />
+          <hr className="border-hairline my-4" />
           {signedIn ? (
             <>
               {adminLinks.map((link) => (
@@ -170,8 +183,8 @@ return (
                   className={
                     'px-3 py-2 rounded-md text-base font-medium block ' +
                     (isActivePath(pathname, link.href)
-                      ? 'text-white bg-white/10'
-                      : 'text-indigo-400 hover:text-white hover:bg-white/5')
+                      ? 'text-primary bg-primary-soft'
+                      : 'text-ink-muted hover:text-ink hover:bg-surface-sunken')
                   }
                 >
                   {link.label}
@@ -181,15 +194,15 @@ return (
                 type="button"
                 onClick={handleSignOut}
                 disabled={signingOut}
-                className="text-left text-red-400 hover:text-red-300 px-3 py-2 rounded-md text-base font-medium block w-full hover:bg-white/5 disabled:opacity-60"
+                className="text-left text-danger hover:text-danger/80 px-3 py-2 rounded-md text-base font-medium block w-full hover:bg-red-50 disabled:opacity-60"
               >
-                {signingOut ? 'Signing out…' : 'Sign Out'}
+                {signingOut ? 'Signing out...' : 'Sign Out'}
               </button>
             </>
           ) : (
             <Link
               href="/login"
-              className="bg-indigo-600 text-center text-white px-4 py-3 rounded-md text-base font-medium hover:bg-indigo-700 transition-colors block w-full mt-4"
+              className="bg-enugu-blue text-center text-text px-4 py-3 rounded-md text-base font-medium hover:bg-enugu-blue/90 transition-colors block w-full mt-4"
             >
               Sign In
             </Link>

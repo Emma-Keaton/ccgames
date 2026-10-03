@@ -114,7 +114,7 @@ export function FormationCanvas({
   }, [dragging, slots, toUnit, onMove])
 
   const accentClass =
-    accent === 'home' ? 'bg-indigo-600 border-indigo-300' : 'bg-sky-600 border-sky-300'
+    accent === 'home' ? 'bg-primary border-primary-strong' : 'bg-secondary border-secondary-strong'
   const editable = Boolean(onMove)
   const surfaceStyle: React.CSSProperties = vertical
     ? { aspectRatio: '68 / 105' }
@@ -126,12 +126,12 @@ export function FormationCanvas({
         ref={surfaceRef}
         role={editable ? 'application' : undefined}
         aria-label={`${teamName} formation on the ${court.shape}`}
-        className="relative w-full select-none overflow-hidden rounded-xl border border-white/10 bg-gradient-to-b from-emerald-900/80 to-emerald-950/80"
+        className="relative w-full select-none overflow-hidden rounded-xl border border-border-subtle bg-gradient-to-b from-secondary/40 to-secondary-strong/60"
         style={surfaceStyle}
       >
         {/* Court markings: halfway line + centre circle, for both orientations. */}
         <div
-          className="absolute border border-white/20"
+          className="absolute border border-border-subtle"
           style={
             vertical
               ? { left: '8%', right: '8%', top: '49%', height: '2%' }
@@ -139,7 +139,7 @@ export function FormationCanvas({
           }
         />
         <div
-          className="absolute rounded-full border border-white/20"
+          className="absolute rounded-full border border-border-subtle"
           style={
             vertical
               ? { left: '30%', width: '40%', top: '44%', height: '12%' }
@@ -159,7 +159,7 @@ export function FormationCanvas({
                 top: `${pos.y * 100}%`,
                 transform: 'translate(-50%, -50%)',
               }}
-              className={`absolute flex h-9 w-9 items-center justify-center rounded-full border-2 text-xs font-bold shadow-lg ${accentClass} ${
+              className={`absolute flex h-9 w-9 items-center justify-center rounded-full border-2 text-xs font-bold shadow-cc ${accentClass} ${
                 editable ? 'cursor-grab touch-none active:cursor-grabbing' : ''
               } ${isDragging ? 'z-10 scale-110' : ''}`}
               title={`${label}${slot.role ? ` · ${slot.role}` : ''}${slot.is_captain ? ' (C)' : ''}`}
@@ -197,7 +197,7 @@ export function FormationCanvas({
             <div className="flex flex-wrap items-center gap-2">
               <select
                 aria-label={`Add a player to the ${teamName} lineup`}
-                className="rounded-lg border border-white/10 bg-[#0f172a] px-3 py-1.5 text-sm"
+                className="rounded-lg border border-border-subtle bg-surface px-3 py-1.5 text-sm"
                 defaultValue=""
                 onChange={(event) => {
                   const playerId = event.target.value
@@ -216,7 +216,7 @@ export function FormationCanvas({
                     </option>
                   ))}
               </select>
-              {saving && <span className="text-xs text-gray-400">Saving…</span>}
+              {saving && <span className="text-xs text-text-muted">Saving…</span>}
             </div>
           )}
 
@@ -228,9 +228,9 @@ export function FormationCanvas({
                 return (
                   <li
                     key={slot.slot}
-                    className="flex flex-wrap items-center gap-2 rounded-lg bg-white/5 px-3 py-1.5"
+                    className="flex flex-wrap items-center gap-2 rounded-lg bg-surface-sunken px-3 py-1.5"
                   >
-                    <span className="w-6 text-center text-xs font-bold text-gray-300">
+                    <span className="w-6 text-center text-xs font-bold text-text-muted">
                       {slot.slot}
                     </span>
                     <span className="flex-1 truncate">{label}</span>
@@ -245,7 +245,7 @@ export function FormationCanvas({
                             onRoleChange(slot, event.target.value)
                           }
                         }}
-                        className="w-24 rounded border border-white/10 bg-[#0f172a] px-2 py-0.5 text-xs"
+                        className="w-24 rounded border border-border-subtle bg-surface px-2 py-0.5 text-xs"
                       />
                     )}
                     {onToggleCaptain && (
@@ -256,7 +256,7 @@ export function FormationCanvas({
                         className={`rounded px-2 py-0.5 text-xs font-semibold ${
                           slot.is_captain
                             ? 'bg-amber-400 text-black'
-                            : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                            : 'bg-white/10 text-text-muted hover:bg-surface-sunken'
                         }`}
                       >
                         C
@@ -267,7 +267,7 @@ export function FormationCanvas({
                         type="button"
                         aria-label={`Remove ${label} from the lineup`}
                         onClick={() => onRemove(slot)}
-                        className="rounded px-2 py-0.5 text-xs text-red-300 hover:bg-red-500/20"
+                        className="rounded px-2 py-0.5 text-xs text-live hover:bg-red-500/20"
                       >
                         ✕
                       </button>
@@ -276,7 +276,7 @@ export function FormationCanvas({
                 )
               })}
             {slots.length === 0 && (
-              <li className="rounded-lg bg-white/5 px-3 py-2 text-xs text-gray-400">
+              <li className="rounded-lg bg-surface-sunken px-3 py-2 text-xs text-text-muted">
                 No lineup yet — add players above, then drag them into position.
               </li>
             )}

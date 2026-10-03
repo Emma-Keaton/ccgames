@@ -4,6 +4,10 @@ import Navigation from '@/components/Navigation'
 import { HomeInsights } from '@/components/HomeInsights'
 import { restGet } from '@/lib/public-api'
 import type { InsightPost } from '@/components/HomeInsights'
+import { PageHeader } from '@/components/ui/PageHeader'
+import { Section } from '@/components/ui/Section'
+import { EmptyState, LiveBadge } from '@/components/ui/feedback'
+import { Button } from '@/components/ui/Button'
 
 /** Live-ish home page: 30s freshness window. */
 export const revalidate = 30
@@ -40,39 +44,37 @@ interface MatchCardRow {
 const renderMatchList = (matches: MatchCardRow[], emptyMessage: string) => {
   if (matches.length === 0) {
       return (
-          <div className="bg-[#1e293b] rounded-xl p-8 text-center border border-white/5 text-gray-400">
-              {emptyMessage}
-          </div>
+          <EmptyState title={emptyMessage} hint="Fixtures appear here once officials publish the schedule." />
       )
   }
   return (
       <div className="space-y-4">
           {matches.map((match) => (
-              <Link href={`/match/${match.id}`} key={match.id} className="block">
-                  <div className="bg-[#1e293b] rounded-xl p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between border border-white/5 hover:border-indigo-500/50 transition-colors cursor-pointer group">
-                      <div className="flex items-center justify-between w-full sm:w-auto flex-1 gap-4">
-                          <div className="flex items-center gap-3 sm:gap-4 flex-1">
-                              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-700 flex items-center justify-center font-bold text-white text-xs sm:text-sm">{match.home.abbr}</div>
-                              <span className="font-semibold text-sm sm:text-lg">{match.home.name}</span>
+              <Link href={`/match/${match.id}`} key={match.id} className="block rounded-xl focus-visible:outline-2 focus-visible:outline-primary">
+                  <div className="cc-card cc-card--interactive group flex flex-col items-center justify-between p-4 sm:flex-row sm:p-6">
+                      <div className="flex w-full flex-1 items-center justify-between gap-4 sm:w-auto">
+                          <div className="flex flex-1 items-center gap-3 sm:gap-4">
+                              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-surface-sunken text-xs font-bold text-text sm:h-10 sm:w-10 sm:text-sm">{match.home.abbr}</div>
+                              <span className="text-sm font-semibold sm:text-lg">{match.home.name}</span>
                           </div>
 
-                          <div className="flex flex-col items-center px-4 sm:px-8 shrink-0">
+                          <div className="flex shrink-0 flex-col items-center px-4 sm:px-8">
                               {match.home.score !== undefined && match.away.score !== undefined ? (
                                 <>
-                                  <div className="text-xl sm:text-2xl font-black tabular-nums tracking-tighter group-hover:text-indigo-400 transition-colors">{match.home.score} - {match.away.score}</div>
-                                  <div className={`text-xs font-medium mt-1 ${match.status === 'LIVE' ? 'text-red-400 animate-pulse' : 'text-gray-400'}`}>{match.time || match.status}</div>
+                                  <div className="cc-score text-xl group-hover:text-primary sm:text-2xl">{match.home.score} - {match.away.score}</div>
+                                  <div className={`cc-num mt-1 text-xs font-medium ${match.status === 'LIVE' ? '' : 'text-text-muted'}`}>{match.status === 'LIVE' ? <LiveBadge label={match.time || match.status} /> : (match.time || match.status)}</div>
                                 </>
                               ) : (
                                 <>
-                                  <div className="text-sm sm:text-base font-bold text-gray-400 group-hover:text-indigo-400 transition-colors">VS</div>
-                                  <div className="text-xs font-medium mt-1 text-gray-400">{match.date}</div>
+                                  <div className="text-sm font-bold text-text-muted transition-colors group-hover:text-primary sm:text-base">VS</div>
+                                  <div className="cc-num mt-1 text-xs font-medium text-text-muted">{match.date}</div>
                                 </>
                               )}
                           </div>
 
                           <div className="flex items-center gap-3 sm:gap-4 flex-1 justify-end">
                               <span className="font-semibold text-sm sm:text-lg text-right">{match.away.name}</span>
-                              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-700 flex items-center justify-center font-bold text-white text-xs sm:text-sm">{match.away.abbr}</div>
+                              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-surface-sunken flex items-center justify-center font-bold text-text text-xs sm:text-sm">{match.away.abbr}</div>
                           </div>
                       </div>
                   </div>
@@ -83,17 +85,15 @@ const renderMatchList = (matches: MatchCardRow[], emptyMessage: string) => {
 }
 
 const UpcomingFixturesSection = ({ matches }: { matches: MatchCardRow[] }) => (
-  <section>
-      <h2 className="text-2xl font-bold mb-6">Upcoming Fixtures</h2>
+  <Section title="Upcoming Fixtures">
       {renderMatchList(matches, "No upcoming fixtures scheduled.")}
-  </section>
+  </Section>
 )
 
 const ConcludedMatchesSection = ({ matches }: { matches: MatchCardRow[] }) => (
-  <section>
-      <h2 className="text-2xl font-bold mb-6">Results</h2>
+  <Section title="Results">
       {renderMatchList(matches, "No recent results available.")}
-  </section>
+  </Section>
 )
 
 export default async function Home() {
@@ -153,22 +153,16 @@ export default async function Home() {
   const hasMatches = matchesOfTheDay.length > 0
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white pb-32">
+    <div className="min-h-dvh bg-surface pb-24 text-text cc-safe-b">
       <Navigation />
       <div className="pt-16">
-        <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+        <main className="cc-page max-w-5xl space-y-16 !pt-12">
 
-          <div className="cc-card flex flex-col items-center gap-4 p-8 text-center sm:p-12">
-            <span className="inline-block rounded-full bg-primary-soft px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-primary">
-              Enugu 2026 · 23rd National Sports Festival
-            </span>
-            <h1 className="max-w-2xl text-4xl font-black tracking-tight text-text sm:text-5xl">
-              Coal City Games
-            </h1>
-            <p className="max-w-2xl text-lg font-normal text-text-muted">
-              Festival daylight: every result, fixture, medal and story from Enugu 2026 — live as it happens, across all 20 sports.
-            </p>
-          </div>
+          <PageHeader
+            eyebrow="Enugu 2026 · 23rd National Sports Festival"
+            title="Coal City Games"
+            lede="Festival daylight: every result, fixture, medal and story from Enugu 2026 — live as it happens, across all 20 sports."
+          />
 
           {hasMatches ? (
              <>
@@ -194,12 +188,12 @@ export default async function Home() {
         </main>
       </div>
 
-      <div className="fixed bottom-8 left-0 right-0 z-40 flex justify-center pointer-events-none px-4">
+      <div data-tour="home-signup" className="cc-safe-b pointer-events-none fixed bottom-8 left-0 right-0 z-40 flex justify-center px-4">
         <div className="pointer-events-auto">
-            <Link href="/login" className="flex items-center gap-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 px-8 rounded-full shadow-[0_10px_40px_rgba(79,70,229,0.6)] transition-all transform hover:scale-105 border border-indigo-400/50 backdrop-blur-md">
+              <Button href="/login" size="lg" className="rounded-full !px-8 !py-4">
                 <span className="text-base sm:text-lg">Sign Up & Follow Your Team</span>
-                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
-            </Link>
+                <svg className="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+              </Button>
         </div>
       </div>
     </div>

@@ -49,6 +49,7 @@ export function WelcomeDialog() {
   const { loading, authenticated } = useAdminAuth()
   const [ready, setReady] = useState(false)
   const [choice, setChoice] = useState<Choice>(CHOICES[0])
+  const primaryRef = useRef<HTMLButtonElement>(null)
   /** Once the visitor picks a card by hand, auto-detection never overrides it. */
   const userPicked = useRef(false)
 
@@ -57,6 +58,17 @@ export function WelcomeDialog() {
     const timer = window.setTimeout(() => setReady(true), 2200)
     return () => window.clearTimeout(timer)
   }, [])
+
+  // Focus the primary action on open + Escape to dismiss (mobile menu parity).
+  useEffect(() => {
+    if (!ready || loading) return
+    primaryRef.current?.focus()
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') completeWelcome()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [ready, loading, completeWelcome])
 
   /**
    * Everybody is welcomed as a fan; a signed-in account gets the signed-in
@@ -87,12 +99,12 @@ export function WelcomeDialog() {
 
   return (
     <div
-      className="fixed inset-0 z-[9997] flex items-center justify-center bg-[#020617]/85 p-4"
+      className="cc-scrim flex items-center justify-center p-4 cc-safe-b"
       role="dialog"
       aria-modal="true"
       aria-labelledby="welcome-title"
     >
-      <div className="w-full max-w-xl rounded-2xl border border-border-subtle bg-surface-card p-6 shadow-2xl">
+      <div className="cc-modal w-full max-w-xl">
         <div className="flex items-center gap-3">
           
           <Image
@@ -103,16 +115,16 @@ export function WelcomeDialog() {
             className="h-10 w-10 object-contain"
           />
           <div>
-            <h2 id="welcome-title" className="text-xl font-extrabold tracking-tight text-white">
+            <h2 id="welcome-title" className="text-xl font-extrabold tracking-tight text-text">
               Welcome to Coal City Games
             </h2>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-text-muted">
               Tournaments, live scoring and news in one place.
             </p>
           </div>
         </div>
 
-        <p className="mt-4 text-sm leading-relaxed text-gray-300">
+        <p className="mt-4 text-sm leading-relaxed text-text-muted">
           {authenticated
             ? 'Welcome back — here is a 60-second tour of everything your account can do: live scores, fixtures, tables and news.'
             : 'Let us show you around in 60 seconds — live scores, fixtures, tables, squads and news. No account needed to watch; sign in to follow your favourite teams.'}
@@ -134,12 +146,12 @@ export function WelcomeDialog() {
                 className={
                   'w-full rounded-xl border p-4 text-left transition ' +
                   (selected
-                    ? 'border-indigo-400/70 bg-indigo-500/10'
-                    : 'border-white/10 bg-white/5 hover:border-white/25')
+                    ? 'border-primary/40 bg-primary-soft'
+                    : 'border-border-subtle bg-surface-sunken hover:border-border-subtle')
                 }
               >
-                <span className="block text-sm font-semibold text-white">{option.title}</span>
-                <span className="mt-1 block text-xs text-gray-400">{option.detail}</span>
+                <span className="block text-sm font-semibold text-text">{option.title}</span>
+                <span className="mt-1 block text-xs text-text-muted">{option.detail}</span>
               </button>
             )
           })}
@@ -149,7 +161,7 @@ export function WelcomeDialog() {
           <button
             type="button"
             onClick={completeWelcome}
-            className="text-xs text-gray-400 underline decoration-dotted hover:text-white"
+            className="text-xs text-text-muted underline decoration-dotted hover:text-text"
           >
             I do not need this — do not show again
           </button>
@@ -157,14 +169,15 @@ export function WelcomeDialog() {
             <Link
               href="/onboarding"
               onClick={completeWelcome}
-              className="rounded-lg border border-white/15 px-4 py-2 text-sm font-semibold text-gray-200 hover:bg-white/5"
+              className="cc-btn cc-btn--secondary"
             >
               Open the guide
             </Link>
             <button
+              ref={primaryRef}
               type="button"
               onClick={confirm}
-              className="rounded-lg bg-indigo-600 px-5 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+              className="cc-btn cc-btn--primary"
             >
               {choice.action === 'tour' ? 'Take the tour' : 'Continue'}
             </button>

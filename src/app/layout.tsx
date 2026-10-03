@@ -65,7 +65,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0f172a',
+  themeColor: '#F8F9FA',
   width: 'device-width',
   initialScale: 1,
 }
@@ -77,10 +77,31 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* Above-the-fold webfonts get an explicit priority hint so the first
+            paint already uses the real typeface instead of swapping mid-read. */}
+        <link
+          rel="preload"
+          href="/fonts/Inter-Regular.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/Inter-Bold.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className={SYSTEM_FONT_CLASS}>
+        <a href="#main" className="cc-skip-link">
+          Skip to main content
+        </a>
         <SplashScreen />
         <OnboardingExperience>
-          {children}
+          <div id="main">{children}</div>
         </OnboardingExperience>
         <FloatingBackButton />
       </body>

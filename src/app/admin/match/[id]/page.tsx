@@ -1455,11 +1455,11 @@ export default function LiveMatchManager({ params }: { params: Promise<{ id: str
   }
 
 return (
-    <div className="min-h-screen bg-[#0f172a] pb-24 text-white">
-      <header className="sticky top-0 z-30 border-b border-white/10 bg-[#0f172a]/95 backdrop-blur">
+    <div className="min-h-screen bg-[#0f172a] pb-24 text-text">
+      <header className="sticky top-0 z-30 border-b border-border-subtle bg-[#0f172a]/95 backdrop-blur">
         <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <div className="flex items-center gap-4">
-            <Link href="/admin" className="text-sm text-gray-400 hover:text-white">
+            <Link href="/admin" className="text-sm text-text-muted hover:text-text">
               ← Dashboard
             </Link>
             <h1 className="text-lg font-bold">Live match manager</h1>
@@ -1468,7 +1468,7 @@ return (
             <span
               className={
                 'rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ' +
-                (isRunning ? 'bg-red-500/20 text-red-300' : 'bg-white/10 text-gray-300')
+                (isRunning ? 'bg-danger/10 text-live' : 'bg-surface-sunken text-text-muted')
               }
             >
               {isRunning ? 'Live' : status.replace(/_/g, ' ')}
@@ -1477,7 +1477,7 @@ return (
             {fixture.tournament_id && (
               <Link
                 href={`/admin/tournaments/${fixture.tournament_id}`}
-                className="text-indigo-400 hover:text-indigo-300"
+                className="text-primary hover:text-primary"
               >
                 Tournament
               </Link>
@@ -1493,7 +1493,7 @@ return (
         <nav
           data-tour="console-scopes"
           aria-label="Logging scopes"
-          className="flex gap-2 overflow-x-auto rounded-xl border border-white/5 bg-[#1e293b] p-3"
+          className="flex gap-2 overflow-x-auto rounded-xl border border-border-subtle bg-[#1e293b] p-3"
         >
           {availableScopes.map((scope) => (
             <button
@@ -1504,10 +1504,10 @@ return (
               className={
                 'whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition ' +
                 (activeScope === scope.id
-                  ? 'bg-indigo-600 text-white'
+                  ? 'bg-primary text-text'
                   : scope.enabled
-                    ? 'bg-white/5 text-gray-300 hover:bg-white/10'
-                    : 'bg-white/5 text-gray-500') +
+                    ? 'bg-surface-sunken text-text-muted hover:bg-surface-sunken'
+                    : 'bg-surface-sunken text-text-muted') +
                 (scope.enabled ? '' : ' cursor-not-allowed opacity-60')
               }
             >
@@ -1518,25 +1518,25 @@ return (
         </nav>
 
         {/* Live logger roster — who is logging what on this match right now. */}
-        <section data-tour="console-header" className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+        <section data-tour="console-header" className="rounded-xl border border-border-subtle bg-[#1e293b] p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-lg font-semibold">Logging now</h2>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-text-muted">
               {runtime.hasLoggersRpc
                 ? 'One logger per stream: two people cannot record the same scope on this match.'
                 : 'Coverage requires the latest database setup (fixture_loggers).'}
             </span>
           </div>
           {myClaims.length === 0 ? (
-            <p className="mt-3 text-sm text-gray-500">Nobody has claimed a stream yet.</p>
+            <p className="mt-3 text-sm text-text-muted">Nobody has claimed a stream yet.</p>
           ) : (
             <ul className="mt-3 flex flex-wrap gap-2">
               {myClaims.map((row) => (
                 <li
                   key={`${row.scope}:${row.user_id}`}
-                  className="rounded-full bg-white/5 px-3 py-1 text-xs text-gray-300"
+                  className="rounded-full bg-surface-sunken px-3 py-1 text-xs text-text-muted"
                 >
-                  <span className="font-semibold text-indigo-300">{row.scope}</span>
+                  <span className="font-semibold text-primary">{row.scope}</span>
                   {row.email ? ` · ${row.email}` : ''}
                   {row.is_stale ? ' · stale' : ''}
                 </li>
@@ -1546,11 +1546,11 @@ return (
         </section>
 
         {activeScope === 'score' && (
-        <section className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+        <section className="rounded-xl border border-border-subtle bg-[#1e293b] p-6">
           <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-[1fr_auto_1fr]">
             <div className="text-center md:text-right">
               <p className="text-xl font-bold">{fixture.home_team?.name ?? 'Home'}</p>
-              <p className="text-xs text-gray-400">Home</p>
+              <p className="text-xs text-text-muted">Home</p>
             </div>
 
             <div className="flex items-center justify-center gap-3">
@@ -1560,7 +1560,7 @@ return (
                   min={allowNegativeScore ? undefined : 0}
                   value={homeScore}
                   onChange={(event) => setHomeScore(Number.parseInt(event.target.value, 10) || 0)}
-                  className="h-16 w-16 rounded-xl border border-white/10 bg-[#0f172a] text-center text-3xl font-black focus:border-indigo-500 focus:outline-none"
+                  className="h-16 w-16 rounded-xl border border-border-subtle bg-[#0f172a] text-center text-3xl font-black focus:border-primary/40 focus:outline-none"
                 />
                 <button
                   type="button"
@@ -1571,14 +1571,14 @@ return (
                   +1
                 </button>
               </div>
-              <span className="text-2xl font-bold text-gray-500">–</span>
+              <span className="text-2xl font-bold text-text-muted">–</span>
               <div className="flex flex-col items-center gap-1">
                 <input
                   type="number"
                   min={allowNegativeScore ? undefined : 0}
                   value={awayScore}
                   onChange={(event) => setAwayScore(Number.parseInt(event.target.value, 10) || 0)}
-                  className="h-16 w-16 rounded-xl border border-white/10 bg-[#0f172a] text-center text-3xl font-black focus:border-indigo-500 focus:outline-none"
+                  className="h-16 w-16 rounded-xl border border-border-subtle bg-[#0f172a] text-center text-3xl font-black focus:border-primary/40 focus:outline-none"
                 />
                 <button
                   type="button"
@@ -1593,11 +1593,11 @@ return (
 
             <div className="text-center md:text-left">
               <p className="text-xl font-bold">{fixture.away_team?.name ?? 'Away'}</p>
-              <p className="text-xs text-gray-400">Away</p>
+              <p className="text-xs text-text-muted">Away</p>
             </div>
           </div>
 
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3 border-t border-white/10 pt-4">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3 border-t border-border-subtle pt-4">
             <button
               type="button"
               disabled={busy}
@@ -1606,7 +1606,7 @@ return (
             >
               Save {arrangement ? scoreLabel(arrangement.scoringType) : 'score'}
             </button>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-text-muted">
               {scoreName || 'Score'} is written atomically through <code>record_score()</code>.
               {arrangement && arrangement.scoringType !== 'duel' && (
                 <>
@@ -1621,7 +1621,7 @@ return (
         )}
 
         {activeScope === 'clock' && (
-<section data-tour="console-clock" className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+<section data-tour="console-clock" className="rounded-xl border border-border-subtle bg-[#1e293b] p-6">
           <h2 className="mb-4 text-lg font-semibold">Clock &amp; status</h2>
           <div className="flex flex-wrap gap-2">
             {clock ? (
@@ -1631,7 +1631,7 @@ return (
             )}
           </div>
 
-          <div className="mt-5 flex flex-wrap items-end gap-3 border-t border-white/10 pt-4">
+          <div className="mt-5 flex flex-wrap items-end gap-3 border-t border-border-subtle pt-4">
             <Field label="Override minute">
               <TextInput
                 value={minuteInput}
@@ -1649,7 +1649,7 @@ return (
             >
               Apply
             </button>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-text-muted">
               Elapsed: {Math.floor(elapsedSeconds / 60)}:{String(elapsedSeconds % 60).padStart(2, '0')}{' '}
               &bull; minute {minute}
             </p>
@@ -1658,10 +1658,10 @@ return (
         )}
 
         {activeScope === 'clock' && canRules && (
-          <section data-tour="console-rules" className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+          <section data-tour="console-rules" className="rounded-xl border border-border-subtle bg-[#1e293b] p-6">
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
               <h2 className="text-lg font-semibold">Allocated times for this match</h2>
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-text-muted">
                 {isOverride
                   ? 'This match overrides the sport defaults.'
                   : 'Using the sport catalogue defaults.'}
@@ -1728,7 +1728,7 @@ return (
                 </button>
               </div>
             </form>
-            <p className="mt-3 text-xs text-gray-500">
+            <p className="mt-3 text-xs text-text-muted">
               Saved per match through <code>set_fixture_rules()</code> — the global sports catalogue is
               untouched, so other fixtures keep their own allocations.
             </p>
@@ -1736,16 +1736,16 @@ return (
         )}
 
         {activeScope === 'stats' && (
-        <section data-tour="console-stats" className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+        <section data-tour="console-stats" className="rounded-xl border border-border-subtle bg-[#1e293b] p-6">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Match statistics</h2>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-text-muted">
               Each tap calls <code>record_stat()</code> (atomic + duty checked).
             </span>
           </div>
 
           {writableStatGroups.length === 0 ? (
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-text-muted">
               Your duties do not cover any stat on this match — you can still watch the numbers below.
             </p>
           ) : null}
@@ -1753,7 +1753,7 @@ return (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {(['home', 'away'] as Side[]).map((side) => (
               <div key={side}>
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-indigo-300">
+                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
                   {side === 'home'
                     ? fixture.home_team?.name ?? 'Home'
                     : fixture.away_team?.name ?? 'Away'}
@@ -1761,7 +1761,7 @@ return (
                 {writableStatGroups.map((group) => (
                   <div key={group.group ?? 'other'} className="mb-4">
                     {group.group && (
-                      <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-gray-500">
+                      <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-text-muted">
                         {group.group}
                       </p>
                     )}
@@ -1769,9 +1769,9 @@ return (
                       {group.options.map((stat) => (
                         <li
                           key={stat.key}
-                          className="flex items-center justify-between rounded-lg border border-white/10 bg-[#0f172a] px-3 py-2"
+                          className="flex items-center justify-between rounded-lg border border-border-subtle bg-[#0f172a] px-3 py-2"
                         >
-                          <span className="text-sm text-gray-300">{stat.label}</span>
+                          <span className="text-sm text-text-muted">{stat.label}</span>
                           <span className="flex items-center gap-2">
                             <span className="font-mono text-sm tabular-nums">
                               {statNumber(stats, side, stat.key)}
@@ -1824,15 +1824,15 @@ return (
           </div>
 
           {readOnlyStatGroups.length > 0 && (
-            <div className="mt-6 border-t border-white/10 pt-4">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-gray-500">
+            <div className="mt-6 border-t border-border-subtle pt-4">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-text-muted">
                 Read-only — another logger owns these streams
               </p>
               <ul className="flex flex-wrap gap-2">
                 {readOnlyStatGroups.flatMap((group) => group.options).map((option) => (
                   <li
                     key={option.key}
-                    className="rounded-full bg-white/5 px-3 py-1 text-xs text-gray-400"
+                    className="rounded-full bg-surface-sunken px-3 py-1 text-xs text-text-muted"
                   >
                     {option.label}
                   </li>
@@ -1844,14 +1844,14 @@ return (
         )}
 
         {activeScope === 'lineup' && (
-        <section data-tour="console-lineup" className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+        <section data-tour="console-lineup" className="rounded-xl border border-border-subtle bg-[#1e293b] p-6">
           <h2 className="mb-1 text-lg font-semibold">Lineups &amp; formation</h2>
-          <p className="mb-4 text-xs text-gray-500">
+          <p className="mb-4 text-xs text-text-muted">
             Drag tokens to set each player&apos;s position. Coordinates are stored on{' '}
             <code>fixture_lineups</code> and streamed live to the public page.
           </p>
           {!runtime.hasLineupRpc ? (
-            <p className="rounded-lg bg-white/5 px-3 py-2 text-sm text-gray-400">
+            <p className="rounded-lg bg-surface-sunken px-3 py-2 text-sm text-text-muted">
               Formations need the latest database setup (db-setup.sql).
             </p>
           ) : (
@@ -1880,7 +1880,7 @@ return (
                   })
                 return (
                   <div key={side} className="space-y-3">
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-gray-300">
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-text-muted">
                       {team.name}
                     </h3>
                     <FormationCanvas
@@ -1943,26 +1943,26 @@ return (
 
         {activeScope === 'timeline' && (
         <div data-tour="console-timeline" className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-          <section className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+          <section className="rounded-xl border border-border-subtle bg-[#1e293b] p-6">
             <h2 className="mb-4 text-lg font-semibold">Timeline ({events.length})</h2>
             {events.length === 0 ? (
-              <p className="text-sm text-gray-500">No events logged yet.</p>
+              <p className="text-sm text-text-muted">No events logged yet.</p>
             ) : (
               <ul className="space-y-3">
                 {events.map((row) => (
                   <li
                     key={row.id}
-                    className="flex items-start gap-3 rounded-lg border border-white/10 bg-[#0f172a] p-3"
+                    className="flex items-start gap-3 rounded-lg border border-border-subtle bg-[#0f172a] p-3"
                   >
-                    <span className="w-10 shrink-0 font-bold text-indigo-400">{row.minute}&apos;</span>
+                    <span className="w-10 shrink-0 font-bold text-primary">{row.minute}&apos;</span>
                     <div className="flex-1">
                       <p className="text-sm font-semibold capitalize">
                         {row.event_type.replace(/_/g, ' ')}
                       </p>
                       {row.player_name && (
-                        <p className="text-xs text-gray-300">{row.player_name}</p>
+                        <p className="text-xs text-text-muted">{row.player_name}</p>
                       )}
-                      {row.details && <p className="text-xs text-gray-500">{row.details}</p>}
+                      {row.details && <p className="text-xs text-text-muted">{row.details}</p>}
                     </div>
                     <button
                       type="button"
@@ -1978,10 +1978,10 @@ return (
             )}
           </section>
 
-          <section className="rounded-xl border border-white/5 bg-[#1e293b] p-6">
+          <section className="rounded-xl border border-border-subtle bg-[#1e293b] p-6">
             <h2 className="mb-4 text-lg font-semibold">Log an event</h2>
             {loggableEventOptions.length === 0 ? (
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-text-muted">
                 Your duties do not cover any event type on this match. Ask a tournament admin for an
                 <code className="mx-1">event:&lt;type&gt;</code> duty, or watch the timeline.
               </p>

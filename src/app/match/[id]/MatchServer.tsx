@@ -205,7 +205,7 @@ export default async function MatchServer({ params }: MatchPageServerProps) {
   const initialEvents = events.slice(0, 5)
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white pb-32">
+    <div className="min-h-dvh bg-surface text-text pb-32">
       <Navigation />
 
       <MatchHeader fixture={fixture} isLive={isLive} />
@@ -239,26 +239,26 @@ function MatchHeader({ fixture, isLive }: { fixture: MatchFixtureShape; isLive: 
         <div className="flex items-center justify-center gap-6 flex-wrap">
           <Link href={`/team/${fixture.home_team.id}`} className="flex flex-col items-center gap-4 flex-1 group">
             <div
-              className="w-20 h-20 sm:w-32 sm:h-32 rounded-full flex items-center justify-center font-black text-2xl sm:text-5xl text-white/50 border border-white/10 group-hover:scale-105 transition-transform shadow-xl"
+              className="w-20 h-20 sm:w-32 sm:h-32 rounded-full flex items-center justify-center font-black text-2xl sm:text-5xl text-text-muted border border-border-subtle group-hover:scale-105 transition-transform shadow-cc"
               style={{
                 backgroundColor:
                   fixture.home_team.attire_color === 'Yet to be decided'
-                    ? '#334155'
-                    : (fixture.home_team.attire_color ?? '#334155'),
+                    ? 'var(--color-surface-sunken)'
+                    : (fixture.home_team.attire_color ?? 'var(--color-surface-sunken)'),
               }}
             >
               {fixture.home_team.short_name}
             </div>
-            <span className="font-bold text-lg sm:text-2xl text-center group-hover:text-indigo-300 transition-colors">
+            <span className="font-bold text-lg sm:text-2xl text-center group-hover:text-primary transition-colors">
               {fixture.home_team.name}
             </span>
           </Link>
 
           <div className="flex flex-col items-center px-4 sm:px-8 shrink-0">
-            <div className={`text-3xl sm:text-6xl font-black ${isLive ? 'text-red-400 drop-shadow-lg' : 'text-white drop-shadow-lg'}`}>
+            <div className={`cc-score text-3xl sm:text-6xl ${isLive ? 'text-live' : 'text-text'}`}>
               {fixture.home_score} - {fixture.away_score}
             </div>
-            <div className={`text-sm font-medium mt-2 ${isLive ? 'text-red-400 animate-pulse' : 'text-gray-400'}`}>
+            <div className={`cc-num text-sm font-medium mt-2 ${isLive ? 'text-live animate-pulse' : 'text-text-muted'}`}>
               {isLive
                 ? 'LIVE'
                 : fixture.status === 'full_time'
@@ -271,17 +271,17 @@ function MatchHeader({ fixture, isLive }: { fixture: MatchFixtureShape; isLive: 
 
           <Link href={`/team/${fixture.away_team.id}`} className="flex flex-col items-center gap-4 flex-1 group">
             <div
-              className="w-20 h-20 sm:w-32 sm:h-32 rounded-full flex items-center justify-center font-black text-2xl sm:text-5xl text-white/50 border border-white/10 group-hover:scale-105 transition-transform shadow-xl"
+              className="w-20 h-20 sm:w-32 sm:h-32 rounded-full flex items-center justify-center font-black text-2xl sm:text-5xl text-text-muted border border-border-subtle group-hover:scale-105 transition-transform shadow-cc"
               style={{
                 backgroundColor:
                   fixture.away_team.attire_color === 'Yet to be decided'
-                    ? '#334155'
-                    : (fixture.away_team.attire_color ?? '#334155'),
+                    ? 'var(--color-surface-sunken)'
+                    : (fixture.away_team.attire_color ?? 'var(--color-surface-sunken)'),
               }}
             >
               {fixture.away_team.short_name}
             </div>
-            <span className="font-bold text-lg sm:text-2xl text-center group-hover:text-indigo-300 transition-colors">
+            <span className="font-bold text-lg sm:text-2xl text-center group-hover:text-primary transition-colors">
               {fixture.away_team.name}
             </span>
           </Link>
@@ -293,13 +293,13 @@ function MatchHeader({ fixture, isLive }: { fixture: MatchFixtureShape; isLive: 
 
 function MatchMetaCard({ fixture }: { fixture: MatchFixtureShape }) {
   return (
-    <div className="bg-[#1e293b] rounded-xl p-6 border border-white/5 text-center text-gray-400">
+    <div className="cc-card p-6 text-center text-text-muted">
       <p>
-        Venue: <span className="text-white font-medium">{fixture.venue || 'TBD'}</span>
+        Venue: <span className="text-text font-medium">{fixture.venue || 'TBD'}</span>
       </p>
       <p className="mt-2">
         Competition:{' '}
-        <span className="text-white font-medium">
+        <span className="text-text font-medium">
           Coal City Games {fixture.home_team.category} {fixture.home_team.team_type}
         </span>
       </p>
@@ -309,19 +309,19 @@ function MatchMetaCard({ fixture }: { fixture: MatchFixtureShape }) {
 
 function MatchMiniEvents({ initialEvents }: { initialEvents: MatchEventShape[] }) {
   return (
-    <div className="bg-[#1e293b] rounded-xl p-6 border border-white/5">
+    <div className="cc-card p-6">
       <h3 className="font-bold text-lg mb-4 text-center">Match Events</h3>
       {initialEvents.length === 0 ? (
-        <p className="text-gray-500 text-center text-sm">No events logged yet.</p>
+        <p className="text-text-muted text-center text-sm">No events logged yet.</p>
       ) : (
         <div className="space-y-3 max-h-60 overflow-y-auto">
           {initialEvents.map((e) => (
-            <div key={e.id} className="flex items-center justify-between text-sm py-2 border-b border-white/5 last:border-0">
-              <span className="text-gray-400 w-12">{e.minute}&apos;</span>
-              <span className="flex-1 font-medium text-center text-white">
+            <div key={e.id} className="flex items-center justify-between text-sm py-2 border-b border-border-subtle last:border-0">
+              <span className="text-text-muted w-12">{e.minute}&apos;</span>
+              <span className="flex-1 font-medium text-center text-text">
                 {e.event_type.replace(/_/g, ' ')}
               </span>
-              <span className="text-gray-400 flex-1 text-right truncate">
+              <span className="text-text-muted flex-1 text-right truncate">
                 {e.player_name || 'N/A'}
               </span>
             </div>
